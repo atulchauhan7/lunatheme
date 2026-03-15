@@ -98,6 +98,7 @@
   var searchTriggers = $$('[data-lh-search-trigger]');
   var headerSearchClose = $('[data-lh-header-search-close]');
   var headerSearchInput = headerSearch ? headerSearch.querySelector('.lh-header-search__input') : null;
+  var predictiveWrap = headerSearch ? headerSearch.querySelector('predictive-search') : null;
 
   function openSearch() {
     if (headerSearch) {
@@ -112,6 +113,10 @@
     if (headerSearch) {
       headerSearch.classList.remove('open');
       if (headerSearchInput) headerSearchInput.value = '';
+      /* Close predictive search dropdown if open */
+      if (predictiveWrap && predictiveWrap.close) {
+        predictiveWrap.close(true);
+      }
     }
   }
 

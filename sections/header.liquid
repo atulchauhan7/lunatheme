@@ -1,7 +1,11 @@
 {{ 'lunacoder-header.css' | asset_url | stylesheet_tag }}
+{{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
 
 {%- if settings.cart_type == 'notification' -%}
   <link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
@@ -64,26 +68,46 @@
 
   <div class="lh-header-search" data-lh-header-search>
     <div class="lh-header-search__inner">
-      <form action="{{ routes.search_url }}" method="get" role="search" class="lh-header-search__form">
-        <input type="hidden" name="type" value="product">
-        <svg class="lh-header-search__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="M21 21l-4.35-4.35"/>
-        </svg>
-        <input type="search" name="q" class="lh-header-search__input" placeholder="Search for products..." autocomplete="off" aria-label="Search products">
-        <button type="button" class="lh-header-search__close" data-lh-header-search-close aria-label="Close search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
+      {%- if settings.predictive_search_enabled -%}
+        <predictive-search class="lh-predictive-search-wrap" data-loading-text="{{ 'accessibility.loading' | t }}">
+      {%- endif -%}
+        <form action="{{ routes.search_url }}" method="get" role="search" class="lh-header-search__form">
+          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="options[prefix]" value="last">
+          <svg class="lh-header-search__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
           </svg>
-        </button>
-      </form>
-      <div class="lh-header-search__tags">
-        <span class="lh-header-search__tags-label">Trending</span>
-        {% for link in linklists[section.settings.menu].links limit: 5 %}
-          <a href="{{ routes.search_url }}?q={{ link.title | url_encode }}&type=product" class="lh-header-search__tag">{{ link.title }}</a>
-        {% endfor %}
-      </div>
+          <input
+            type="search"
+            name="q"
+            class="lh-header-search__input"
+            placeholder="Search for products..."
+            autocomplete="off"
+            aria-label="Search products"
+            {%- if settings.predictive_search_enabled -%}
+              role="combobox"
+              aria-expanded="false"
+              aria-owns="predictive-search-results"
+              aria-controls="predictive-search-results"
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            {%- endif -%}
+          >
+          <button type="reset" class="lh-header-search__reset hidden" aria-label="Reset search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;padding:0"></button>
+          {%- if settings.predictive_search_enabled -%}
+            <div class="predictive-search predictive-search--header lh-predictive-results" tabindex="-1" data-predictive-search>
+              {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+            </div>
+            <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+          {%- endif -%}
+        </form>
+      {%- if settings.predictive_search_enabled -%}
+        </predictive-search>
+      {%- endif -%}
     </div>
   </div>
 
