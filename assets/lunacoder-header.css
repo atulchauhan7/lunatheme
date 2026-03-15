@@ -766,13 +766,15 @@ header-drawer {
 }
 
 /* Override drawer positioning to work inside our fixed header */
-header-drawer .menu-drawer {
+header-drawer .menu-drawer,
+.js header-drawer .menu-drawer {
   position: fixed;
   top: var(--lh-drawer-top, 60px);
   left: 0;
   width: 100%;
   height: calc(100vh - var(--lh-drawer-top, 60px));
   height: calc(100dvh - var(--lh-drawer-top, 60px));
+  bottom: 0;
   z-index: 1001;
   max-width: none;
   border: none;
