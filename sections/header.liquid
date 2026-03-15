@@ -1,9 +1,13 @@
 {{ 'lunacoder-header.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
 
 {%- if settings.cart_type == 'notification' -%}
   <link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
+<div class="header-wrapper">
 <header class="lh-site-header {% if section.settings.show_announcement %}has-announcement{% endif %}" data-header>
   <div class="lh-site-header__inner">
 
@@ -13,10 +17,6 @@
           <line x1="4" y1="7" x2="20" y2="7"/>
           <line x1="4" y1="12" x2="20" y2="12"/>
           <line x1="4" y1="17" x2="14" y2="17"/>
-        </svg>
-        <svg class="lh-menu-toggle__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
       <button class="lh-header-icon" data-lh-search-trigger aria-label="Search">
@@ -87,61 +87,11 @@
     </div>
   </div>
 
-  <nav class="lh-site-header__nav" role="navigation" aria-label="Main navigation">
-    <div class="lh-nav-mobile-header">
-      <span class="lh-nav-mobile-brand">{{ shop.name }}</span>
-      <button class="lh-nav-mobile-close" aria-label="Close menu" data-lh-nav-close>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
-    <div class="lh-nav-mobile-links">
-      {% for link in linklists[section.settings.menu].links %}
-        <div class="lh-nav-item">
-          <a href="{{ link.url }}" class="lh-site-header__nav-link {% if link.active %}active{% endif %}"
-            {% if link.url contains '/collections/' %}data-lh-nav-collection-handle="{{ link.url | split: '/collections/' | last | split: '?' | first | split: '/' | first }}"{% endif %}>
-            <span class="lh-nav-link__inner">
-              <span class="lh-nav-link__thumb" style="display:none"></span>
-              <span class="lh-nav-link__text">{{ link.title }}</span>
-            </span>
-            {% if link.links.size > 0 %}
-              <svg class="lh-nav-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
-            {% endif %}
-          </a>
-          {% if link.links.size > 0 %}
-            <div class="lh-mega-menu">
-              <div class="lh-mega-menu__grid">
-                {% for child_link in link.links %}
-                  <div class="lh-mega-menu__column">
-                    <a href="{{ child_link.url }}" class="lh-mega-menu__column-title">{{ child_link.title }}</a>
-                    {% for grandchild in child_link.links %}
-                      <a href="{{ grandchild.url }}" class="lh-mega-menu__link">{{ grandchild.title }}</a>
-                    {% endfor %}
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-    <div class="lh-nav-collections" id="lh-nav-collections"></div>
-    <div class="lh-nav-mobile-footer">
-      <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="lh-nav-mobile-footer__link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-        {% if customer %}My Account{% else %}Log In{% endif %}
-      </a>
-    </div>
-  </nav>
-  <div class="lh-nav-overlay" data-lh-nav-overlay></div>
+  {%- if section.settings.menu != blank -%}
+    {%- render 'header-drawer' -%}
+  {%- endif -%}
 </header>
+</div>
 
 <script src="{{ 'lunacoder-header.js' | asset_url }}" defer></script>
 

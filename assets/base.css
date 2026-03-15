@@ -3262,6 +3262,7 @@ details-disclosure > details {
   .animate--ambient > img,
   .animate--ambient > .svg-wrapper {
     animation: animateAmbient 30s linear infinite;
+    animation: none;
   }
 
   @keyframes animateAmbient {
