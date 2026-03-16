@@ -410,7 +410,7 @@
 .lh-header-search .predictive-search__search-for-button {
   border-top: 1px solid var(--lh-border);
   position: sticky;
-  bottom: 0;
+  bottom: 30px;
   background: var(--lh-header-bg, #fff);
   z-index: 2;
   margin-bottom: 48px;
