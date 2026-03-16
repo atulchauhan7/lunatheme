@@ -96,9 +96,14 @@
   /* === HEADER INLINE SEARCH === */
   var headerSearch = $('[data-lh-header-search]');
   var searchTriggers = $$('[data-lh-search-trigger]');
-  var headerSearchClose = $('[data-lh-header-search-close]');
   var headerSearchInput = headerSearch ? headerSearch.querySelector('.lh-header-search__input') : null;
+  var headerSearchReset = headerSearch ? headerSearch.querySelector('.lh-header-search__reset') : null;
   var predictiveWrap = headerSearch ? headerSearch.querySelector('predictive-search') : null;
+
+  function syncHeaderSearchResetState() {
+    if (!headerSearchInput || !headerSearchReset) return;
+    headerSearchReset.classList.toggle('hidden', !headerSearchInput.value.trim());
+  }
 
   function openSearch() {
     if (headerSearch) {
@@ -113,6 +118,7 @@
     if (headerSearch) {
       headerSearch.classList.remove('open');
       if (headerSearchInput) headerSearchInput.value = '';
+      syncHeaderSearchResetState();
       /* Close predictive search dropdown if open */
       if (predictiveWrap && predictiveWrap.close) {
         predictiveWrap.close(true);
@@ -131,7 +137,17 @@
       }
     });
   });
-  if (headerSearchClose) headerSearchClose.addEventListener('click', closeSearch);
+  if (headerSearchInput) {
+    headerSearchInput.addEventListener('input', syncHeaderSearchResetState);
+  }
+  if (headerSearchReset) {
+    headerSearchReset.addEventListener('click', function () {
+      setTimeout(function () {
+        syncHeaderSearchResetState();
+        if (headerSearchInput) headerSearchInput.focus();
+      }, 0);
+    });
+  }
   document.addEventListener('click', function (e) {
     if (headerSearch && headerSearch.classList.contains('open') &&
       !headerSearch.contains(e.target) &&
