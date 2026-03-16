@@ -838,8 +838,8 @@
 /* Header icons */
 .lh-header-icon {
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1041,7 +1041,7 @@
   .lh-site-header__left { gap: 0.45rem; }
   .lh-site-header__logo { font-size: clamp(1.6rem, 6vw, 2.4rem); letter-spacing: 0.35em; }
   .lh-site-header__right { gap: 0.5rem; }
-  .lh-header-icon { width: 46px; height: 46px; }
+  .lh-header-icon { width: 44px; height: 44px; }
   .lh-header-icon svg { width: 22px; height: 22px; }
 }
 
@@ -1055,8 +1055,8 @@
     text-overflow: ellipsis;
     max-width: calc(100vw - 140px);
   }
-  .lh-header-icon { width: 40px; height: 40px; }
-  .lh-header-icon svg { width: 20px; height: 20px; }
+  .lh-header-icon { width: 44px; height: 44px; }
+  .lh-header-icon svg { width: 22px; height: 22px; }
   .lh-site-header__left { gap: 0.2rem; }
   .lh-site-header__right { gap: 0.2rem; }
 }
