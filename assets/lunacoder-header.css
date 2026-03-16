@@ -834,7 +834,7 @@
 
 /* Mobile menu toggle */
 .lh-menu-toggle {
-  display: none;
+  display: flex;
   cursor: pointer;
 }
 .lh-menu-toggle.active .lh-menu-toggle__open { display: none; }
