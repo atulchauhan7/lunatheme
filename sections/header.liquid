@@ -101,6 +101,11 @@
             {%- endif -%}
           >
           <button type="reset" class="lh-header-search__reset hidden" aria-label="Reset search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;padding:0"></button>
+          <button type="button" class="lh-header-search__close" data-lh-header-search-close aria-label="Close search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
           {%- if settings.predictive_search_enabled -%}
             <div class="predictive-search predictive-search--header lh-predictive-results" tabindex="-1" data-predictive-search>
               {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
