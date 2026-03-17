@@ -28,13 +28,8 @@
   function setHeaderHeight() {
     var hh = header ? Math.round(header.getBoundingClientRect().bottom) : 72;
     document.documentElement.style.setProperty('--header-height', hh + 'px');
-    // Set body padding to match total header height
-    if (announcementSection && !announcementSection.classList.contains('announcement-hidden')) {
-      var announcementHeight = announcementSection.getBoundingClientRect().height;
-      document.body.style.paddingTop = (hh + announcementHeight) + 'px';
-    } else {
-      document.body.style.paddingTop = hh + 'px';
-    }
+    /* Set body padding to match total header height (already includes announcement) */
+    document.body.style.paddingTop = hh + 'px';
   }
   setHeaderHeight();
   window.addEventListener('resize', setHeaderHeight);

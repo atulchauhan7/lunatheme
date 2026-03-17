@@ -158,6 +158,10 @@ class PredictiveSearch extends SearchForm {
     activeElement.setAttribute('aria-selected', true);
     if (selectedElement) selectedElement.setAttribute('aria-selected', false);
 
+    if (typeof activeElement.scrollIntoView === 'function') {
+      activeElement.scrollIntoView({ block: 'nearest' });
+    }
+
     this.input.setAttribute('aria-activedescendant', activeElement.id);
   }
 
@@ -239,8 +243,10 @@ class PredictiveSearch extends SearchForm {
   }
 
   getResultsMaxHeight() {
-    this.resultsMaxHeight =
-      window.innerHeight - document.querySelector('.section-header')?.getBoundingClientRect().bottom;
+    const sectionHeader = document.querySelector('.section-header');
+    const headerBottom = sectionHeader ? sectionHeader.getBoundingClientRect().bottom : 0;
+    const availableHeight = window.innerHeight - Math.max(0, headerBottom);
+    this.resultsMaxHeight = Math.max(200, availableHeight - 8);
     return this.resultsMaxHeight;
   }
 

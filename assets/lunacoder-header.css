@@ -9,9 +9,10 @@
   --lh-text: rgba(var(--color-foreground), 0.75);
   --lh-heading: rgb(var(--color-foreground));
   --lh-text-muted: rgba(var(--color-foreground), 0.55);
-  --lh-accent: rgb(var(--color-button));
-  --lh-accent-rgb: var(--color-button);
-  --lh-accent-dark: rgb(var(--color-button));
+  /* Override accent color with gold for header/announcement */
+  --lh-accent: #F4a610;
+  --lh-accent-rgb: 244,166,16;
+  --lh-accent-dark: #DA8B00;
   --lh-border: rgba(var(--color-foreground), 0.12);
   --lh-surface: rgba(var(--color-foreground), 0.04);
   --lh-container-width: var(--page-width, 120rem);
@@ -281,7 +282,8 @@
   z-index: 10;
   scrollbar-width: thin;
   scrollbar-color: var(--lh-border) transparent;
-  padding-bottom: 8px;
+  scroll-padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
 }
 .lh-header-search .predictive-search--header::-webkit-scrollbar { width: 4px; }
 .lh-header-search .predictive-search--header::-webkit-scrollbar-thumb { background: var(--lh-border); border-radius: 2px; }
@@ -424,10 +426,10 @@
 .lh-header-search .predictive-search__search-for-button {
   border-top: 1px solid var(--lh-border);
   position: sticky;
-  bottom: 30px;
+  bottom: 0;
   background: var(--lh-header-bg, #fff);
   z-index: 2;
-  margin-bottom: 48px;
+  margin-bottom: 0;
 }
 .lh-header-search .predictive-search__search-for-button .predictive-search__item {
   padding: 14px 24px;
@@ -1091,6 +1093,8 @@
   }
   .lh-header-search .predictive-search--header {
     max-height: min(58vh, calc(100vh - 180px));
+    scroll-padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -1148,7 +1152,8 @@
     font-size: 1.25rem !important;
   }
   .lh-header-search .predictive-search__search-for-button {
-    margin-bottom: 20px;
+    bottom: 0;
+    margin-bottom: 0;
   }
   .lh-header-search .predictive-search__item-heading {
     font-size: 1.3rem;
@@ -1171,6 +1176,10 @@
   .lh-header-search .predictive-search__image {
     width: 56px;
     height: 70px;
+  }
+  .lh-header-search .predictive-search__search-for-button {
+    bottom: 0;
+    margin-bottom: 0;
   }
 }
 
