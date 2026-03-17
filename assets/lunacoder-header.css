@@ -1306,7 +1306,6 @@ header-drawer .list-social {
 .js header-drawer > details[open] > summary::before {
   opacity: 1;
   visibility: visible;
-}
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
@@ -1365,4 +1364,20 @@ body {
   overflow: hidden !important;
   height: 100vh !important;
   height: 100dvh !important;
+}
+
+/* === GOKWIK — Neutralise ALL fixed overlapping elements ===
+   Must be at the END of this file to win source-order battles
+   against earlier !important rules (e.g. cart-drawer z-index). */
+body:has(#gokwik-iframe) .lh-site-header,
+body:has(#gokwik-iframe) .announcement-bar-section,
+body:has(#gokwik-iframe) .section-header,
+body:has(#gokwik-iframe) .lh-nav-overlay,
+body:has(#gokwik-iframe) .lh-header-search,
+body:has(#gokwik-iframe) header-drawer,
+body:has(#gokwik-iframe) cart-drawer,
+body:has(#gokwik-iframe) cart-notification,
+body:has(#gokwik-iframe) .drawer {
+  pointer-events: none !important;
+  z-index: 0 !important;
 }

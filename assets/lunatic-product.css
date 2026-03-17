@@ -240,22 +240,11 @@ body.overflow-hidden .product-info__cta-group { display: none !important }
 .product-info__add-to-cart .btn:hover { background: var(--color-accent); color: #fff; border-color: var(--color-accent) }
 
 /* === GOKWIK CHECKOUT — Pure CSS detection via :has() ===
-   When GoKwik injects #gokwik-iframe, neutralise every theme-level
-   fixed element that could sit on top and capture click/tap events.
-   :has() is re-evaluated automatically by the browser — zero JS needed. */
-body:has(#gokwik-iframe) .lh-site-header,
-body:has(#gokwik-iframe) .announcement-bar-section,
-body:has(#gokwik-iframe) .section-header {
-  pointer-events: none !important;
-  z-index: 0 !important;
-}
+   When GoKwik injects #gokwik-iframe, hide the mobile CTA bar.
+   All other fixed elements are neutralised in lunacoder-header.css
+   (loaded last, wins source-order for !important). */
 body:has(#gokwik-iframe) .product-info__cta-group {
   display: none !important;
-}
-body:has(#gokwik-iframe) .drawer,
-body:has(#gokwik-iframe) cart-drawer {
-  pointer-events: none !important;
-  z-index: 0 !important;
 }
 
 /* Loading spinner for buttons */
