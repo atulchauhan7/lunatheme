@@ -471,19 +471,8 @@
       /* Update cart count bubble directly */
       updateCartCount();
 
-      /* Dispatch event for cart drawer */
-      document.dispatchEvent(new CustomEvent('cart:refresh'));
-
-      /* Try opening cart drawer if it exists */
-      var cartDrawer = document.querySelector('cart-drawer');
-      if (cartDrawer && typeof cartDrawer.open === 'function') {
-        cartDrawer.open();
-      } else {
-        var cartNotification = document.querySelector('cart-notification');
-        if (cartNotification && typeof cartNotification.open === 'function') {
-          cartNotification.open();
-        }
-      }
+      /* Redirect to cart page */
+      window.location.href = '/cart';
     })
     .catch(function () {
       btns.forEach(function (b) {
