@@ -1,5 +1,6 @@
 {% if section.blocks.size > 0 %}
-<div class="announcement-bar marquee-pausable" role="banner">
+  {%- assign marquee_duration = section.settings.change_slides_speed | times: 6 -%}
+<div class="announcement-bar marquee-pausable" role="banner" style="--announcement-marquee-duration: {{ marquee_duration }}s;">
   {%- assign first_block = section.blocks.first -%}
   {% if first_block.settings.link != blank %}<a href="{{ first_block.settings.link }}" class="announcement-bar__link">{% endif %}
   <div class="announcement-bar__marquee" aria-live="off">
@@ -35,7 +36,7 @@
     {
       "type": "range",
       "id": "change_slides_speed",
-      "min": 3,
+      "min": 1,
       "max": 10,
       "step": 1,
       "unit": "s",

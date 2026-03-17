@@ -95,7 +95,7 @@
 }
 .announcement-bar__marquee {
   display: flex;
-  animation: lh-marquee 40s linear infinite;
+  animation: lh-marquee var(--announcement-marquee-duration, 35s) linear infinite;
   white-space: nowrap;
   position: relative;
   z-index: 1;
