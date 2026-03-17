@@ -183,6 +183,8 @@ html { scroll-behavior: smooth }
 .product-option__value.selected { border-color: var(--color-accent); background: var(--color-accent); color: #fff; box-shadow: 0 4px 12px rgba(var(--color-accent-rgb), 0.25) }
 .product-option.is-missing-selection .product-option__label { color: var(--color-accent) }
 .product-option.is-missing-selection .product-option__values { animation: missingSelectionShake 0.4s ease }
+.product-info__option-insert { margin-bottom: 1rem }
+.product-info__option-insert .size-chart-trigger { margin-left: 0 }
 
 /* Size chart trigger */
 .size-chart-trigger { display: inline-flex; align-items: center; gap: 5px; font-size: 1.09rem; font-weight: 600; letter-spacing: 0.04em; color: var(--color-accent); cursor: pointer !important; background: rgba(var(--color-accent-rgb), 0.06) !important; border: 1px solid rgba(var(--color-accent-rgb), 0.15) !important; font-family: inherit !important; padding: 3px 10px; margin-left: 0.96rem; text-transform: none; transition: all 0.25s ease; border-radius: 50px }

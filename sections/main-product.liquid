@@ -79,12 +79,24 @@
 
 <!-- === PRODUCT INFO === -->
 <div class="product-info">
+  {% assign option_layout_blocks = section.blocks | where: 'type', 'option_layout' %}
+  {% assign has_custom_title_block = false %}
+  {% if option_layout_blocks.size > 0 %}
+    {% for block in option_layout_blocks %}
+      {% if block.settings.layout_type == 'product_title' %}
+        {% assign has_custom_title_block = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 
   {% if product.vendor != blank %}
   <div class="product-info__vendor">{{ product.vendor }}<svg class="product-info__vendor-badge" width="14" height="14" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="#fff" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
   {% endif %}
 
+  {% unless has_custom_title_block %}
   <h1 class="product-info__title">{{ product.title }}</h1>
+  {% endunless %}
 
   {% comment %} Star Rating {% endcomment %}
   {% if section.settings.show_rating %}
@@ -195,20 +207,101 @@
   {% unless product.has_only_default_variant %}
   <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
   <div class="product-info__options">
-    {% for option in product.options_with_values %}
-    <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}">
-      <label class="product-option__label">
-        {{ option.name }}
-      </label>
-      <div class="product-option__values">
-        {% for value in option.values %}
-        <span class="product-option__value" data-option-index="{{ forloop.index0 }}" data-value="{{ value }}" role="button" tabindex="0" aria-pressed="false">
-          {{ value }}
-        </span>
-        {% endfor %}
+    {% if option_layout_blocks.size > 0 %}
+      {% for block in option_layout_blocks %}
+        {% case block.settings.layout_type %}
+          {% when 'product_title' %}
+            <h1 class="product-info__title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+          {% when 'size_chart_trigger' %}
+            <div class="product-info__option-insert" {{ block.shopify_attributes }}>
+              <button type="button" class="size-chart-trigger" data-open-size-sheet>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18"/><path d="M7 3v4"/><path d="M17 3v4"/><path d="M7 21v-4"/><path d="M17 21v-4"/><rect x="3" y="7" width="18" height="10" rx="2"/></svg>
+                {{ block.settings.label | default: 'Size Chart' | escape }}
+              </button>
+            </div>
+
+          {% when 'size_options' %}
+            {% for option in product.options_with_values %}
+              {% assign option_name = option.name | downcase %}
+              {% if option_name contains 'size' %}
+              <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}" {{ block.shopify_attributes }}>
+                <label class="product-option__label">{{ option.name }}</label>
+                <div class="product-option__values">
+                  {% for value in option.values %}
+                  <span class="product-option__value" data-option-index="{{ forloop.parentloop.index0 }}" data-value="{{ value }}" role="button" tabindex="0" aria-pressed="false">{{ value }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+
+          {% when 'color_options' %}
+            {% for option in product.options_with_values %}
+              {% assign option_name = option.name | downcase %}
+              {% if option_name contains 'color' or option_name contains 'colour' %}
+              <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}" {{ block.shopify_attributes }}>
+                <label class="product-option__label">{{ option.name }}</label>
+                <div class="product-option__values">
+                  {% for value in option.values %}
+                  <span class="product-option__value" data-option-index="{{ forloop.parentloop.index0 }}" data-value="{{ value }}" role="button" tabindex="0" aria-pressed="false">{{ value }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+
+          {% when 'other_options' %}
+            {% for option in product.options_with_values %}
+              {% assign option_name = option.name | downcase %}
+              {% unless option_name contains 'size' or option_name contains 'color' or option_name contains 'colour' %}
+              <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}" {{ block.shopify_attributes }}>
+                <label class="product-option__label">{{ option.name }}</label>
+                <div class="product-option__values">
+                  {% for value in option.values %}
+                  <span class="product-option__value" data-option-index="{{ forloop.parentloop.index0 }}" data-value="{{ value }}" role="button" tabindex="0" aria-pressed="false">{{ value }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endunless %}
+            {% endfor %}
+
+          {% when 'all_options' %}
+            {% for option in product.options_with_values %}
+            <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}" {{ block.shopify_attributes }}>
+              <label class="product-option__label">{{ option.name }}</label>
+              <div class="product-option__values">
+                {% for value in option.values %}
+                <span class="product-option__value" data-option-index="{{ forloop.parentloop.index0 }}" data-value="{{ value }}" role="button" tabindex="0" aria-pressed="false">{{ value }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endfor %}
+
+          {% when 'custom_content' %}
+            {% if block.settings.content != blank %}
+            <div class="product-info__option-insert" {{ block.shopify_attributes }}>
+              {{ block.settings.content }}
+            </div>
+            {% endif %}
+        {% endcase %}
+      {% endfor %}
+    {% else %}
+      {% for option in product.options_with_values %}
+      <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}">
+        <label class="product-option__label">
+          {{ option.name }}
+        </label>
+        <div class="product-option__values">
+          {% for value in option.values %}
+          <span class="product-option__value" data-option-index="{{ forloop.index0 }}" data-value="{{ value }}" role="button" tabindex="0" aria-pressed="false">
+            {{ value }}
+          </span>
+          {% endfor %}
+        </div>
       </div>
-    </div>
-    {% endfor %}
+      {% endfor %}
+    {% endif %}
   </div>
   {% endunless %}
 
@@ -850,6 +943,62 @@
     }
   ],
   "blocks": [
+    {
+      "type": "option_layout",
+      "name": "Option Layout",
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout_type",
+          "label": "Layout item",
+          "default": "all_options",
+          "options": [
+            {
+              "value": "product_title",
+              "label": "Product title"
+            },
+            {
+              "value": "size_chart_trigger",
+              "label": "Size chart trigger"
+            },
+            {
+              "value": "size_options",
+              "label": "Size options"
+            },
+            {
+              "value": "color_options",
+              "label": "Color options"
+            },
+            {
+              "value": "other_options",
+              "label": "Other options"
+            },
+            {
+              "value": "all_options",
+              "label": "All options (fallback)"
+            },
+            {
+              "value": "custom_content",
+              "label": "Custom content"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Trigger label",
+          "default": "Size Chart",
+          "info": "Used when Layout item is Size chart trigger"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Custom content",
+          "default": "<p>Add any content you want between option groups.</p>",
+          "info": "Used when Layout item is Custom content"
+        }
+      ]
+    },
     {
       "type": "info_container",
       "name": "Product Info Container",
