@@ -239,7 +239,24 @@ body.overflow-hidden .product-info__cta-group { display: none !important }
 .product-info__add-to-cart .btn { width: 100%; background: #fff; color: var(--color-accent); border: 1.5px solid var(--color-accent) }
 .product-info__add-to-cart .btn:hover { background: var(--color-accent); color: #fff; border-color: var(--color-accent) }
 
-/* GoKwik manages its own z-index and overlay; no theme overrides needed */
+/* === GOKWIK CHECKOUT — Pure CSS detection via :has() ===
+   When GoKwik injects #gokwik-iframe, neutralise every theme-level
+   fixed element that could sit on top and capture click/tap events.
+   :has() is re-evaluated automatically by the browser — zero JS needed. */
+body:has(#gokwik-iframe) .lh-site-header,
+body:has(#gokwik-iframe) .announcement-bar-section,
+body:has(#gokwik-iframe) .section-header {
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+body:has(#gokwik-iframe) .product-info__cta-group {
+  display: none !important;
+}
+body:has(#gokwik-iframe) .drawer,
+body:has(#gokwik-iframe) cart-drawer {
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
 
 /* Loading spinner for buttons */
 .btn.is-loading { pointer-events: none; opacity: 0.85 }

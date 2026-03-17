@@ -543,10 +543,8 @@
     });
   }
 
-  /* GoKwik manages its own z-index (2147483647), scroll locking, and
-     overlay behavior.  No theme-side detection or DOM manipulation
-     is needed — any interference breaks touch events inside their
-     checkout iframe.  This comment kept for future reference.  */
+  /* GoKwik: all interaction handling is done purely via CSS :has()
+     selectors in lunatic-product.css — no JS needed. */
 
   /* ================================================================
      SIZE SHEET (Bottom Sheet for mobile)
