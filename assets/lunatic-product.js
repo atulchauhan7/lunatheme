@@ -730,125 +730,6 @@
   }
 
   /* ================================================================
-     SIZE CHART MODAL
-     ================================================================ */
-  function initSizeChartTabs() {
-    var overlay = document.getElementById('size-chart-modal') || $('.size-chart-overlay');
-    if (!overlay) return;
-
-    /* Move overlay to body to avoid parent overflow clipping */
-    if (overlay.parentNode && overlay.parentNode !== document.body) {
-      document.body.appendChild(overlay);
-    }
-
-    var modal = $('.size-chart-modal', overlay);
-    var closeBtn = $('.size-chart-modal__close', overlay);
-    var tabs = $$('.size-chart-tab', overlay);
-    var panels = $$('.size-chart-panel', overlay);
-
-    function openSizeChart() {
-      overlay.classList.add('open');
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('overflow-hidden');
-    }
-
-    function closeSizeChart() {
-      overlay.classList.remove('open');
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('overflow-hidden');
-    }
-
-    /* Kiwi Size Chart — comprehensive selector list for all Kiwi versions */
-    var kiwiSelectors = [
-      '.kiwi-sizing-chart button',
-      '.kiwi-sizing-chart a',
-      '.ks-chart-modal-link',
-      '.ks-chart-link',
-      '[class*="ks-"] a[href*="size"]',
-      '[class*="ks-"] button',
-      '.ks-container-app-block a',
-      '.ks-container-app-block button',
-      '.ks-container-with-modal a',
-      '.ks-container-with-modal button',
-      '[data-ks-link]',
-      'a.kiwi-select-size-chart'
-    ].join(', ');
-
-    function findKiwiTrigger() {
-      return document.querySelector(kiwiSelectors);
-    }
-
-    function tryOpenKiwi(fallbackFn) {
-      /* Method 1: Click Kiwi's own trigger button */
-      var kiwiBtn = findKiwiTrigger();
-      if (kiwiBtn) {
-        kiwiBtn.click();
-        return;
-      }
-
-      /* Method 2: Call Kiwi's global API if available */
-      if (window.KiwiSizing && typeof window.KiwiSizing.openSizeChart === 'function') {
-        window.KiwiSizing.openSizeChart();
-        return;
-      }
-
-      /* Method 3: Wait briefly for Kiwi to finish rendering */
-      setTimeout(function () {
-        var btn = findKiwiTrigger();
-        if (btn) {
-          btn.click();
-          return;
-        }
-        /* Kiwi not available — use custom modal as fallback */
-        if (fallbackFn) fallbackFn();
-      }, 600);
-    }
-
-    function isKiwiAvailable() {
-      return !!(
-        window.KiwiSizing ||
-        document.querySelector('[class*="ks-"], [class*="kiwi-"], script[src*="kiwisizing"]')
-      );
-    }
-
-    /* Open triggers */
-    $$('.size-chart-trigger').forEach(function (trigger) {
-      trigger.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (isKiwiAvailable()) {
-          tryOpenKiwi(openSizeChart);
-        } else {
-          openSizeChart();
-        }
-      });
-    });
-
-    if (closeBtn) {
-      closeBtn.removeAttribute('onclick');
-      closeBtn.addEventListener('click', closeSizeChart);
-    }
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeSizeChart();
-    });
-
-    tabs.forEach(function (tab, i) {
-      tab.addEventListener('click', function () {
-        tabs.forEach(function (t) { t.classList.remove('active'); });
-        panels.forEach(function (p) { p.classList.remove('active'); });
-        tab.classList.add('active');
-        if (panels[i]) panels[i].classList.add('active');
-      });
-    });
-
-    /* ESC key close */
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeSizeChart();
-    });
-  }
-
-  /* ================================================================
      PRODUCT LIGHTBOX — Fullscreen image viewer
      ================================================================ */
   var lightbox = null;
@@ -1262,7 +1143,6 @@
     initAddToCart();
     initBuyNow();
     initSizeSheet();
-    initSizeChartTabs();
     initProductShare();
     initPromoCopy();
     initScrollAnimations();
