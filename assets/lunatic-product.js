@@ -754,9 +754,11 @@
     var tabs = $$('.size-chart-tab', overlay);
     var panels = $$('.size-chart-panel', overlay);
 
-    function isKiwiLoaded() {
-      return !!document.querySelector(
-        '.ks-modal-header, .ks-modal-content, .ks-chart-tab-container, .ks-powered-by'
+    function isKiwiAvailable() {
+      /* Kiwi injects window.KiwiSizing and a container before its modal exists */
+      return !!(
+        window.KiwiSizing ||
+        document.querySelector('.ks-container-app-block, .ks-container-with-modal, script[src*="kiwisizing"]')
       );
     }
 
@@ -776,23 +778,35 @@
     $$('.size-chart-trigger').forEach(function (trigger) {
       trigger.removeAttribute('onclick');
       trigger.addEventListener('click', function (e) {
-        /* If Kiwi Sizing is loaded, let it handle the click natively.
-           Don't stopPropagation so Kiwi's delegated listener can fire. */
-        if (isKiwiLoaded()) {
-          /* Also try clicking Kiwi's own trigger in case it has one */
-          var kiwiTrigger = document.querySelector(
-            '.ks-chart-modal-link, .ks-chart-link, [data-kiwi-open], #ks-chart-open'
-          );
-          if (kiwiTrigger && kiwiTrigger !== trigger) {
-            e.preventDefault();
-            kiwiTrigger.click();
-          }
+        if (!isKiwiAvailable()) {
+          /* Kiwi not present — use our custom modal */
+          e.preventDefault();
+          e.stopPropagation();
+          openSizeChart();
           return;
         }
-        /* Kiwi not present — use our custom modal */
+
+        /* Kiwi IS available — find and click its dynamically-created trigger */
         e.preventDefault();
-        e.stopPropagation();
-        openSizeChart();
+        var kiwiBtn = document.querySelector(
+          '.ks-chart-modal-link, .ks-chart-link, ' +
+          '.ks-container-app-block a, .ks-container-app-block button, ' +
+          '.ks-container-with-modal a, .ks-container-with-modal button'
+        );
+        if (kiwiBtn) {
+          kiwiBtn.click();
+          return;
+        }
+        /* Kiwi script loaded but button not rendered yet — try after a short delay */
+        setTimeout(function () {
+          var btn = document.querySelector(
+            '.ks-chart-modal-link, .ks-chart-link, ' +
+            '.ks-container-app-block a, .ks-container-app-block button'
+          );
+          if (btn) { btn.click(); return; }
+          /* Last resort: open our custom modal */
+          openSizeChart();
+        }, 500);
       });
     });
 
