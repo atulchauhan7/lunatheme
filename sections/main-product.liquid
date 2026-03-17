@@ -219,7 +219,7 @@
       <svg class="pdp-ticket__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="2"/><circle cx="15" cy="15" r="2"/><line x1="7.5" y1="16.5" x2="16.5" y2="7.5"/><path d="M21.41 11.58l-9-9a2 2 0 00-2.82 0L2 10.17V22h11.83l7.58-7.58a2 2 0 000-2.84z"/></svg>
       <div class="pdp-ticket__info">
         <span class="pdp-ticket__heading">{{ section.settings.promo_text | escape }}</span>
-        <span class="pdp-ticket__sub">Tap the code to copy &amp; apply at checkout</span>
+        <span class="pdp-ticket__sub">{{ section.settings.promo_subtext | escape }}</span>
       </div>
     </div>
     <div class="pdp-ticket__divider"></div>
@@ -234,29 +234,29 @@
   {% endif %}
 
   <div class="product-info__quantity">
-    <label class="product-option__label">Quantity</label>
+    <label class="product-option__label">{{ section.settings.quantity_label | escape }}</label>
     <div class="quantity-selector">
       <button type="button" data-qty-minus>&#8722;</button>
-      <input type="number" name="quantity" value="1" min="1" aria-label="Quantity">
+      <input type="number" name="quantity" value="1" min="1" aria-label="{{ section.settings.quantity_label | escape }}">
       <button type="button" data-qty-plus>+</button>
     </div>
   </div>
 
   <!-- Desktop CTA -->
   <div class="product-info__cta-desktop">
-    <button type="submit" class="btn btn--primary btn--full btn--large btn--add-to-cart" data-text="Add to Cart" {% unless product.available %}disabled{% endunless %}>
+    <button type="submit" class="btn btn--primary btn--full btn--large btn--add-to-cart" data-text="{{ section.settings.add_to_cart_label | escape }}" data-sold-out-text="{{ section.settings.sold_out_label | escape }}" {% unless product.available %}disabled{% endunless %}>
       {% if product.available %}
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      <span class="btn-text">Add to Cart</span>
+      <span class="btn-text">{{ section.settings.add_to_cart_label | escape }}</span>
       <span class="btn-spinner"></span>
       {% else %}
-      <span class="btn-text">Sold Out</span>
+      <span class="btn-text">{{ section.settings.sold_out_label | escape }}</span>
       {% endif %}
     </button>
     {% if product.available %}
-    <button type="button" class="btn btn--buy-now btn--full btn--large" data-buy-now data-text="Buy Now">
+    <button type="button" class="btn btn--buy-now btn--full btn--large" data-buy-now data-text="{{ section.settings.buy_now_label | escape }}">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      <span class="btn-text">Buy Now</span>
+      <span class="btn-text">{{ section.settings.buy_now_label | escape }}</span>
     </button>
     {% endif %}
   </div>
@@ -264,14 +264,14 @@
   <!-- Mobile fixed CTA bar -->
   <div class="product-info__cta-group">
     <div class="product-info__add-to-cart">
-      <button type="button" class="btn btn--primary btn--full btn--large btn--add-to-cart" data-text="Add to Cart" {% unless product.available %}disabled{% endunless %}>
-        {% if product.available %}<span class="btn-text">Add to Cart</span><span class="btn-spinner"></span>{% else %}<span class="btn-text">Sold Out</span>{% endif %}
+      <button type="button" class="btn btn--primary btn--full btn--large btn--add-to-cart" data-text="{{ section.settings.add_to_cart_label | escape }}" data-sold-out-text="{{ section.settings.sold_out_label | escape }}" {% unless product.available %}disabled{% endunless %}>
+        {% if product.available %}<span class="btn-text">{{ section.settings.add_to_cart_label | escape }}</span><span class="btn-spinner"></span>{% else %}<span class="btn-text">{{ section.settings.sold_out_label | escape }}</span>{% endif %}
       </button>
     </div>
     {% if product.available %}
-    <button type="button" class="btn btn--buy-now btn--full btn--large" data-buy-now data-text="Buy Now">
+    <button type="button" class="btn btn--buy-now btn--full btn--large" data-buy-now data-text="{{ section.settings.buy_now_label | escape }}">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      <span class="btn-text">Buy Now</span>
+      <span class="btn-text">{{ section.settings.buy_now_label | escape }}</span>
     </button>
     {% endif %}
   </div>
@@ -285,7 +285,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
     </div>
     <div class="product-delivery__text">
-      <strong>Estimated Delivery</strong>
+      <strong>{{ section.settings.delivery_heading | escape }}</strong>
       <span>{{ 'now' | date: '%s' | plus: delivery_min_sec | date: '%b %d' }} — {{ 'now' | date: '%s' | plus: delivery_max_sec | date: '%b %d, %Y' }}</span>
     </div>
   </div>
@@ -351,7 +351,7 @@
     {% if product.description != blank %}
     <div class="accordion-item open">
       <button class="accordion-trigger" type="button" aria-expanded="true">
-        Description
+        {{ section.settings.description_heading | escape }}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="accordion-content" style="max-height: 500px;">
@@ -365,7 +365,7 @@
     {% if section.settings.shipping_text != blank %}
     <div class="accordion-item">
       <button class="accordion-trigger" type="button" aria-expanded="false">
-        Shipping &amp; Returns
+        {{ section.settings.shipping_heading | escape }}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="accordion-content">
@@ -379,7 +379,7 @@
     {% if section.settings.care_text != blank %}
     <div class="accordion-item">
       <button class="accordion-trigger" type="button" aria-expanded="false">
-        Care Instructions
+        {{ section.settings.care_heading | escape }}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="accordion-content">
@@ -681,6 +681,54 @@
       "default": "Inclusive of all taxes"
     },
     {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity label",
+      "default": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_label",
+      "label": "Add to cart button label",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "buy_now_label",
+      "label": "Buy now button label",
+      "default": "Buy Now"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_label",
+      "label": "Sold out button label",
+      "default": "Sold Out"
+    },
+    {
+      "type": "text",
+      "id": "delivery_heading",
+      "label": "Delivery heading",
+      "default": "Estimated Delivery"
+    },
+    {
+      "type": "text",
+      "id": "description_heading",
+      "label": "Description accordion heading",
+      "default": "Description"
+    },
+    {
+      "type": "text",
+      "id": "shipping_heading",
+      "label": "Shipping accordion heading",
+      "default": "Shipping & Returns"
+    },
+    {
+      "type": "text",
+      "id": "care_heading",
+      "label": "Care accordion heading",
+      "default": "Care Instructions"
+    },
+    {
       "type": "richtext",
       "id": "shipping_text",
       "label": "Shipping & Returns text",
@@ -754,6 +802,12 @@
       "type": "text",
       "id": "promo_text",
       "label": "Promo heading"
+    },
+    {
+      "type": "text",
+      "id": "promo_subtext",
+      "label": "Promo subtext",
+      "default": "Tap the code to copy & apply at checkout"
     },
     {
       "type": "text",

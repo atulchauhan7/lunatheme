@@ -235,7 +235,10 @@
         btn.disabled = !v.available;
         if (!v.available) {
           btn.classList.add('is-sold-out');
-          if (btn.querySelector('.btn-text')) btn.querySelector('.btn-text').textContent = 'Sold Out';
+          if (btn.querySelector('.btn-text')) {
+            var soldOutText = btn.getAttribute('data-sold-out-text') || 'Sold Out';
+            btn.querySelector('.btn-text').textContent = soldOutText;
+          }
         } else {
           btn.classList.remove('is-sold-out');
           if (btn.querySelector('.btn-text')) {
