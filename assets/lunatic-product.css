@@ -93,7 +93,7 @@ html { scroll-behavior: smooth }
    GALLERY SLIDER
    ================================================================ */
 .product-gallery--slider { position: sticky; max-width: 100%; overflow: hidden }
-.product-gallery__viewport { position: relative; width: 100%; overflow: hidden; touch-action: pan-y pinch-zoom; aspect-ratio: 3/4; max-height: calc(100vh - 200px); background: var(--color-surface); border-radius: 4px }
+.product-gallery__viewport { position: relative; width: 100%; overflow: hidden; touch-action: pan-y pinch-zoom; aspect-ratio: auto; height: clamp(560px, 72vh, 780px); min-height: 520px; max-height: 780px; background: var(--color-surface); border-radius: 4px }
 .product-gallery__track { display: flex; height: 100%; will-change: transform; transition: transform 0.45s cubic-bezier(.25,.46,.45,.94) }
 .product-gallery__slide { flex: 0 0 100%; width: 100%; height: 100%; position: relative; overflow: hidden }
 .product-gallery__slide img { width: 100%; height: 100%; object-fit: cover; object-position: top center; cursor: zoom-in; transition: transform 0.5s var(--ease-out-expo) }
@@ -428,7 +428,7 @@ body:has(#gokwik-iframe) .product-info__cta-group {
 @media (min-width: 769px) and (max-width: 1024px) {
   .product-page__grid { grid-template-columns: 1fr 1fr; gap: 2.4rem }
   .product-gallery--slider { position: static }
-  .product-gallery__viewport { aspect-ratio: 3/4; max-height: calc(100vh - 150px) }
+   .product-gallery__viewport { aspect-ratio: auto; height: clamp(500px, 68vh, 700px); min-height: 460px; max-height: 700px }
   .product-info { position: static }
   .product-gallery__main { aspect-ratio: 3/4 }
   .product-gallery__thumb { width: 60px; min-width: 60px; height: 78px }
