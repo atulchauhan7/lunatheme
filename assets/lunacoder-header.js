@@ -166,47 +166,6 @@
     }
   });
 
-  /* === MOBILE KEYBOARD HANDLING === */
-  /* When keyboard opens/closes, viewport height changes; reposition dropdown */
-  if (headerSearchInput) {
-    var lastViewportHeight = window.innerHeight;
-    var keyboardCheckInterval = null;
-
-    function handleViewportChange() {
-      if (headerSearch && headerSearch.classList.contains('open')) {
-        /* Force dropdown to recalculate position */
-        var dropdown = headerSearch ? headerSearch.querySelector('.predictive-search--header') : null;
-        if (dropdown && predictiveWrap && predictiveWrap.open) {
-          /* Trigger predictive search to reposition */
-          setTimeout(function () {
-            if (predictiveWrap.open) {
-              predictiveWrap.open();
-            }
-          }, 100);
-        }
-      }
-    }
-
-    headerSearchInput.addEventListener('focus', function () {
-      lastViewportHeight = window.innerHeight;
-      /* Check for viewport changes due to keyboard opening */
-      keyboardCheckInterval = setInterval(function () {
-        var currentHeight = window.innerHeight;
-        if (Math.abs(currentHeight - lastViewportHeight) > 50) {
-          lastViewportHeight = currentHeight;
-          handleViewportChange();
-        }
-      }, 100);
-    });
-
-    headerSearchInput.addEventListener('blur', function () {
-      if (keyboardCheckInterval) {
-        clearInterval(keyboardCheckInterval);
-        keyboardCheckInterval = null;
-      }
-    });
-  }
-
   /* === NAV COLLECTION THUMBNAILS (mobile) === */
   (function () {
     var container = document.getElementById('lh-nav-collections');

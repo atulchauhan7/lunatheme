@@ -221,8 +221,6 @@
   letter-spacing: 0.04em;
   min-width: 0;
   line-height: 1.4;
-  /* Prevent iOS zoom on focus */
-  font-size: 16px !important;
 }
 /* Keep a single custom clear control (reset button); hide browser-native cancel icon */
 .lh-header-search__input::-webkit-search-cancel-button,
@@ -1096,11 +1094,13 @@
     max-height: min(58vh, calc(100vh - 180px));
     scroll-padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
     padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
-    /* Keep dropdown visible when keyboard opens/closes */
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
+  }
+  /* Prevent iOS zoom on input focus (mobile only) */
+  .lh-header-search__input {
+    font-size: 16px !important;
+  }
+  .lh-header-search__input::placeholder {
+    font-size: 16px !important;
   }
 }
 
@@ -1302,6 +1302,27 @@ header-drawer .list-social {
   visibility: hidden;
   z-index: 2;
   transition: opacity 0s, visibility 0s;
+}
+.js header-drawer > details[open] > summary::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* === GOKWIK INTERACTION FIX === */
+/* Disable all header interactions when GoKwik checkout is active */
+body.gokwik-active .lh-header-search,
+body.gokwik-active .lh-header-search .predictive-search--header,
+body.gokwik-active [data-lh-search-trigger],
+body.gokwik-active .lh-header-search__input {
+  pointer-events: none !important;
+}
+
+/* Prevent any dropdown/overlay from appearing during GoKwik checkout */
+body.gokwik-active .predictive-search--header {
+  display: none !important;
+  visibility: hidden !important;
+  z-index: -1 !important;
+}
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
