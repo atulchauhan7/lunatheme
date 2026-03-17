@@ -746,14 +746,6 @@
     var tabs = $$('.size-chart-tab', overlay);
     var panels = $$('.size-chart-panel', overlay);
 
-    function isKiwiAvailable() {
-      /* Kiwi injects window.KiwiSizing and a container before its modal exists */
-      return !!(
-        window.KiwiSizing ||
-        document.querySelector('.ks-container-app-block, .ks-container-with-modal, script[src*="kiwisizing"]')
-      );
-    }
-
     function openSizeChart() {
       overlay.classList.add('open');
       overlay.setAttribute('aria-hidden', 'false');
@@ -766,39 +758,70 @@
       document.body.classList.remove('overflow-hidden');
     }
 
+    /* Kiwi Size Chart — comprehensive selector list for all Kiwi versions */
+    var kiwiSelectors = [
+      '.kiwi-sizing-chart button',
+      '.kiwi-sizing-chart a',
+      '.ks-chart-modal-link',
+      '.ks-chart-link',
+      '[class*="ks-"] a[href*="size"]',
+      '[class*="ks-"] button',
+      '.ks-container-app-block a',
+      '.ks-container-app-block button',
+      '.ks-container-with-modal a',
+      '.ks-container-with-modal button',
+      '[data-ks-link]',
+      'a.kiwi-select-size-chart'
+    ].join(', ');
+
+    function findKiwiTrigger() {
+      return document.querySelector(kiwiSelectors);
+    }
+
+    function tryOpenKiwi(fallbackFn) {
+      /* Method 1: Click Kiwi's own trigger button */
+      var kiwiBtn = findKiwiTrigger();
+      if (kiwiBtn) {
+        kiwiBtn.click();
+        return;
+      }
+
+      /* Method 2: Call Kiwi's global API if available */
+      if (window.KiwiSizing && typeof window.KiwiSizing.openSizeChart === 'function') {
+        window.KiwiSizing.openSizeChart();
+        return;
+      }
+
+      /* Method 3: Wait briefly for Kiwi to finish rendering */
+      setTimeout(function () {
+        var btn = findKiwiTrigger();
+        if (btn) {
+          btn.click();
+          return;
+        }
+        /* Kiwi not available — use custom modal as fallback */
+        if (fallbackFn) fallbackFn();
+      }, 600);
+    }
+
+    function isKiwiAvailable() {
+      return !!(
+        window.KiwiSizing ||
+        document.querySelector('[class*="ks-"], [class*="kiwi-"], script[src*="kiwisizing"]')
+      );
+    }
+
     /* Open triggers */
     $$('.size-chart-trigger').forEach(function (trigger) {
-      trigger.removeAttribute('onclick');
       trigger.addEventListener('click', function (e) {
-        if (!isKiwiAvailable()) {
-          /* Kiwi not present — use our custom modal */
-          e.preventDefault();
-          e.stopPropagation();
-          openSizeChart();
-          return;
-        }
-
-        /* Kiwi IS available — find and click its dynamically-created trigger */
         e.preventDefault();
-        var kiwiBtn = document.querySelector(
-          '.ks-chart-modal-link, .ks-chart-link, ' +
-          '.ks-container-app-block a, .ks-container-app-block button, ' +
-          '.ks-container-with-modal a, .ks-container-with-modal button'
-        );
-        if (kiwiBtn) {
-          kiwiBtn.click();
-          return;
-        }
-        /* Kiwi script loaded but button not rendered yet — try after a short delay */
-        setTimeout(function () {
-          var btn = document.querySelector(
-            '.ks-chart-modal-link, .ks-chart-link, ' +
-            '.ks-container-app-block a, .ks-container-app-block button'
-          );
-          if (btn) { btn.click(); return; }
-          /* Last resort: open our custom modal */
+        e.stopPropagation();
+
+        if (isKiwiAvailable()) {
+          tryOpenKiwi(openSizeChart);
+        } else {
           openSizeChart();
-        }, 500);
+        }
       });
     });
 
