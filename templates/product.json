@@ -11,10 +11,19 @@
   "sections": {
     "main": {
       "type": "main-product",
+      "name": "PDP",
       "settings": {
         "show_rating": true,
         "show_share": true,
         "tax_note": "Inclusive of all taxes",
+        "quantity_label": "Quantity",
+        "add_to_cart_label": "Add to Cart",
+        "buy_now_label": "Buy Now",
+        "sold_out_label": "Sold Out",
+        "delivery_heading": "Estimated Delivery",
+        "description_heading": "Description",
+        "shipping_heading": "Shipping & Returns",
+        "care_heading": "Care Instructions",
         "shipping_text": "<p>Free standard shipping on all orders. 7-day hassle-free returns on all items.</p>",
         "care_text": "<p>Please refer to the product label for specific care instructions.</p>",
         "delivery_min_days": 5,
@@ -25,6 +34,7 @@
         "trust_4": "Quality Assured",
         "promo_enabled": false,
         "promo_text": "",
+        "promo_subtext": "Tap the code to copy & apply at checkout",
         "promo_code": ""
       }
     },
