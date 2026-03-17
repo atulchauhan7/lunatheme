@@ -544,6 +544,23 @@
   }
 
   /* ================================================================
+     GOKWIK OVERLAY WATCH
+     Detect when GoKwik injects its checkout iframe and hide our
+     fixed elements (header, mobile CTA) so they don't block touch.
+     ================================================================ */
+  function initGokwikOverlayWatch() {
+    function toggle() {
+      var gkIframe = document.getElementById('gokwik-iframe');
+      var gkContainer = document.querySelector('.gokwik-container');
+      var isActive = !!(gkIframe || (gkContainer && gkContainer.offsetHeight > 0));
+      document.body.classList.toggle('gokwik-active', isActive);
+    }
+
+    var observer = new MutationObserver(toggle);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ================================================================
      SIZE SHEET (Bottom Sheet for mobile)
      ================================================================ */
   function initSizeSheet() {
@@ -1235,6 +1252,7 @@
     initAccordions();
     initAddToCart();
     initBuyNow();
+    initGokwikOverlayWatch();
     initSizeSheet();
     initSizeChartTabs();
     initProductShare();
