@@ -348,46 +348,80 @@
 
   <!-- Accordion -->
   <div class="product-accordion">
-    {% if product.description != blank %}
-    <div class="accordion-item open">
-      <button class="accordion-trigger" type="button" aria-expanded="true">
-        {{ section.settings.description_heading | default: 'Description' | escape }}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="accordion-content" style="max-height: 500px;">
-        <div class="accordion-content__inner">
-          {{ product.description }}
+    {% assign info_blocks = section.blocks | where: 'type', 'info_container' %}
+    {% if info_blocks.size > 0 %}
+      {% for block in info_blocks %}
+        {% assign block_title = block.settings.title | default: 'Information' %}
+        {% assign has_content = false %}
+        {% if block.settings.content != blank %}
+          {% assign has_content = true %}
+        {% elsif block.settings.page != blank and block.settings.page.content != blank %}
+          {% assign has_content = true %}
+        {% endif %}
+        {% if has_content %}
+        {% assign is_open = false %}
+        {% if forloop.first or block.settings.open_default %}
+          {% assign is_open = true %}
+        {% endif %}
+        <div class="accordion-item{% if forloop.first or block.settings.open_default %} open{% endif %}" {{ block.shopify_attributes }}>
+          <button class="accordion-trigger" type="button" aria-expanded="{% if is_open %}true{% else %}false{% endif %}">
+            {{ block_title | escape }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-content"{% if is_open %} style="max-height: 500px;"{% endif %}>
+            <div class="accordion-content__inner">
+              {% if block.settings.content != blank %}
+                {{ block.settings.content }}
+              {% else %}
+                {{ block.settings.page.content }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% if product.description != blank %}
+      <div class="accordion-item open">
+        <button class="accordion-trigger" type="button" aria-expanded="true">
+          {{ section.settings.description_heading | default: 'Description' | escape }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion-content" style="max-height: 500px;">
+          <div class="accordion-content__inner">
+            {{ product.description }}
+          </div>
         </div>
       </div>
-    </div>
-    {% endif %}
+      {% endif %}
 
-    {% if section.settings.shipping_text != blank %}
-    <div class="accordion-item">
-      <button class="accordion-trigger" type="button" aria-expanded="false">
-        {{ section.settings.shipping_heading | default: 'Shipping & Returns' | escape }}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="accordion-content">
-        <div class="accordion-content__inner">
-          {{ section.settings.shipping_text }}
+      {% if section.settings.shipping_text != blank %}
+      <div class="accordion-item">
+        <button class="accordion-trigger" type="button" aria-expanded="false">
+          {{ section.settings.shipping_heading | default: 'Shipping & Returns' | escape }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-content__inner">
+            {{ section.settings.shipping_text }}
+          </div>
         </div>
       </div>
-    </div>
-    {% endif %}
+      {% endif %}
 
-    {% if section.settings.care_text != blank %}
-    <div class="accordion-item">
-      <button class="accordion-trigger" type="button" aria-expanded="false">
-        {{ section.settings.care_heading | default: 'Care Instructions' | escape }}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="accordion-content">
-        <div class="accordion-content__inner">
-          {{ section.settings.care_text }}
+      {% if section.settings.care_text != blank %}
+      <div class="accordion-item">
+        <button class="accordion-trigger" type="button" aria-expanded="false">
+          {{ section.settings.care_heading | default: 'Care Instructions' | escape }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-content__inner">
+            {{ section.settings.care_text }}
+          </div>
         </div>
       </div>
-    </div>
+      {% endif %}
     {% endif %}
   </div>
 
@@ -813,6 +847,37 @@
       "type": "text",
       "id": "promo_code",
       "label": "Promo code"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info_container",
+      "name": "Product Info Container",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Container title",
+          "default": "Shipping & Returns"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Container content",
+          "default": "<p>Add your product information here. You can format this text from the Theme Editor.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Or use a page (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
     }
   ]
 }
