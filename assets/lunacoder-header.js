@@ -100,8 +100,16 @@
     headerSearchReset.classList.toggle('hidden', !headerSearchInput.value.trim());
   }
 
+  function closeMenuDrawer() {
+    if (drawerDetails && drawerDetails.hasAttribute('open')) {
+      drawerDetails.removeAttribute('open');
+      document.body.classList.remove('overflow-hidden');
+    }
+  }
+
   function openSearch() {
     if (headerSearch) {
+      closeMenuDrawer();
       headerSearch.classList.add('open');
       setTimeout(function () {
         if (headerSearchInput) headerSearchInput.focus();
