@@ -232,23 +232,14 @@ html { scroll-behavior: smooth }
 
 /* Mobile CTA */
 .product-info__cta-group { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1400; background: var(--color-background); display: none; flex-direction: row; gap: 0.8rem; padding: 1.2rem 1.6rem; padding-bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -2px 16px rgba(0,0,0,0.08); border-top: 2px solid var(--color-accent) }
-/* When GoKwik is active: disable all interactions and move below viewport */
-body.gokwik-active .product-info__cta-group {
-  display: none !important;
-  pointer-events: none !important;
-  z-index: -1 !important;
-}
+/* Hide CTA only on presence of overlay (CSS-driven, no javascript interference) */
 body.overflow-hidden .product-info__cta-group { display: none !important }
-/* Header: fully disable interactions when GoKwik active */
-body.gokwik-active .lh-site-header {
-  display: none !important;
-  pointer-events: none !important;
-  z-index: -1 !important;
-}
 .product-info__cta-group .btn { flex: 1; min-width: 0; padding: 14px 10px; font-size: 1.15rem; letter-spacing: 0.1em }
 .product-info__add-to-cart { flex: 1; margin-bottom: 0; min-width: 0 }
 .product-info__add-to-cart .btn { width: 100%; background: #fff; color: var(--color-accent); border: 1.5px solid var(--color-accent) }
 .product-info__add-to-cart .btn:hover { background: var(--color-accent); color: #fff; border-color: var(--color-accent) }
+
+/* GoKwik manages its own z-index and overlay; no theme overrides needed */
 
 /* Loading spinner for buttons */
 .btn.is-loading { pointer-events: none; opacity: 0.85 }

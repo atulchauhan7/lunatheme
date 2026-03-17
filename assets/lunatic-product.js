@@ -543,75 +543,10 @@
     });
   }
 
-  /* ================================================================
-     GOKWIK OVERLAY WATCH (OPTIMIZED)
-     Efficient detection of GoKwik iframe with pointer-events blocking
-     ================================================================ */
-  function initGokwikOverlayWatch() {
-    var isGokwikActive = false;
-    var debounceTimer = null;
-
-    function update() {
-      var gkIframe = document.getElementById('gokwik-iframe');
-      var gkContainer = document.querySelector('.gokwik-container');
-      var shouldBeActive = !!(gkIframe || (gkContainer && gkContainer.offsetHeight > 0));
-
-      if (shouldBeActive !== isGokwikActive) {
-        isGokwikActive = shouldBeActive;
-        document.body.classList.toggle('gokwik-active', shouldBeActive);
-
-        /* When GoKwik becomes active, close any open overlays from header */
-        if (shouldBeActive) {
-          /* Close predictive search if open */
-          var predictiveWrap = document.querySelector('[data-lh-header-search] predictive-search');
-          if (predictiveWrap && predictiveWrap.close) {
-            predictiveWrap.close(true);
-          }
-          
-          /* Close header search panel */
-          var headerSearch = document.querySelector('[data-lh-header-search]');
-          if (headerSearch) {
-            headerSearch.classList.remove('open');
-          }
-          
-          /* Close menu drawer if open */
-          var menuDrawer = document.getElementById('Details-menu-drawer-container');
-          if (menuDrawer && menuDrawer.hasAttribute('open')) {
-            menuDrawer.removeAttribute('open');
-            document.body.classList.remove('overflow-hidden');
-          }
-        }
-      }
-    }
-
-    /* Watch for gokwik-iframe specifically */
-    var observer = new MutationObserver(function () {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(update, 50);
-    });
-
-    /* Only observe direct body children to avoid excessive mutations */
-    observer.observe(document.body, { childList: true });
-
-    /* Also check when script loads */
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', update);
-    } else {
-      update();
-    }
-
-    /* Listen for GoKwik's native events if available */
-    if (window.GoKwik) {
-      window.addEventListener('gokwik-open', function () {
-        isGokwikActive = true;
-        document.body.classList.add('gokwik-active');
-      });
-      window.addEventListener('gokwik-close', function () {
-        isGokwikActive = false;
-        document.body.classList.remove('gokwik-active');
-      });
-    }
-  }
+  /* GoKwik manages its own z-index (2147483647), scroll locking, and
+     overlay behavior.  No theme-side detection or DOM manipulation
+     is needed — any interference breaks touch events inside their
+     checkout iframe.  This comment kept for future reference.  */
 
   /* ================================================================
      SIZE SHEET (Bottom Sheet for mobile)
@@ -1305,7 +1240,6 @@
     initAccordions();
     initAddToCart();
     initBuyNow();
-    initGokwikOverlayWatch();
     initSizeSheet();
     initSizeChartTabs();
     initProductShare();
