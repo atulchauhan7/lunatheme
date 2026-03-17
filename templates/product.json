@@ -11,6 +11,20 @@
   "sections": {
     "main": {
       "type": "main-product",
+      "blocks": {
+        "info_container_9Xcrr3": {
+          "type": "info_container",
+          "settings": {
+            "title": "Benefits",
+            "content": "<p>🎁 <strong>Free gift </strong>with every <strong>prepaid</strong> order ❤️</p>",
+            "page": "",
+            "open_default": false
+          }
+        }
+      },
+      "block_order": [
+        "info_container_9Xcrr3"
+      ],
       "name": "Product Information",
       "settings": {
         "show_rating": true,
