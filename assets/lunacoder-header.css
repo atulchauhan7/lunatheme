@@ -977,9 +977,9 @@
 
   /* Center content with a max-width on wide screens */
   .lh-header-search__inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px clamp(20px, 4vw, 60px) 18px;
+    max-width: none;
+    margin: 0;
+    padding: 12px clamp(16px, 4vw, 52px) 14px;
   }
 
   /* Form = NO own border — the panel's accent line is the only separator */
@@ -1066,6 +1066,7 @@
 
   .lh-site-header__inner { padding: 7px 18px; position: relative; }
   .lh-site-header.scrolled .lh-site-header__inner { padding: 5px 18px; }
+  .lh-header-search__inner { padding: 10px 18px 12px; }
   .lh-site-header__left { gap: 0.45rem; }
   .lh-site-header__logo { font-size: clamp(1.72rem, 6.2vw, 2.55rem); letter-spacing: 0.35em; }
   .lh-site-header__right { gap: 0.5rem; }
@@ -1213,6 +1214,11 @@
 @media (max-width: 412px) {
   .lh-site-header__inner { padding: 0 12px; }
   .lh-site-header.scrolled .lh-site-header__inner { padding: 0 12px; }
+  .lh-header-search__inner { padding: 8px 12px 10px; }
+  .lh-header-search .predictive-search--header {
+    left: -12px;
+    right: -12px;
+  }
   .lh-site-header__left,
   .lh-site-header__right { gap: 0.15rem; }
   .lh-header-icon { width: 44px; height: 44px; }
@@ -1227,6 +1233,11 @@
 @media (max-width: 360px) {
   .lh-site-header__inner { padding: 0 10px; }
   .lh-site-header.scrolled .lh-site-header__inner { padding: 0 10px; }
+  .lh-header-search__inner { padding: 8px 10px 10px; }
+  .lh-header-search .predictive-search--header {
+    left: -10px;
+    right: -10px;
+  }
   .lh-header-icon { width: 42px; height: 42px; }
   .lh-header-icon svg { width: 21px; height: 21px; }
   .lh-site-header__logo {

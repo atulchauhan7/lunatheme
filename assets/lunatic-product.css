@@ -14,7 +14,7 @@ html { scroll-behavior: smooth }
 .product-page { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility }
 .product-page img { max-width: 100%; height: auto; display: block }
 .product-page a { color: inherit; text-decoration: none }
-.product-page button { cursor: pointer; border: none; background: rosybrown; font-family: inherit }
+.product-page button { cursor: pointer; border: none; background: none; font-family: inherit }
 .product-page ul, .product-page ol { list-style: none }
 .product-page input, .product-page textarea, .product-page select { font-family: inherit; font-size: inherit }
 .product-page h1,
@@ -102,8 +102,8 @@ html { scroll-behavior: smooth }
 
 /* Dots */
 .product-gallery__dots { display: flex; gap: 4px; padding: 10px 0 0; width: 100% }
-.product-gallery__dot { flex: 1; height: 3px; border-radius: 2px; background: var(--color-border); border: none; cursor: pointer; transition: all 0.35s ease; padding: 0; opacity: 0.4 }
-.product-gallery__dot.active { background: var(--color-accent); height: 3px; opacity: 1; box-shadow: 0 0 4px rgba(var(--color-accent-rgb), 0.3) }
+.product-gallery__dot { flex: 1; height: 3px !important; border-radius: 2px !important; background: #d0c1ad !important; border: none; cursor: pointer; transition: all 0.35s ease; padding: 0; opacity: 0.4 }
+.product-gallery__dot.active { background: var(--color-accent) !important; height: 3px; opacity: 1; box-shadow: 0 0 4px rgba(var(--color-accent-rgb), 0.3) }
 
 /* Counter */
 .product-gallery__counter { position: absolute; bottom: 16px; right: 16px; background: rgba(255,255,255,0.92); color: var(--color-heading); font-size: 1.02rem; font-weight: 600; letter-spacing: 0.08em; padding: 6px 14px; border-radius: 20px; z-index: 2; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 8px rgba(0,0,0,0.06) }
