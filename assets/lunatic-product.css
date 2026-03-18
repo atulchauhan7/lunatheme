@@ -252,6 +252,16 @@ body:has(#gokwik-iframe) .product-info__cta-group {
   display: none !important;
 }
 
+/* Force GoKwik checkout button to use the theme yellow, overriding
+   the settings.priClr value set in gokwik.liquid. */
+.gokwik-checkout button {
+  background: var(--color-accent) !important;
+  color: #fff !important;
+}
+.gokwik-checkout button:hover {
+  background: var(--color-accent-dark) !important;
+}
+
 /* Loading spinner for buttons */
 .btn.is-loading { pointer-events: none; opacity: 0.85 }
 .btn .btn-spinner { display: none; width: 16px; height: 16px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; flex-shrink: 0 }
