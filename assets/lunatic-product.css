@@ -14,7 +14,7 @@ html { scroll-behavior: smooth }
 .product-page { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility }
 .product-page img { max-width: 100%; height: auto; display: block }
 .product-page a { color: inherit; text-decoration: none }
-.product-page button { cursor: pointer; border: none; background: none; font-family: inherit }
+.product-page button { cursor: pointer; border: none; background: rosybrown; font-family: inherit }
 .product-page ul, .product-page ol { list-style: none }
 .product-page input, .product-page textarea, .product-page select { font-family: inherit; font-size: inherit }
 .product-page h1,
@@ -48,6 +48,7 @@ html { scroll-behavior: smooth }
   --duration-lg: 0.8s;
   --container-width: 1440px;
   --grid-gutter: 28px;
+   --product-mobile-cta-space: 0px;
 }
 
 /* ================================================================
@@ -233,7 +234,7 @@ html { scroll-behavior: smooth }
 .product-page .btn--buy-now svg { width: 16px; height: 16px }
 
 /* Mobile CTA */
-.product-info__cta-group { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1400; background: var(--color-background); display: none; flex-direction: row; gap: 0.8rem; padding: 1.2rem 1.6rem; padding-bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -2px 16px rgba(0,0,0,0.08); border-top: 2px solid var(--color-accent) }
+.product-info__cta-group { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1600; background: var(--color-background); display: none; flex-direction: row; gap: 0.8rem; padding: 1.2rem 1.6rem; padding-bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -2px 16px rgba(0,0,0,0.08); border-top: 2px solid var(--color-accent); isolation: isolate }
 /* Hide CTA only on presence of overlay (CSS-driven, no javascript interference) */
 body.overflow-hidden .product-info__cta-group { display: none !important }
 .product-info__cta-group .btn { flex: 1; min-width: 0; padding: 14px 10px; font-size: 1.15rem; letter-spacing: 0.1em }
@@ -441,6 +442,7 @@ body:has(#gokwik-iframe) .product-info__cta-group {
    RESPONSIVE — MOBILE (<=768px)
    ================================================================ */
 @media (max-width: 768px) {
+   .product-page { --product-mobile-cta-space: calc(112px + env(safe-area-inset-bottom, 0px)); }
   .product-page__grid { grid-template-columns: 1fr; gap: 1.6rem }
   .product-page { padding-top: 0; overflow-x: hidden; padding-bottom: 0 }
   .product-gallery--slider { position: static }
@@ -470,7 +472,7 @@ body:has(#gokwik-iframe) .product-info__cta-group {
   .quantity-selector input { width: 44px; height: 40px; font-size: 1.41rem }
   .product-info__cta-desktop { display: none }
    .product-info__cta-group { display: flex !important; position: fixed; bottom: 0; left: 0; right: 0; opacity: 1 !important; visibility: visible !important }
-  .template-product body, .template-product { padding-bottom: 80px !important }
+   .template-product #MainContent { padding-bottom: var(--product-mobile-cta-space) !important }
   .product-info__add-to-cart .btn { padding: 14px; font-size: 1.25rem }
   .product-delivery { margin-bottom: 1.2rem; padding: 1.04rem 1.36rem }
   .product-delivery__icon { width: 32px; height: 32px }
@@ -515,6 +517,7 @@ body:has(#gokwik-iframe) .product-info__cta-group {
    RESPONSIVE — SMALL PHONES (<=412px)
    ================================================================ */
 @media (max-width: 412px) {
+   .product-page { --product-mobile-cta-space: calc(96px + env(safe-area-inset-bottom, 0px)); }
   .product-page { padding-top: 0 }
   .product-gallery__main { aspect-ratio: 4/5; margin-bottom: 0.48rem }
   .product-gallery__thumbs { gap: 0.4rem; padding-bottom: 4px; margin-bottom: 0.32rem }
@@ -720,7 +723,7 @@ body:has(#gokwik-iframe) .product-info__cta-group {
 #MainContent { margin-bottom: 0 !important; padding-bottom: 0 !important }
 #MainContent > .shopify-section { margin: 0 !important; padding: 0 !important }
 .template-product .shopify-section { margin: 0 !important; padding: 0 !important }
-.template-product #MainContent { margin: 0 !important; padding: 0 !important }
+.template-product #MainContent { margin: 0 !important; padding-bottom: var(--product-mobile-cta-space, 0) !important; padding-top: 0 !important; padding-left: 0 !important; padding-right: 0 !important }
 .shopify-section[id] > .shopify-app-block:only-child:empty { display: none }
 body > .shopify-section-group-footer-group { margin-top: 0 !important }
 /* Collapse ALL app sections on PDP to zero spacing */
