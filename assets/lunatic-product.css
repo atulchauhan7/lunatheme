@@ -535,7 +535,7 @@ body:has(#gokwik-iframe) .product-info__cta-group {
   .accordion-content__inner { font-size: 1.25rem; padding-bottom: 1.2rem; line-height: 1.65 }
   .product-info__meta { grid-template-columns: 1fr }
   .product-info__meta-item { font-size: 1.15rem }
-  .product-breadcrumbs { padding-top: 15px; font-size: 1.04rem }
+   .product-breadcrumbs { padding-top: 10px; font-size: 0.98rem }
   .product-gallery__viewport { height: 46vh; max-height: 360px }
   .product-page .container { padding: 0 10px }
 }

@@ -525,7 +525,7 @@
   grid-template-columns: 1fr auto 1fr;
   grid-template-areas: "left center right";
   align-items: center;
-  padding: 11px clamp(16px, 4vw, 52px);
+  padding: 7px clamp(16px, 4vw, 52px);
   background: var(--lh-header-bg);
   transition: all 0.5s var(--lh-ease-out-expo);
   border: none;
@@ -555,7 +555,7 @@
   box-shadow: 0 2px 8px rgba(var(--lh-accent-rgb), 0.25);
 }
 .lh-site-header.scrolled .lh-site-header__inner {
-  padding: 9px clamp(16px, 4vw, 52px);
+  padding: 6px clamp(16px, 4vw, 52px);
   background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(28px) saturate(200%);
   -webkit-backdrop-filter: blur(28px) saturate(200%);
@@ -855,8 +855,8 @@
 /* Header icons */
 .lh-header-icon {
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -893,8 +893,8 @@
   transition-duration: 0.15s;
 }
 .lh-header-icon svg {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   transition: inherit;
   position: relative;
   z-index: 1;
@@ -1060,18 +1060,18 @@
   .lh-menu-toggle { display: flex; }
   .lh-header-icon--desktop-only { display: none; }
 
-  .lh-site-header__inner { padding: 10px 18px; position: relative; }
-  .lh-site-header.scrolled .lh-site-header__inner { padding: 8px 18px; }
+  .lh-site-header__inner { padding: 7px 18px; position: relative; }
+  .lh-site-header.scrolled .lh-site-header__inner { padding: 5px 18px; }
   .lh-site-header__left { gap: 0.45rem; }
   .lh-site-header__logo { font-size: clamp(1.72rem, 6.2vw, 2.55rem); letter-spacing: 0.35em; }
   .lh-site-header__right { gap: 0.5rem; }
-  .lh-header-icon { width: 44px; height: 44px; }
-  .lh-header-icon svg { width: 22px; height: 22px; }
+  .lh-header-icon { width: 50px; height: 50px; }
+  .lh-header-icon svg { width: 25px; height: 25px; }
 }
 
 @media (max-width: 480px) {
-  .lh-site-header__inner { padding: 8px 14px; }
-  .lh-site-header.scrolled .lh-site-header__inner { padding: 6px 14px; }
+  .lh-site-header__inner { padding: 6px 14px; }
+  .lh-site-header.scrolled .lh-site-header__inner { padding: 4px 14px; }
   .lh-site-header__logo {
     font-size: clamp(1.5rem, 6.8vw, 2.15rem);
     letter-spacing: 0.25em;
@@ -1079,8 +1079,8 @@
     text-overflow: ellipsis;
     max-width: calc(100vw - 140px);
   }
-  .lh-header-icon { width: 44px; height: 44px; }
-  .lh-header-icon svg { width: 22px; height: 22px; }
+  .lh-header-icon { width: 48px; height: 48px; }
+  .lh-header-icon svg { width: 24px; height: 24px; }
   .lh-site-header__left { gap: 0.2rem; }
   .lh-site-header__right { gap: 0.2rem; }
 }
@@ -1207,9 +1207,29 @@
 
 /* === Samsung S24 / Modern Phones (360-412px) === */
 @media (max-width: 412px) {
-  .lh-site-header__inner { padding: 8px 12px; }
-  .lh-site-header.scrolled .lh-site-header__inner { padding: 6px 12px; }
-  .lh-site-header__logo { font-size: clamp(1.58rem, 6.7vw, 1.95rem); letter-spacing: 0.22em; }
+  .lh-site-header__inner { padding: 0 12px; }
+  .lh-site-header.scrolled .lh-site-header__inner { padding: 0 12px; }
+  .lh-site-header__left,
+  .lh-site-header__right { gap: 0.15rem; }
+  .lh-header-icon { width: 44px; height: 44px; }
+  .lh-header-icon svg { width: 22px; height: 22px; }
+  .lh-site-header__logo {
+    font-size: clamp(1.44rem, 6.2vw, 1.9rem);
+    letter-spacing: 0.18em;
+    max-width: calc(100vw - 210px);
+  }
+}
+
+@media (max-width: 360px) {
+  .lh-site-header__inner { padding: 0 10px; }
+  .lh-site-header.scrolled .lh-site-header__inner { padding: 0 10px; }
+  .lh-header-icon { width: 42px; height: 42px; }
+  .lh-header-icon svg { width: 21px; height: 21px; }
+  .lh-site-header__logo {
+    font-size: clamp(1.34rem, 5.9vw, 1.72rem);
+    letter-spacing: 0.15em;
+    max-width: calc(100vw - 188px);
+  }
 }
 
 /* === Override Dawn header styles in same section group === */
