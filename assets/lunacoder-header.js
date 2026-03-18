@@ -102,8 +102,19 @@
 
   function closeMenuDrawer() {
     if (drawerDetails && drawerDetails.hasAttribute('open')) {
-      drawerDetails.removeAttribute('open');
-      document.body.classList.remove('overflow-hidden');
+      // Prefer Dawn's own close handler so focus and body lock cleanup stay in sync.
+      if (drawerSummary) {
+        drawerSummary.click();
+      }
+
+      // Fallback cleanup in case the summary click path is interrupted.
+      if (drawerDetails.hasAttribute('open')) {
+        drawerDetails.removeAttribute('open');
+      }
+      ['overflow-hidden', 'overflow-hidden-mobile', 'overflow-hidden-tablet', 'overflow-hidden-desktop']
+        .forEach(function (cls) {
+          document.body.classList.remove(cls);
+        });
     }
   }
 
