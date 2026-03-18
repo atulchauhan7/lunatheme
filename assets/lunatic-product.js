@@ -492,26 +492,52 @@
   function runBuyNowFlow(form) {
     if (!form) return;
 
-    /* Prefer GoKwik's native flow when available. */
-    var gokwikBuyNow = document.getElementById('gokwik-buy-now');
-    if (gokwikBuyNow && typeof window.onBuyNowClick === 'function') {
-      window.onBuyNowClick(gokwikBuyNow);
-      return;
-    }
+    var variantInput = $('input[name="id"]', form);
+    var qtyInput = $('input[name="quantity"]', form);
+    if (!variantInput) return;
 
-    var gokwikCheckoutBtn = document.querySelector('.gokwik-checkout button:not([disabled])');
-    if (gokwikCheckoutBtn) {
-      gokwikCheckoutBtn.click();
-      return;
-    }
+    var id = parseInt(variantInput.value, 10);
+    var qty = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
 
-    /* Fallback to legacy checkout redirect when GoKwik is unavailable. */
-    var variantId = $('input[name="id"]', form);
-    var qty = $('input[name="quantity"]', form);
-    if (!variantId) return;
-    var id = variantId.value;
-    var q = qty ? qty.value : 1;
-    window.location.href = '/cart/' + id + ':' + q + '?checkout';
+    var btns = $$('.btn--buy-now');
+    btns.forEach(function (b) { b.classList.add('is-loading'); b.disabled = true; });
+
+    /* Step 1: Add the item to cart via Shopify AJAX — this is fast and avoids
+       GoKwik's own slow add-to-cart step inside its buy-now flow. */
+    fetch(window.theme.routes.cart_add_url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ items: [{ id: id, quantity: qty }] })
+    })
+    .then(function (r) {
+      if (!r.ok) throw new Error('cart_add_failed');
+      return r.json();
+    })
+    .then(function () {
+      /* Step 2: Proceed to checkout. Prefer GoKwik checkout (cart already filled,
+         no extra add step needed so it opens instantly), else native /checkout. */
+      var gokwikCheckoutBtn = document.querySelector('.gokwik-checkout button:not([disabled])');
+      if (gokwikCheckoutBtn) {
+        gokwikCheckoutBtn.click();
+        /* Re-enable buttons after handing off (GoKwik opens an overlay) */
+        btns.forEach(function (b) { b.classList.remove('is-loading'); b.disabled = false; });
+        return;
+      }
+      window.location.href = window.theme.routes.checkout_url || '/checkout';
+    })
+    .catch(function () {
+      btns.forEach(function (b) {
+        b.classList.remove('is-loading');
+        b.disabled = false;
+        var txt = b.querySelector('.btn-text');
+        if (txt) {
+          txt.textContent = 'Error — Try Again';
+          setTimeout(function () {
+            txt.textContent = b.getAttribute('data-text') || 'Buy Now';
+          }, 2500);
+        }
+      });
+    });
   }
 
   function updateCartCount() {
