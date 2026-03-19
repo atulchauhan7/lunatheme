@@ -67,6 +67,13 @@ gokwikCheckoutButtons.forEach(function(button) {
    button.disabled = false;
    button.classList.remove('disabled');
 });
+     // Show GoKwik wrappers now that GoKwik is ready; hide native fallback buttons
+     document.querySelectorAll('.gokwik-checkout').forEach(function(el) {
+       el.classList.add('gk-ready');
+     });
+     document.querySelectorAll('.shopifycheckoutbtn').forEach(function(el) {
+       el.style.display = 'none';
+     });
    const targetElement = document.querySelector("body");
      function debounce(func, delay) {
        let timeoutId;
@@ -106,7 +113,11 @@ gokwikCheckoutButtons.forEach(function(button) {
 {% endif %}
 <style>
  {% if settings.goEnable %}
+ /* Hide GoKwik buttons by default — shown only once gokwikLoaded fires */
  .gokwik-checkout {
+   display: none;
+ }
+ .gokwik-checkout.gk-ready {
    width: 100%;
    display: flex;
    justify-content: center;

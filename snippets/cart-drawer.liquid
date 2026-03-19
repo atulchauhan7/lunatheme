@@ -562,10 +562,11 @@
         <!-- CTAs -->
 
         <div class="cart__ctas" {{ block.shopify_attributes }}>
+          {% render 'gokwik-checkout' %}
           <button
             type="submit"
             id="CartDrawer-Checkout"
-            class="cart__checkout-button button"
+            class="cart__checkout-button button shopifycheckoutbtn"
             name="checkout"
             form="CartDrawer-Form"
             {% if cart == empty %}
