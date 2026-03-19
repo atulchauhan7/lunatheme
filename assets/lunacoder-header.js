@@ -23,6 +23,42 @@
   var header = $('.lh-site-header');
   if (!header) return;
 
+  /* Hide header + announcement whenever cart drawer/GoKwik cart is open */
+  function hideHeaderForCart() {
+    header.style.display = 'none';
+    if (announcementSection) announcementSection.style.display = 'none';
+    document.body.style.paddingTop = '0';
+  }
+  function restoreHeaderForCart() {
+    header.style.display = '';
+    if (announcementSection) announcementSection.style.display = '';
+    setHeaderHeight();
+  }
+
+  /* Watch for Dawn cart-drawer getting 'active' class (fires on localhost too) */
+  var cartDrawerEl = document.querySelector('cart-drawer');
+  if (cartDrawerEl) {
+    new MutationObserver(function () {
+      if (cartDrawerEl.classList.contains('active')) {
+        hideHeaderForCart();
+      } else {
+        restoreHeaderForCart();
+      }
+    }).observe(cartDrawerEl, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  /* Watch for GoKwik iframe injection (live only) */
+  new MutationObserver(function () {
+    if (document.getElementById('gokwik-iframe')) {
+      hideHeaderForCart();
+    }
+  }).observe(document.body, { childList: true, subtree: false });
+
+  /* ?openCart=true param (localhost testing shortcut) */
+  if (new URLSearchParams(window.location.search).get('openCart') === 'true') {
+    hideHeaderForCart();
+  }
+
   var announcementSection = $('.announcement-bar-section');
 
   function setHeaderHeight() {

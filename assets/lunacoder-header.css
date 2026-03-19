@@ -1403,12 +1403,14 @@ body {
   height: 100dvh !important;
 }
 
-/* === GOKWIK — Neutralise ALL fixed overlapping elements ===
+/* === GOKWIK — Hide header & announcement bar when cart is open ===
    Must be at the END of this file to win source-order battles
    against earlier !important rules (e.g. cart-drawer z-index). */
 body:has(#gokwik-iframe) .lh-site-header,
 body:has(#gokwik-iframe) .announcement-bar-section,
-body:has(#gokwik-iframe) .section-header,
+body:has(#gokwik-iframe) .section-header {
+  display: none !important;
+}
 body:has(#gokwik-iframe) .lh-nav-overlay,
 body:has(#gokwik-iframe) .lh-header-search,
 body:has(#gokwik-iframe) header-drawer,
@@ -1417,4 +1419,10 @@ body:has(#gokwik-iframe) cart-notification,
 body:has(#gokwik-iframe) .drawer {
   pointer-events: none !important;
   z-index: 0 !important;
+}
+/* Also hide when openCart=true is in URL (e.g. localhost testing) */
+body.gokwik-cart-open .lh-site-header,
+body.gokwik-cart-open .announcement-bar-section,
+body.gokwik-cart-open .section-header {
+  display: none !important;
 }

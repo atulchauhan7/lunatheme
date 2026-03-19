@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", getCountryData);
 
    function applyGoKwikItemListSpacing() {
      var marginTop = getGoKwikItemListMargin();
-     var itemWrappers = document.querySelectorAll('.item-list-wrapper.svelte-1k1ehgb, [class*="item-list-wrapper"][class*="svelte-"]');
+     var itemWrappers = document.querySelectorAll('.item-list-wrapper');
      itemWrappers.forEach(function (el) {
        el.style.setProperty('margin', '10px', 'important');
        el.style.setProperty('border-radius', '12px', 'important');
@@ -158,6 +158,24 @@ gokwikCheckoutButtons.forEach(function(button) {
  </script>
 {% endif %}
 <style>
+/* =====================================================
+   .item-list-wrapper — applied unconditionally so it
+   works whether or not goEnable is on
+   ===================================================== */
+.item-list-wrapper {
+  margin: 10px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  scrollbar-width: none;
+  margin-top: 45px;
+}
+@media screen and (max-width: 749px) {
+  .item-list-wrapper { margin-top: 20px; }
+}
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .item-list-wrapper { margin-top: 30px; }
+}
  {% if settings.goEnable %}
  /* Hide GoKwik buttons by default — shown only once gokwikLoaded fires */
  .gokwik-checkout {
@@ -235,28 +253,7 @@ gokwikCheckoutButtons.forEach(function(button) {
     cursor: not-allowed;
  }
 
- /* Responsive spacing for GoKwik cart item list wrapper */
- .item-list-wrapper.svelte-1k1ehgb,
- [class*="item-list-wrapper"][class*="svelte-"] {
-   margin: 10px !important;
-   border-radius: 12px !important;
-   background: #fff !important;
-   border: 1px solid var(--Gray-Neutral-200, #e5e7eb) !important;
-   scrollbar-width: none !important;
-   margin-top: 20px !important;
- }
- @media screen and (min-width: 750px) {
-   .item-list-wrapper.svelte-1k1ehgb,
-   [class*="item-list-wrapper"][class*="svelte-"] {
-     margin-top: 30px !important;
-   }
- }
- @media screen and (min-width: 990px) {
-   .item-list-wrapper.svelte-1k1ehgb,
-   [class*="item-list-wrapper"][class*="svelte-"] {
-     margin-top: 45px !important;
-   }
- }
+
 
 
 
