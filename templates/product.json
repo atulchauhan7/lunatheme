@@ -32,9 +32,10 @@
         "trust_2": "Easy Returns",
         "trust_3": "Secure Checkout",
         "trust_4": "Quality Assured",
-        "free_gift_note": "🛒 <strong>Add 2 items</strong> & unlock   <strong style=\"color:#c62828;\">30% OFF</strong> 🎉",
+        "show_free_gift_note": true,
+        "free_gift_note": "🛒 Add any 2 items & unlock 30% OFF 🎉",
         "promo_enabled": true,
-        "promo_text": "Add 2 items to your cart and avail 30% off",
+        "promo_text": "Add any 2 items to your cart and avail 30% off",
         "promo_subtext": "Tap the code to copy & apply at checkout",
         "promo_code": "SUMMER30"
       }
