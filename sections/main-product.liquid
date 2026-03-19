@@ -154,7 +154,7 @@
   </div>
 
   <!-- Free gift promo line -->
-  {% if section.settings.free_gift_note != blank %}
+  {% if section.settings.show_free_gift_note and section.settings.free_gift_note != blank %}
   <p class="product-info__free-gift-note">{{ section.settings.free_gift_note }}</p>
   {% endif %}
 
@@ -927,10 +927,16 @@
       "content": "Free Gift Note"
     },
     {
+      "type": "checkbox",
+      "id": "show_free_gift_note",
+      "label": "Show free gift note",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "free_gift_note",
       "label": "Free gift note text",
-      "info": "Supports emojis. Leave blank to hide.",
+      "info": "Supports emojis.",
       "default": "🎁 Free Gift + 10% off with every prepaid order ❤️"
     },
     {
