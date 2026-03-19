@@ -130,7 +130,9 @@
     "cart_color_scheme": "scheme-1",
     "mid": "1937lhjque1z",
     "envType": "production",
+    "hideFlow": false,
     "goEnable": true,
+    "main-titile": "CHECKOUT",
     "goBuynowEnable": true,
     "sections": {
       "main-password-header": {
