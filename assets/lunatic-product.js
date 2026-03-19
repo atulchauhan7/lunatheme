@@ -474,7 +474,18 @@
       /* Update cart count bubble directly */
       updateCartCount();
 
-      /* Redirect to cart page */
+      /* Open GoKwik cart overlay on the current page — no navigation needed.
+         Falls back to Dawn cart drawer, then /cart as absolute last resort. */
+      var gokwikBtn = document.querySelector('.gokwik-checkout button:not([disabled])');
+      if (gokwikBtn) {
+        gokwikBtn.click();
+        return;
+      }
+      var cartDrawer = document.querySelector('cart-drawer');
+      if (cartDrawer && typeof cartDrawer.open === 'function') {
+        cartDrawer.open();
+        return;
+      }
       window.location.href = '/cart';
     })
     .catch(function () {

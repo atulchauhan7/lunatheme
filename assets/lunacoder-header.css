@@ -1403,18 +1403,16 @@ body {
   height: 100dvh !important;
 }
 
-/* === GOKWIK — Neutralise ALL fixed overlapping elements ===
-   Must be at the END of this file to win source-order battles
-   against earlier !important rules (e.g. cart-drawer z-index). */
+/* === CART OPEN — Hide header & announcement bar ===
+   Triggered by: GoKwik iframe (id or src), Dawn cart drawer active, or JS body class.
+   display:none on the actual fixed elements — NOT just the parent wrapper. */
+body:has(cart-drawer.active) .lh-site-header,
+body:has(cart-drawer.active) .announcement-bar-section,
 body:has(#gokwik-iframe) .lh-site-header,
 body:has(#gokwik-iframe) .announcement-bar-section,
-body:has(#gokwik-iframe) .section-header,
-body:has(#gokwik-iframe) .lh-nav-overlay,
-body:has(#gokwik-iframe) .lh-header-search,
-body:has(#gokwik-iframe) header-drawer,
-body:has(#gokwik-iframe) cart-drawer,
-body:has(#gokwik-iframe) cart-notification,
-body:has(#gokwik-iframe) .drawer {
-  pointer-events: none !important;
-  z-index: 0 !important;
+body:has(iframe[src*="gokwik" i]) .lh-site-header,
+body:has(iframe[src*="gokwik" i]) .announcement-bar-section,
+body.cart-ui-open .lh-site-header,
+body.cart-ui-open .announcement-bar-section {
+  display: none !important;
 }

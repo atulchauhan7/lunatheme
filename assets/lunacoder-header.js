@@ -22,8 +22,57 @@
   /* === HEADER SCROLL === */
   var header = $('.lh-site-header');
   if (!header) return;
-
+  /* Declared before hide/restore so both functions can always access it */
   var announcementSection = $('.announcement-bar-section');
+
+  function hideHeaderForCart() {
+    document.body.classList.add('cart-ui-open');
+    header.style.setProperty('display', 'none', 'important');
+    if (announcementSection) announcementSection.style.setProperty('display', 'none', 'important');
+    document.body.style.paddingTop = '0';
+  }
+
+  function restoreHeaderForCart() {
+    /* Guard: only restore once all cart UIs are gone from DOM */
+    if (document.querySelector('cart-drawer.active') ||
+        document.querySelector('#gokwik-iframe, iframe[src*="gokwik" i]')) return;
+    document.body.classList.remove('cart-ui-open');
+    header.style.removeProperty('display');
+    if (announcementSection) announcementSection.style.removeProperty('display');
+    setHeaderHeight();
+  }
+
+  /* Watch cart-drawer.active class toggle */
+  var cartDrawerEl = document.querySelector('cart-drawer');
+  if (cartDrawerEl) {
+    new MutationObserver(function () {
+      cartDrawerEl.classList.contains('active') ? hideHeaderForCart() : restoreHeaderForCart();
+    }).observe(cartDrawerEl, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  /* Watch for GoKwik iframe added/removed anywhere in DOM.
+     subtree:true catches injection inside a wrapper div.
+     We filter mutations to only react when an actual GoKwik iframe node changes —
+     this prevents the false-close race that fires on unrelated DOM updates. */
+  new MutationObserver(function (mutations) {
+    var relevant = mutations.some(function (m) {
+      var nodes = Array.prototype.slice.call(m.addedNodes)
+        .concat(Array.prototype.slice.call(m.removedNodes));
+      return nodes.some(function (n) {
+        return n.nodeType === 1 && (
+          n.id === 'gokwik-iframe' ||
+          (n.tagName === 'IFRAME' && /gokwik/i.test(n.src || n.getAttribute('src') || ''))
+        );
+      });
+    });
+    if (!relevant) return;
+    var hasGokwik = !!(document.getElementById('gokwik-iframe') ||
+      document.querySelector('iframe[src*="gokwik" i]'));
+    hasGokwik ? hideHeaderForCart() : restoreHeaderForCart();
+  }).observe(document.body, { childList: true, subtree: true });
+
+  /* Restore on back/forward-cache navigation */
+  window.addEventListener('pageshow', restoreHeaderForCart);
 
   function setHeaderHeight() {
     var hh = header ? Math.round(header.getBoundingClientRect().bottom) : 72;
