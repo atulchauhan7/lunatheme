@@ -6,14 +6,20 @@
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
+  /* Prevent generic .section + .section spacing from pushing cart below header */
+  #shopify-section-{{ section.id }} {
+    margin-top: 0 !important;
+  }
+
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    /* Header offset is handled globally via body padding in lunacoder-header.js */
+    padding-top: 0;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
+      padding-top: 0;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }

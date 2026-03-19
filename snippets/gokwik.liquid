@@ -56,7 +56,51 @@ document.addEventListener("DOMContentLoaded", getCountryData);
    }
  </script>
  <script>
+   function getGoKwikItemListMargin() {
+     if (window.matchMedia('(min-width: 990px)').matches) return '45px';
+     if (window.matchMedia('(min-width: 750px)').matches) return '30px';
+     return '20px';
+   }
+
+   function applyGoKwikItemListSpacing() {
+     var marginTop = getGoKwikItemListMargin();
+     var itemWrappers = document.querySelectorAll('.item-list-wrapper.svelte-1k1ehgb, [class*="item-list-wrapper"][class*="svelte-"]');
+     itemWrappers.forEach(function (el) {
+       el.style.setProperty('margin', '10px', 'important');
+       el.style.setProperty('border-radius', '12px', 'important');
+       el.style.setProperty('background', '#fff', 'important');
+       el.style.setProperty('border', '1px solid var(--Gray-Neutral-200, #e5e7eb)', 'important');
+       el.style.setProperty('scrollbar-width', 'none', 'important');
+       el.style.setProperty('margin-top', marginTop, 'important');
+     });
+   }
+
+   function bootGoKwikItemListSpacing() {
+     applyGoKwikItemListSpacing();
+     var target = document.body || document.documentElement;
+     if (!target) return;
+     var observer = new MutationObserver(function () {
+       applyGoKwikItemListSpacing();
+     });
+     observer.observe(target, { childList: true, subtree: true });
+     window.addEventListener('resize', applyGoKwikItemListSpacing);
+     // Fallback polling for late async renders when mutation timing is missed
+     var tries = 0;
+     var poll = setInterval(function () {
+       applyGoKwikItemListSpacing();
+       tries += 1;
+       if (tries >= 30) clearInterval(poll);
+     }, 500);
+   }
+
+   if (document.readyState === 'loading') {
+     document.addEventListener('DOMContentLoaded', bootGoKwikItemListSpacing);
+   } else {
+     bootGoKwikItemListSpacing();
+   }
+
    window.addEventListener('gokwikLoaded', e => {
+
    var buyNowButton = document.getElementById('gokwik-buy-now');
 if (buyNowButton) {
    buyNowButton.disabled = false;
@@ -74,6 +118,7 @@ gokwikCheckoutButtons.forEach(function(button) {
      document.querySelectorAll('.shopifycheckoutbtn').forEach(function(el) {
        el.style.display = 'none';
      });
+     applyGoKwikItemListSpacing();
    const targetElement = document.querySelector("body");
      function debounce(func, delay) {
        let timeoutId;
@@ -104,6 +149,7 @@ gokwikCheckoutButtons.forEach(function(button) {
    button.disabled = false;
    button.classList.remove('disabled');
 });
+      applyGoKwikItemListSpacing();
        observer.observe(targetElement, { childList: true, subtree: true });
      }, 700);
      const config = { childList: true, subtree: true };
@@ -187,6 +233,29 @@ gokwikCheckoutButtons.forEach(function(button) {
  }
      #gokwik-buy-now:disabled{
     cursor: not-allowed;
+ }
+
+ /* Responsive spacing for GoKwik cart item list wrapper */
+ .item-list-wrapper.svelte-1k1ehgb,
+ [class*="item-list-wrapper"][class*="svelte-"] {
+   margin: 10px !important;
+   border-radius: 12px !important;
+   background: #fff !important;
+   border: 1px solid var(--Gray-Neutral-200, #e5e7eb) !important;
+   scrollbar-width: none !important;
+   margin-top: 20px !important;
+ }
+ @media screen and (min-width: 750px) {
+   .item-list-wrapper.svelte-1k1ehgb,
+   [class*="item-list-wrapper"][class*="svelte-"] {
+     margin-top: 30px !important;
+   }
+ }
+ @media screen and (min-width: 990px) {
+   .item-list-wrapper.svelte-1k1ehgb,
+   [class*="item-list-wrapper"][class*="svelte-"] {
+     margin-top: 45px !important;
+   }
  }
 
 
