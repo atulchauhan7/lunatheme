@@ -1,1 +1,248 @@
-{"sections":{"image_banner_DxgQzN":{"type":"image-banner","name":"t:sections.image-banner.presets.name","settings":{"image":"shopify:\/\/shop_images\/Untitled_design_45.png","image_overlay_opacity":0,"image_height":"adapt","image_behavior":"ambient","desktop_content_position":"middle-center","desktop_content_alignment":"center","show_text_box":true,"color_scheme":"","stack_images_on_mobile":true,"mobile_content_alignment":"center","show_text_below":true}},"featured_collection":{"type":"featured-collection","settings":{"collection":"new-arrival","products_to_show":16,"title":"<strong>BEST SELLERS<\/strong>","heading_size":"h2","description":"<p><strong>\"Loved the most, worn the most – Dhirai Best Sellers.\"<\/strong><\/p>","show_description":true,"description_style":"body","columns_desktop":4,"enable_desktop_slider":false,"full_width":true,"show_view_all":true,"view_all_style":"solid","color_scheme":"scheme-1","image_ratio":"portrait","image_shape":"default","show_secondary_image":true,"show_vendor":true,"show_rating":true,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false,"padding_top":44,"padding_bottom":36}},"featured_collection_9EpJj3":{"type":"featured-collection","name":"t:sections.featured-collection.presets.name","settings":{"collection":"co-ord-sets","products_to_show":16,"title":"<strong>Co-ord Sets<\/strong>","heading_size":"h2","description":"<p><strong>\"Double the style, twice the love – our top co-ords.\"<\/strong><\/p>","show_description":false,"description_style":"body","columns_desktop":4,"enable_desktop_slider":false,"full_width":false,"show_view_all":true,"view_all_style":"solid","color_scheme":"","image_ratio":"portrait","image_shape":"default","show_secondary_image":true,"show_vendor":true,"show_rating":true,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}},"featured_product_tVU7ww":{"type":"featured-product","blocks":{"text_C74p6Y":{"type":"text","settings":{"text":"{{ section.settings.product.vendor }}","text_style":"uppercase"}},"title_bLRbqP":{"type":"title","settings":{"heading_size":"h1"}},"price_UdaAiR":{"type":"price","settings":{}},"variant_picker_cg3VTQ":{"type":"variant_picker","settings":{"picker_type":"button","swatch_shape":"circle"}},"quantity_selector_jRcNGR":{"type":"quantity_selector","settings":{}},"buy_buttons_Gc73NU":{"type":"buy_buttons","settings":{"show_dynamic_checkout":true,"show_gift_card_recipient":true}},"share_MBGbMg":{"type":"share","settings":{"share_label":"Share"}}},"block_order":["text_C74p6Y","title_bLRbqP","price_UdaAiR","variant_picker_cg3VTQ","quantity_selector_jRcNGR","buy_buttons_Gc73NU","share_MBGbMg"],"name":"t:sections.featured-product.presets.name","settings":{"product":"rang-e-noor-dhirai-s-festive-chanderi-collection","color_scheme":"","secondary_background":true,"media_size":"medium","constrain_to_viewport":true,"media_fit":"contain","media_position":"left","image_zoom":"lightbox","hide_variants":false,"enable_video_looping":false,"padding_top":36,"padding_bottom":36}},"featured_collection_gkgzeG":{"type":"featured-collection","name":"t:sections.featured-collection.presets.name","settings":{"collection":"suit-sets","products_to_show":20,"title":"<strong>SUIT SETS<\/strong>","heading_size":"h2","description":"<p><strong>Suit up in style – Dhirai’s best-loved sets.<\/strong><\/p>","show_description":false,"description_style":"body","columns_desktop":4,"enable_desktop_slider":false,"full_width":false,"show_view_all":true,"view_all_style":"solid","color_scheme":"","image_ratio":"portrait","image_shape":"default","show_secondary_image":true,"show_vendor":true,"show_rating":true,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}},"multicolumn_YCh7pe":{"type":"multicolumn","blocks":{"column_YejaGx":{"type":"column","settings":{"title":"<em><strong>Priya Sharma – Delhi<\/strong><\/em>","text":"<p><strong>⭐️⭐️⭐️⭐️⭐️<br\/><\/strong><em><strong>“Perfect blend of comfort & style!”<\/strong><\/em><strong><br\/>Absolutely loved this co-ord set from Dhirai. The fabric feels super soft on the skin and the fit is just amazing. Got so many compliments when I wore it for brunch with friends!<\/strong><\/p>","link_label":"","link":""}},"column_VLdLGt":{"type":"column","settings":{"title":"<strong>Aishwarya Nair – Kochi<\/strong>","text":"<p><strong>⭐️⭐️⭐️⭐️⭐️<\/strong><\/p><p><strong>My new everyday favorite”Review: These co-ords are just perfect – lightweight, chic, and so easy to style. I can wear them for office, outings, or even casual evenings. Definitely worth every penny!<\/strong><\/p>","link_label":"","link":""}},"column_UU7cQp":{"type":"column","settings":{"title":"<strong>Megha Patel – Ahmedabad<\/strong>","text":"<p><strong>⭐️⭐️⭐️⭐️⭐️<br\/>“Best co-ords I own till now”<br\/> I usually struggle with fit, but Dhirai’s sizing is spot on. The design is trendy yet ethnic, which makes it versatile for any occasion. Love how confident it makes me feel!<\/strong><\/p>","link_label":"","link":""}}},"block_order":["column_YejaGx","column_VLdLGt","column_UU7cQp"],"name":"t:sections.multicolumn.presets.name","settings":{"title":"<strong>✨Dhirai Diaries ✨<\/strong>","heading_size":"h1","image_width":"full","image_ratio":"adapt","button_label":"","button_link":"","columns_desktop":3,"column_alignment":"left","background_style":"primary","color_scheme":"","columns_mobile":"1","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}}},"order":["image_banner_DxgQzN","featured_collection","featured_collection_9EpJj3","featured_product_tVU7ww","featured_collection_gkgzeG","multicolumn_YCh7pe"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_DxgQzN": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Summer_sale_dhirair_1200_628.webp",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "new-arrival",
+        "products_to_show": 16,
+        "title": "<strong>BEST SELLERS</strong>",
+        "heading_size": "h2",
+        "description": "<p><strong>\"Loved the most, worn the most – Dhirai Best Sellers.\"</strong></p>",
+        "show_description": true,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_9EpJj3": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "co-ord-sets",
+        "products_to_show": 16,
+        "title": "<strong>Co-ord Sets</strong>",
+        "heading_size": "h2",
+        "description": "<p><strong>\"Double the style, twice the love – our top co-ords.\"</strong></p>",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_tVU7ww": {
+      "type": "featured-product",
+      "blocks": {
+        "text_C74p6Y": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_bLRbqP": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_UdaAiR": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_cg3VTQ": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_jRcNGR": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_Gc73NU": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_MBGbMg": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_C74p6Y",
+        "title_bLRbqP",
+        "price_UdaAiR",
+        "variant_picker_cg3VTQ",
+        "quantity_selector_jRcNGR",
+        "buy_buttons_Gc73NU",
+        "share_MBGbMg"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "rang-e-noor-dhirai-s-festive-chanderi-collection",
+        "color_scheme": "",
+        "secondary_background": true,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_gkgzeG": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "suit-sets",
+        "products_to_show": 20,
+        "title": "<strong>SUIT SETS</strong>",
+        "heading_size": "h2",
+        "description": "<p><strong>Suit up in style – Dhirai’s best-loved sets.</strong></p>",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_YCh7pe": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_YejaGx": {
+          "type": "column",
+          "settings": {
+            "title": "<em><strong>Priya Sharma – Delhi</strong></em>",
+            "text": "<p><strong>⭐️⭐️⭐️⭐️⭐️<br/></strong><em><strong>“Perfect blend of comfort & style!”</strong></em><strong><br/>Absolutely loved this co-ord set from Dhirai. The fabric feels super soft on the skin and the fit is just amazing. Got so many compliments when I wore it for brunch with friends!</strong></p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_VLdLGt": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Aishwarya Nair – Kochi</strong>",
+            "text": "<p><strong>⭐️⭐️⭐️⭐️⭐️</strong></p><p><strong>My new everyday favorite”Review: These co-ords are just perfect – lightweight, chic, and so easy to style. I can wear them for office, outings, or even casual evenings. Definitely worth every penny!</strong></p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_UU7cQp": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Megha Patel – Ahmedabad</strong>",
+            "text": "<p><strong>⭐️⭐️⭐️⭐️⭐️<br/>“Best co-ords I own till now”<br/> I usually struggle with fit, but Dhirai’s sizing is spot on. The design is trendy yet ethnic, which makes it versatile for any occasion. Love how confident it makes me feel!</strong></p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_YejaGx",
+        "column_VLdLGt",
+        "column_UU7cQp"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "<strong>✨Dhirai Diaries ✨</strong>",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "image_banner_DxgQzN",
+    "featured_collection",
+    "featured_collection_9EpJj3",
+    "featured_product_tVU7ww",
+    "featured_collection_gkgzeG",
+    "multicolumn_YCh7pe"
+  ]
+}
