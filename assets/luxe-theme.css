@@ -129,7 +129,7 @@ p{margin-bottom:1rem}
 /* No-timer fallback: compact belt with rotating text */
 .announcement-bar--belt{height:26px;display:flex;align-items:center;padding:0;font-size:0.5rem;letter-spacing:0.15em}
 .announcement-bar--belt .announcement-bar__link{display:block;width:100%;height:100%;overflow:hidden}
-.announcement-bar--belt .announcement-bar__marquee{height:100%;align-items:center;animation-duration:28s}
+.announcement-bar--belt .announcement-bar__marquee{height:100%;align-items:center;animation-duration:20s}
 .announcement-bar--belt .announcement-bar__marquee span{padding:0 clamp(1.2rem,3.2vw,3rem)}
 .announcement-bar--belt .announcement-bar__marquee span::before{font-size:0.55em;opacity:0.45}
 
