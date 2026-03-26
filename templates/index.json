@@ -12,24 +12,25 @@
     "hero": {
       "type": "hero-banner",
       "blocks": {
-        "slide_XbWHCH": {
+        "slide_QhVVpg": {
           "type": "slide",
           "settings": {
-            "video": "https://cdn.shopify.com/videos/c/o/v/3634c0dbf5ab4e4986acc2b41400e6b7.mp4",
+            "image": "shopify://shop_images/900_1200.webp",
+            "video": "",
             "subtitle": "",
             "heading": ""
           }
         }
       },
       "block_order": [
-        "slide_XbWHCH"
+        "slide_QhVVpg"
       ],
       "settings": {
         "subtitle": "",
         "heading": "",
         "description": "",
         "button_label": "Shop Now",
-        "button_link": "shopify://collections/best-sellers",
+        "button_link": "shopify://collections/summer-bloom-26",
         "button_label_2": "",
         "button_link_2": "",
         "slideshow_speed": 6,
@@ -102,21 +103,21 @@
           "type": "tab",
           "settings": {
             "tab_label": "Best Seller",
-            "collection": "best-sellers"
+            "collection": "best-seller"
           }
         },
         "tab2": {
           "type": "tab",
           "settings": {
-            "tab_label": "chanchal",
-            "collection": "chanchal"
+            "tab_label": "sets",
+            "collection": "suit-sets"
           }
         },
         "tab3": {
           "type": "tab",
           "settings": {
             "tab_label": "Coord Set",
-            "collection": "coord-set"
+            "collection": "co-ord-sets"
           }
         }
       },
@@ -139,17 +140,19 @@
         "b1": {
           "type": "banner",
           "settings": {
-            "heading": "Daily wear",
+            "image": "shopify://shop_images/imgi_10_SET0213_3_ef422a9e-9e61-47f8-95eb-bc31484dff1c.jpg",
+            "heading": "New Arrivals",
             "button_label": "Shop Now",
-            "link": ""
+            "link": "shopify://collections/new-arrival"
           }
         },
         "b2": {
           "type": "banner",
           "settings": {
-            "heading": "Straight Kurtis",
+            "image": "shopify://shop_images/imgi_6_3-96105505863380_l.jpg",
+            "heading": "kurti sets",
             "button_label": "Shop Now",
-            "link": ""
+            "link": "shopify://collections/kurta-sets"
           }
         }
       },
@@ -157,7 +160,6 @@
         "b1",
         "b2"
       ],
-      "disabled": true,
       "settings": {}
     },
     "scrolling": {
@@ -198,8 +200,8 @@
     },
     "image-text": {
       "type": "image-with-text",
+      "disabled": true,
       "settings": {
-        "image": "shopify://shop_images/Untitled_design_56.png",
         "subtitle": "Our Story",
         "heading": "Crafted with Love",
         "text": "<p>Every kurti in our collection is thoughtfully designed, blending traditional Indian craftsmanship with contemporary style. From handpicked fabrics to intricate detailing, we create ethnic wear that celebrates the grace of every woman.</p>",
