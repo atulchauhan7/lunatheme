@@ -134,6 +134,7 @@ window.theme = {
 moneyFormat: {{ shop.money_format | json }},
 currency: {{ cart.currency.iso_code | json }},
 cartCount: {{ cart.item_count }},
+checkoutProvider: {{ settings.checkout_provider | default: 'native' | json }},
 routes: {
 cart_url: '{{ routes.cart_url }}',
 cart_add_url: '{{ routes.cart_add_url }}',
@@ -155,7 +156,8 @@ setTimeout(function(){
   if(!document.body.classList.contains('page-loaded')){ document.body.classList.add('page-loaded'); }
 }, 1500);
 </script>
-{% if settings.enable_shopflo %}
+{% assign active_provider = settings.checkout_provider | default: 'native' %}
+{% if active_provider == 'shopflo' or active_provider == 'native' and settings.enable_shopflo %}
 <script>
 (function(){
   var h=window.location.hostname;
@@ -177,6 +179,26 @@ setTimeout(function(){
   document.head.appendChild(s);
 })();
 </script>
+{% elsif active_provider == 'gokwik' %}
+{% if settings.gokwik_mid != blank %}
+<script>
+(function(){
+  var mid={{ settings.gokwik_mid | json }};
+  var h=window.location.hostname;
+  var isLocal=(h==='localhost'||h==='127.0.0.1');
+  window.gokwikConfig={
+    mid:mid,
+    environment:isLocal?'sandbox':'production',
+    shopDomain:{{ shop.permanent_domain | json }}
+  };
+  var s=document.createElement('script');
+  s.src='https://cdn.gokwik.co/v4/build/gkwik.js';
+  s.async=true;
+  s.setAttribute('data-gk-mid',mid);
+  document.head.appendChild(s);
+})();
+</script>
+{% endif %}
 {% endif %}
 
 <!-- Preload main JS -->
