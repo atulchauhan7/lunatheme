@@ -22,8 +22,12 @@ window.addEventListener('scroll',function(){if(!progTicking){progTicking=true;re
 /* === HEADER SCROLL === */
 const header=$('.site-header');
 const announcementBar=$('.announcement-bar');
+const isBeltAnnouncement=!!(announcementBar&&announcementBar.classList.contains('announcement-bar--belt'));
 function setHeaderHeight(){
-if(header&&!announcementBar)header.classList.remove('has-announcement');
+if(header){
+if(!announcementBar)header.classList.remove('has-announcement');
+header.classList.toggle('has-announcement-belt',isBeltAnnouncement);
+}
 var hh=header?Math.round(header.offsetHeight):72;
 var cs=$('.category-strip');var sh=cs?cs.offsetHeight:0;
 document.documentElement.style.setProperty('--header-height',hh+'px');

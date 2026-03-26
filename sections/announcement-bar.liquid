@@ -1,5 +1,6 @@
 {% if section.settings.show_announcement %}
-<div class="announcement-bar announcement-bar--timer" role="banner">
+<div class="announcement-bar{% if section.settings.timer_end != blank %} announcement-bar--timer{% else %} announcement-bar--belt{% endif %}" role="banner">
+  {% if section.settings.timer_end != blank %}
   <div class="announcement-bar__timer-layout">
     <div class="announcement-bar__timer-msg">
       {% if section.settings.link != blank %}<a href="{{ section.settings.link }}" class="announcement-bar__link">{% endif %}
@@ -14,7 +15,19 @@
       <span class="ann-timer-seg"><span class="ann-timer-num" id="ann-secs">00</span><span class="ann-timer-label">Sec</span></span>
     </div>
   </div>
-</div>
+  {% else %}
+  {% if section.settings.link != blank %}<a href="{{ section.settings.link }}" class="announcement-bar__link">{% endif %}
+    <div class="announcement-bar__marquee" aria-label="Announcement">
+      <span>{{ section.settings.text }}</span>
+      <span>{{ section.settings.text }}</span>
+      <span>{{ section.settings.text }}</span>
+      <span>{{ section.settings.text }}</span>
+      <span>{{ section.settings.text }}</span>
+      <span>{{ section.settings.text }}</span>
+    </div>
+  {% if section.settings.link != blank %}</a>{% endif %}
+  {% endif %}
+  </div>
 {% endif %}
 
 {% schema %}
