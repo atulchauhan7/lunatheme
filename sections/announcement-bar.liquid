@@ -1,4 +1,5 @@
 {% if section.settings.show_announcement %}
+<style>:root{--announcement-content-offset:{% if section.settings.timer_end != blank %}48px{% else %}26px{% endif %};--announcement-height:{% if section.settings.timer_end != blank %}48px{% else %}26px{% endif %}}</style>
 <div class="announcement-bar{% if section.settings.timer_end != blank %} announcement-bar--timer{% else %} announcement-bar--belt{% endif %}" role="banner">
   {% if section.settings.timer_end != blank %}
   <div class="announcement-bar__timer-layout">

@@ -22,16 +22,36 @@ window.addEventListener('scroll',function(){if(!progTicking){progTicking=true;re
 /* === HEADER SCROLL === */
 const header=$('.site-header');
 const announcementBar=$('.announcement-bar');
-const isBeltAnnouncement=!!(announcementBar&&announcementBar.classList.contains('announcement-bar--belt'));
+function syncAnnouncementContentOffsetVar(){
+  var h=announcementBar?Math.round(announcementBar.getBoundingClientRect().height):0;
+  document.documentElement.style.setProperty('--announcement-content-offset',h+'px');
+}
+function syncAnnouncementHeightVar(){
+  var h=0;
+  if(announcementBar&&header&&header.classList.contains('has-announcement')&&!announcementBar.classList.contains('announcement-hidden')){
+    h=Math.round(announcementBar.getBoundingClientRect().height);
+  }
+  document.documentElement.style.setProperty('--announcement-height',h+'px');
+}
 function setHeaderHeight(){
 if(header){
 if(!announcementBar)header.classList.remove('has-announcement');
-header.classList.toggle('has-announcement-belt',isBeltAnnouncement);
+}
+if(header&&announcementBar){
+var csTop=window.pageYOffset||document.documentElement.scrollTop;
+if(csTop<=5){
+announcementBar.classList.remove('announcement-hidden');
+header.classList.add('has-announcement');
+}else if(announcementBar.classList.contains('announcement-hidden')){
+header.classList.remove('has-announcement');
+}
 }
 var hh=header?Math.round(header.offsetHeight):72;
 var cs=$('.category-strip');var sh=cs?cs.offsetHeight:0;
 document.documentElement.style.setProperty('--header-height',hh+'px');
 document.documentElement.style.setProperty('--strip-height',sh+'px');
+syncAnnouncementContentOffsetVar();
+syncAnnouncementHeightVar();
 }
 setHeaderHeight();
 window.addEventListener('load',function(){requestAnimationFrame(setHeaderHeight)});
@@ -47,13 +67,16 @@ if(announcementBar){
 if(cs<=5){
 announcementBar.classList.remove('announcement-hidden');
 header.classList.add('has-announcement');
+syncAnnouncementHeightVar();
 }else if(scrollingDown){
 announcementBar.classList.add('announcement-hidden');
 header.classList.remove('has-announcement');
+syncAnnouncementHeightVar();
 }
 }
 }
 lastScroll=cs<=0?0:cs;
+syncAnnouncementHeightVar();
 headerTicking=false;
 }
 window.addEventListener('scroll',function(){if(!headerTicking){headerTicking=true;requestAnimationFrame(handleHeaderScroll)}},{passive:true});

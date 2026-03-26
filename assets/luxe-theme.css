@@ -52,9 +52,9 @@ p{margin-bottom:1rem}
 }
 
 /* === MAIN CONTENT OFFSET — strip only on homepage, other pages need header clearance === */
-.main-content{overflow-x:hidden;padding-top:var(--header-height,72px)}
+.main-content{overflow-x:hidden;padding-top:calc(var(--header-height,72px) + var(--announcement-content-offset,0px))}
 .template-index .main-content{padding-top:0}
-.template-product .main-content{padding-top:var(--header-height,72px)}
+.template-product .main-content{padding-top:calc(var(--header-height,72px) + var(--announcement-content-offset,0px))}
 
 /* === SECTIONS === */
 .section{padding:0.5rem 0}
@@ -166,12 +166,7 @@ p{margin-bottom:1rem}
 
 /* === HEADER — Premium editorial fashion header === */
 .site-header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0;overflow:visible}
-.site-header.has-announcement{top:48px}
-.site-header.has-announcement.has-announcement-belt{top:26px}
-@supports(padding:env(safe-area-inset-top)){
-  .site-header.has-announcement{top:calc(48px + env(safe-area-inset-top,0px))}
-  .site-header.has-announcement.has-announcement-belt{top:calc(26px + env(safe-area-inset-top,0px))}
-}
+.site-header.has-announcement{top:var(--announcement-height,48px)}
 .site-header__inner{position:relative;display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"left center right";align-items:center;padding:14px clamp(16px,4vw,52px);background:var(--color-header-bg);transition:all 0.5s var(--ease-out-expo);border-bottom:1px solid transparent}
 .site-header__inner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--color-accent);opacity:1;transition:opacity 0.4s var(--ease-out-expo)}
 .site-header.scrolled .site-header__inner{padding:10px clamp(16px,4vw,52px);background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 4px 30px rgba(0,0,0,0.04)}
@@ -1620,9 +1615,9 @@ p{margin-bottom:1rem}
   .acct-grid{grid-template-columns:1fr;gap:2rem}
   .acct-hero__greeting{font-size:1.25rem}
   /* Strip only on homepage — other pages use header clearance */
-  .main-content{padding-top:var(--header-height,53px)}
+  .main-content{padding-top:calc(var(--header-height,53px) + var(--announcement-content-offset,0px))}
   .template-index .main-content{padding-top:0}
-  .template-product .main-content{padding-top:var(--header-height,53px)}
+  .template-product .main-content{padding-top:calc(var(--header-height,53px) + var(--announcement-content-offset,0px))}
   .section{padding:0.4rem 0}
   .section--no-padding{padding:0}
   .container{padding:0 16px}
@@ -1830,9 +1825,9 @@ p{margin-bottom:1rem}
 /* === TABLET (769px to 1024px) === */
 @media(min-width:769px) and (max-width:1024px){
   .grid--4{grid-template-columns:repeat(3,1fr)}
-  .main-content{padding-top:var(--header-height,72px)}
+  .main-content{padding-top:calc(var(--header-height,72px) + var(--announcement-content-offset,0px))}
   .template-index .main-content{padding-top:0}
-  .template-product .main-content{padding-top:var(--header-height,72px)}
+  .template-product .main-content{padding-top:calc(var(--header-height,72px) + var(--announcement-content-offset,0px))}
   .product-page__grid{grid-template-columns:1fr 1fr;gap:1.5rem}
   .product-gallery--slider{position:static}
   .product-gallery__viewport{aspect-ratio:3/4;max-height:calc(100vh - 50px)}
