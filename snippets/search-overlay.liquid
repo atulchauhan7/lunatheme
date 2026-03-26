@@ -1,0 +1,36 @@
+<div class="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+<button class="search-overlay__close" aria-label="Close search">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<line x1="18" y1="6" x2="6" y2="18"/>
+<line x1="6" y1="6" x2="18" y2="18"/>
+</svg>
+</button>
+
+<div class="search-overlay__inner">
+<form action="{{ routes.search_url }}" method="get" role="search">
+<input type="hidden" name="type" value="product">
+<div class="search-overlay__input-wrap">
+<input 
+type="search" 
+name="q" 
+class="search-overlay__input" 
+placeholder="Search..." 
+autocomplete="off"
+aria-label="Search"
+>
+</div>
+</form>
+
+<div class="search-overlay__suggestions">
+<div class="search-overlay__suggestions-title">Popular Searches</div>
+<div class="search-overlay__suggestions-list">
+<a href="{{ routes.search_url }}?q=anarkali+kurti&type=product" class="search-overlay__suggestion">Anarkali Kurti</a>
+<a href="{{ routes.search_url }}?q=cotton+kurti&type=product" class="search-overlay__suggestion">Cotton Kurti</a>
+<a href="{{ routes.search_url }}?q=palazzo+set&type=product" class="search-overlay__suggestion">Palazzo Set</a>
+<a href="{{ routes.search_url }}?q=party+wear&type=product" class="search-overlay__suggestion">Party Wear</a>
+<a href="{{ routes.search_url }}?q=new+arrivals&type=product" class="search-overlay__suggestion">New Arrivals</a>
+<a href="{{ routes.search_url }}?q=under+999&type=product" class="search-overlay__suggestion">Under &#8377;999</a>
+</div>
+</div>
+</div>
+</div>

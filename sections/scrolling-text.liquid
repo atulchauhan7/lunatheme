@@ -1,0 +1,18 @@
+<section class="scrolling-text marquee-pausable" data-section-id="{{ section.id }}">
+<div class="scrolling-text__inner">
+{% for block in section.blocks %}
+<span class="scrolling-text__item" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+<span class="scrolling-text__separator" aria-hidden="true">&#10022;</span>
+{% endfor %}
+{% for i in (2..4) %}
+{% for block in section.blocks %}
+<span class="scrolling-text__item" aria-hidden="true">{{ block.settings.text }}</span>
+<span class="scrolling-text__separator" aria-hidden="true">&#10022;</span>
+{% endfor %}
+{% endfor %}
+</div>
+</section>
+
+{% schema %}
+{"name":"Scrolling Text","max_blocks":6,"settings":[],"blocks":[{"type":"text","name":"Text","settings":[{"type":"text","id":"text","label":"Text","default":"New Arrivals"}]}],"presets":[{"name":"Scrolling Text","blocks":[{"type":"text","settings":{"text":"New Arrivals"}},{"type":"text","settings":{"text":"Premium Quality"}},{"type":"text","settings":{"text":"Free Shipping"}},{"type":"text","settings":{"text":"Sustainable"}}]}]}
+{% endschema %}

@@ -1,0 +1,31 @@
+<style>
+:root {
+--color-accent: {{ settings.accent_color }};
+--color-accent-dark: {{ settings.accent_color_dark | default: settings.accent_color | color_darken: 15 }};
+--color-accent-rgb: {{ settings.accent_color | color_extract: 'red' }}, {{ settings.accent_color | color_extract: 'green' }}, {{ settings.accent_color | color_extract: 'blue' }};
+--color-text: {{ settings.text_color | default: '#1a1a1a' }};
+--color-text-muted: {{ settings.text_muted_color | default: '#888888' }};
+--color-heading: {{ settings.heading_color | default: '#1a1a1a' }};
+--color-background: {{ settings.background_color | default: '#ffffff' }};
+--color-surface: {{ settings.surface_color | default: '#fafafa' }};
+--color-border: {{ settings.border_color | default: '#d5d5d5' }};
+--font-heading: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+--font-body: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+--border-radius: {{ settings.border_radius | default: 0 }}px;
+--container-width: {{ settings.container_width | default: '1440px' }};
+--grid-gutter: {{ settings.grid_gutter | default: '28px' }};
+--section-spacing: {{ settings.section_spacing | default: 5 }}px;
+--color-header-bg: {{ settings.header_bg_color | default: '#ffffff' }};
+--color-header-text: {{ settings.header_text_color | default: '#e12d2d' }};
+--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+--ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+--duration-md: 0.5s;
+--duration-lg: 0.8s;
+}
+@media(max-width:768px){
+  :root{--grid-gutter:16px}
+}
+@media(max-width:480px){
+  :root{--grid-gutter:12px}
+}
+</style>

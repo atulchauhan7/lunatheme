@@ -1,0 +1,748 @@
+<div class="product-page">
+<div class="container">
+
+<nav class="product-breadcrumbs" aria-label="Breadcrumb">
+<a href="{{ routes.root_url }}">Home</a>
+<span aria-hidden="true">/</span>
+{% if product.collections.size > 0 %}
+<a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+<span aria-hidden="true">/</span>
+{% endif %}
+<span class="product-breadcrumbs__current">{{ product.title | truncate: 40 }}</span>
+</nav>
+
+{% comment %} --- Resolve MRP once: prefer compare_at_price, fall back to mrp-XXX tag --- {% endcomment %}
+{% assign mrp = 0 %}
+{% assign price_num = product.price | divided_by: 100 %}
+{% if product.compare_at_price > product.price %}
+  {% assign mrp = product.compare_at_price | divided_by: 100 %}
+{% else %}
+  {% for tag in product.tags %}
+    {% assign tag_lower = tag | downcase %}
+    {% if tag_lower contains 'mrp-' %}
+      {% assign mrp = tag_lower | remove: 'mrp-' | plus: 0 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% assign has_discount = false %}
+{% if mrp > price_num %}{% assign has_discount = true %}{% endif %}
+
+<div class="product-page__grid">
+
+<!-- === GALLERY === -->
+<div class="product-gallery product-gallery--slider">
+<div class="product-gallery__viewport">
+{% if has_discount %}<span class="product-gallery__badge product-gallery__badge--sale">SALE</span>{% elsif product.tags contains 'new' or product.tags contains 'New' or product.tags contains 'NEW' %}<span class="product-gallery__badge">NEW IN</span>{% endif %}
+<div class="product-gallery__track">
+{% for image in product.images %}
+<div class="product-gallery__slide">
+<img 
+src="{{ image | image_url: width: 800 }}"
+srcset="{{ image | image_url: width: 400 }} 400w,
+{{ image | image_url: width: 600 }} 600w,
+{{ image | image_url: width: 800 }} 800w,
+{{ image | image_url: width: 1200 }} 1200w"
+sizes="(max-width: 412px) 100vw, (max-width: 768px) 100vw, 55vw"
+alt="{{ image.alt | default: product.title | escape }}" 
+width="1200" 
+height="{{ 1200 | divided_by: image.aspect_ratio | default: 0.75 | round }}"
+loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+{% if forloop.first %}fetchpriority="high"{% endif %}
+decoding="async"
+>
+</div>
+{% else %}
+<div class="product-gallery__slide">
+{{ 'product-1' | placeholder_svg_tag }}
+</div>
+{% endfor %}
+</div>
+{% if product.images.size > 1 %}
+<div class="product-gallery__counter">
+<span data-gallery-current>1</span> / {{ product.images.size }}
+</div>
+<button class="product-gallery__arrow product-gallery__arrow--prev" type="button" aria-label="Previous image">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="product-gallery__arrow product-gallery__arrow--next" type="button" aria-label="Next image">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 6 15 12 9 18"/></svg>
+</button>
+{% endif %}
+</div>
+{% if product.images.size > 1 %}
+<div class="product-gallery__dots">
+{% for image in product.images %}
+<button class="product-gallery__dot{% if forloop.first %} active{% endif %}" data-slide="{{ forloop.index0 }}" aria-label="Go to image {{ forloop.index }}"></button>
+{% endfor %}
+</div>
+{% endif %}
+</div>
+
+<!-- === PRODUCT INFO === -->
+<div class="product-info">
+
+  {% if product.vendor != blank %}
+  <div class="product-info__vendor-row">
+    <div class="product-info__vendor">{{ product.vendor }}<svg class="product-info__vendor-badge" width="14" height="14" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="#fff" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+    <button class="pdp-wishlist-icon" type="button" aria-label="Add to wishlist"
+      data-wishlist-toggle
+      data-product-handle="{{ product.handle }}"
+      data-product-title="{{ product.title | escape }}"
+      data-product-url="{{ product.url }}"
+      data-product-price="{{ product.price | money }}"
+      data-product-image="{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% endif %}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+  {% endif %}
+
+  <h1 class="product-info__title">{{ product.title }}</h1>
+
+  {% if settings.product_show_rating %}
+  {% assign review_count = product.metafields.reviews.rating_count %}
+  {% assign review_rating = product.metafields.reviews.rating %}
+  {% if review_count == blank or review_count == 0 %}
+    {% comment %} Pseudo-random dummy values seeded from product ID {% endcomment %}
+    {% assign review_count = product.id | modulo: 200 | plus: 50 %}
+    {% assign rx10 = product.id | modulo: 10 | plus: 40 %}
+  {% else %}
+    {% assign rx10 = review_rating | default: 5 | times: 10 | round %}
+  {% endif %}
+  {% assign star_whole = rx10 | divided_by: 10 %}
+  {% assign star_frac = rx10 | modulo: 10 %}
+  {% assign star_frac_pct = star_frac | times: 10 %}
+  {% assign star_next = star_whole | plus: 1 %}
+  <div class="product-info__rating">
+    <div class="product-info__stars">
+      {% for i in (1..5) %}
+      {% if i <= star_whole %}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      {% elsif i == star_next and star_frac > 0 %}
+      <svg width="14" height="14" viewBox="0 0 24 24" stroke="none"><defs><linearGradient id="pstar-{{ product.id }}"><stop offset="{{ star_frac_pct }}%" stop-color="var(--color-accent)"/><stop offset="{{ star_frac_pct }}%" stop-color="#e0e0e0"/></linearGradient></defs><path fill="url(#pstar-{{ product.id }})" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      {% else %}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#e0e0e0" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <a href="#pdp-reviews" class="product-info__review-count">{{ star_whole }}.{{ star_frac }} ({{ review_count }} Reviews)</a>
+  </div>
+  {% endif %}
+
+  <div class="product-info__price-wrap" data-tag-mrp="{{ mrp }}">
+    {% if has_discount %}
+    {% assign savings = mrp | minus: price_num %}
+    {% assign pct_off = savings | times: 100 | divided_by: mrp %}
+    {% assign price_fmt = product.price | money_without_currency | remove: '.00' | strip %}
+    {% assign mrp_cents = mrp | times: 100 %}
+    {% assign mrp_fmt = mrp_cents | money_without_currency | remove: '.00' | strip %}
+    {% assign savings_cents = savings | times: 100 %}
+    {% assign savings_fmt = savings_cents | money_without_currency | remove: '.00' | strip %}
+    <div class="product-info__price-row">
+      <span class="product-info__compare-price"><s>₹{{ mrp_fmt }}</s></span>
+      <span class="product-info__price product-info__price--on-sale">₹{{ price_fmt }}</span>
+      <span class="product-info__save-badge">{{ pct_off }}% OFF</span>
+    </div>
+    <p class="product-info__savings">You save ₹{{ savings_fmt }} on this product</p>
+    {% else %}
+    {% assign price_fmt = product.price | money_without_currency | remove: '.00' | strip %}
+    <span class="product-info__price">₹{{ price_fmt }}</span>
+    {% endif %}
+    {% if settings.product_tax_note != blank %}
+    <span class="product-info__tax-note">{{ settings.product_tax_note }}</span>
+    {% endif %}
+  </div>
+
+  <!-- Highlights pills (from tags) -->
+  {% assign has_highlights = false %}
+  {% for tag in product.tags %}
+    {% assign tag_lower = tag | downcase %}
+    {% if tag_lower contains 'fabric:' or tag_lower contains 'fit:' or tag_lower contains 'sleeve:' or tag_lower contains 'occasion:' or tag_lower contains 'length:' or tag_lower contains 'set:' %}
+      {% assign has_highlights = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% if has_highlights %}
+  <div class="product-highlights">
+    {% for tag in product.tags %}
+      {% assign tag_lower = tag | downcase %}
+      {% if tag_lower contains 'fabric:' %}
+        <span class="product-highlight">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.38 3.46L16 2l-4 3.99L8 2 3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6l6 7 6-7h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"/></svg>
+          {{ tag | remove: 'fabric:' | remove: 'Fabric:' | strip }}
+        </span>
+      {% endif %}
+      {% if tag_lower contains 'fit:' %}
+        <span class="product-highlight">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2v6h.01L10 12l-3.99 4H6v6h6v-.01L16 18l4 3.99V22h2V2H6z"/></svg>
+          {{ tag | remove: 'fit:' | remove: 'Fit:' | strip }}
+        </span>
+      {% endif %}
+      {% if tag_lower contains 'sleeve:' %}
+        <span class="product-highlight">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          {{ tag | remove: 'sleeve:' | remove: 'Sleeve:' | strip }}
+        </span>
+      {% endif %}
+      {% if tag_lower contains 'occasion:' %}
+        <span class="product-highlight">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          {{ tag | remove: 'occasion:' | remove: 'Occasion:' | strip }}
+        </span>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Product form -->
+  {% form 'product', product, data-add-to-cart: true, data-product-form: true %}
+  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+  {% unless product.has_only_default_variant %}
+  <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
+  <div class="product-info__options">
+    {% for option in product.options_with_values %}
+    {% assign option_name_down = option.name | downcase %}
+    {% assign is_size = false %}
+    {% if option_name_down == 'size' or option_name_down == 'sizes' %}{% assign is_size = true %}{% endif %}
+    <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}">
+      <label class="product-option__label">
+        {{ option.name }}
+        {% if is_size %}{% if product.metafields.custom.size_chart != blank %}
+        <button type="button" class="size-chart-trigger" onclick="document.getElementById('size-chart-modal').classList.add('open')" aria-label="View size chart">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3H3v18h18V3z"/><path d="M3 9h3"/><path d="M3 15h5"/><path d="M3 12h4"/></svg>
+          Size Guide
+        </button>
+        {% endif %}{% endif %}
+      </label>
+      <div class="product-option__values">
+        {% for value in option.values %}
+        <span class="product-option__value {% unless is_size %}{% if option.selected_value == value %}selected{% endif %}{% endunless %}" data-option-index="{{ forloop.index0 }}" data-value="{{ value }}" role="button" tabindex="0" aria-pressed="{% unless is_size %}{% if option.selected_value == value %}true{% else %}false{% endif %}{% else %}false{% endunless %}">
+          {{ value }}
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endunless %}
+
+  {% comment %} Per-product promo via metafields, fallback to global settings {% endcomment %}
+  {% assign promo_text = product.metafields.custom.promo_text | default: nil %}
+  {% assign promo_code = product.metafields.custom.promo_code | default: nil %}
+  {% if promo_text == blank %}{% assign promo_text = settings.product_promo_text %}{% endif %}
+  {% if promo_code == blank %}{% assign promo_code = settings.product_promo_code %}{% endif %}
+
+  {% if settings.product_promo_enabled and promo_code != blank %}
+  <div class="pdp-ticket">
+    <div class="pdp-ticket__left">
+      <svg class="pdp-ticket__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="2"/><circle cx="15" cy="15" r="2"/><line x1="7.5" y1="16.5" x2="16.5" y2="7.5"/><path d="M21.41 11.58l-9-9a2 2 0 00-2.82 0L2 10.17V22h11.83l7.58-7.58a2 2 0 000-2.84z"/></svg>
+      <div class="pdp-ticket__info">
+        <span class="pdp-ticket__heading">{{ promo_text | escape }}</span>
+        <span class="pdp-ticket__sub">Tap the code to copy &amp; apply at checkout</span>
+      </div>
+    </div>
+    <div class="pdp-ticket__divider"></div>
+    <div class="pdp-ticket__right">
+      <span class="pdp-ticket__label">YOUR CODE</span>
+      <button type="button" class="pdp-ticket__code" data-copy-code="{{ promo_code | escape }}" data-tip="Click to copy">
+        {{ promo_code | escape }}
+        <svg class="pdp-ticket__copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="product-info__quantity">
+    <label class="product-option__label">Quantity</label>
+    <div class="quantity-selector">
+      <button type="button" data-qty-minus>&#8722;</button>
+      <input type="number" name="quantity" value="1" min="1" aria-label="Quantity">
+      <button type="button" data-qty-plus>+</button>
+    </div>
+  </div>
+
+  <!-- Desktop CTA (inline) -->
+  <div class="product-info__cta-desktop">
+    <button type="submit" class="btn btn--primary btn--full btn--large" {% unless product.available %}disabled{% endunless %}>
+      {% if product.available %}
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Add to Cart
+      {% else %}
+      Sold Out
+      {% endif %}
+    </button>
+    {% if product.available %}
+    <button type="button" class="btn btn--buy-now btn--full btn--large" data-buy-now data-inline-buy-now="true" onclick="pdpBuyNow(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Buy Now
+    </button>
+    {% endif %}
+  </div>
+
+  <!-- Mobile fixed CTA bar -->
+  <div class="product-info__cta-group">
+    <div class="product-info__add-to-cart">
+      <button type="submit" class="btn btn--primary btn--full btn--large" {% unless product.available %}disabled{% endunless %}>
+        {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+      </button>
+    </div>
+    {% if product.available %}
+    <button type="button" class="btn btn--buy-now btn--full btn--large" data-buy-now data-inline-buy-now="true" onclick="pdpBuyNow(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Buy Now
+    </button>
+    {% endif %}
+  </div>
+  {% endform %}
+
+  <!-- Delivery estimate -->
+  {% assign delivery_min_sec = settings.product_delivery_min_days | default: 5 | times: 86400 %}
+  {% assign delivery_max_sec = settings.product_delivery_max_days | default: 7 | times: 86400 %}
+  <div class="product-delivery">
+    <div class="product-delivery__icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    </div>
+    <div class="product-delivery__text">
+      <strong>Estimated Delivery</strong>
+      <span>{{ 'now' | date: '%s' | plus: delivery_min_sec | date: '%b %d' }} — {{ 'now' | date: '%s' | plus: delivery_max_sec | date: '%b %d, %Y' }}</span>
+    </div>
+  </div>
+
+  <!-- Trust badges -->
+  {% if settings.product_trust_1 != blank or settings.product_trust_2 != blank or settings.product_trust_3 != blank or settings.product_trust_4 != blank %}
+  <div class="product-trust">
+    {% if settings.product_trust_1 != blank %}
+    <div class="product-trust__item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      <span>{{ settings.product_trust_1 }}</span>
+    </div>
+    {% endif %}
+    {% if settings.product_trust_2 != blank %}
+    <div class="product-trust__item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+      <span>{{ settings.product_trust_2 }}</span>
+    </div>
+    {% endif %}
+    {% if settings.product_trust_3 != blank %}
+    <div class="product-trust__item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>{{ settings.product_trust_3 }}</span>
+    </div>
+    {% endif %}
+    {% if settings.product_trust_4 != blank %}
+    <div class="product-trust__item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>{{ settings.product_trust_4 }}</span>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% comment %} Share {% endcomment %}
+  {% if settings.product_show_share %}
+  {% assign share_url = shop.url | append: product.url %}
+  <div class="product-share">
+    <span class="product-share__label">Share</span>
+    <div class="product-share__buttons">
+      <a class="product-share__btn product-share__btn--whatsapp"
+         href="https://wa.me/?text={{ product.title | url_encode }}%20{{ share_url | url_encode }}"
+         target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <a class="product-share__btn product-share__btn--facebook"
+         href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | url_encode }}"
+         target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a class="product-share__btn product-share__btn--twitter"
+         href="https://twitter.com/intent/tweet?text={{ product.title | url_encode }}&url={{ share_url | url_encode }}"
+         target="_blank" rel="noopener noreferrer" aria-label="Share on X (Twitter)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a class="product-share__btn product-share__btn--pinterest"
+         href="https://pinterest.com/pin/create/button/?url={{ share_url | url_encode }}&media={{ product.featured_image | image_url: width: 1200 | url_encode }}&description={{ product.title | url_encode }}"
+         target="_blank" rel="noopener noreferrer" aria-label="Share on Pinterest">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+      </a>
+      <button class="product-share__btn product-share__btn--copy" type="button" data-share-copy aria-label="Copy product link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        <span class="product-share__copy-tip">Copied!</span>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Accordion -->
+  <div class="product-accordion">
+    {% if product.description != blank %}
+    <div class="accordion-item open">
+      <button class="accordion-trigger" type="button" aria-expanded="true">
+        Description
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content" style="max-height: 500px;">
+        <div class="accordion-content__inner">
+          {{ product.description }}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if settings.product_shipping_text != blank %}
+    <div class="accordion-item">
+      <button class="accordion-trigger" type="button" aria-expanded="false">
+        Shipping & Returns
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content__inner">
+          {{ settings.product_shipping_text }}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if settings.product_care_text != blank %}
+    <div class="accordion-item">
+      <button class="accordion-trigger" type="button" aria-expanded="false">
+        Care Instructions
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content__inner">
+          {{ settings.product_care_text }}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Product meta -->
+  <div class="product-info__meta">
+    {% for tag in product.tags %}
+      {% assign tag_lower = tag | downcase %}
+      {% if tag_lower contains 'fabric:' or tag_lower contains 'fabric-' %}
+      <div class="product-info__meta-item">
+        <strong>Fabric:</strong> {{ tag | remove: 'fabric:' | remove: 'Fabric:' | remove: 'fabric-' | remove: 'Fabric-' | strip }}
+      </div>
+      {% endif %}
+      {% if tag_lower contains 'fit:' or tag_lower contains 'fit-' %}
+      <div class="product-info__meta-item">
+        <strong>Fit:</strong> {{ tag | remove: 'fit:' | remove: 'Fit:' | remove: 'fit-' | remove: 'Fit-' | strip }}
+      </div>
+      {% endif %}
+      {% if tag_lower contains 'length:' or tag_lower contains 'length-' %}
+      <div class="product-info__meta-item">
+        <strong>Length:</strong> {{ tag | remove: 'length:' | remove: 'Length:' | remove: 'length-' | remove: 'Length-' | strip }}
+      </div>
+      {% endif %}
+      {% if tag_lower contains 'sleeve:' or tag_lower contains 'sleeve-' %}
+      <div class="product-info__meta-item">
+        <strong>Sleeve:</strong> {{ tag | remove: 'sleeve:' | remove: 'Sleeve:' | remove: 'sleeve-' | remove: 'Sleeve-' | strip }}
+      </div>
+      {% endif %}
+      {% if tag_lower contains 'occasion:' or tag_lower contains 'occasion-' %}
+      <div class="product-info__meta-item">
+        <strong>Occasion:</strong> {{ tag | remove: 'occasion:' | remove: 'Occasion:' | remove: 'occasion-' | remove: 'Occasion-' | strip }}
+      </div>
+      {% endif %}
+      {% if tag_lower contains 'set:' or tag_lower contains 'set-' %}
+      <div class="product-info__meta-item">
+        <strong>Set Contents:</strong> {{ tag | remove: 'set:' | remove: 'Set:' | remove: 'set-' | remove: 'Set-' | strip }}
+      </div>
+      {% endif %}
+    {% endfor %}
+    {% if product.vendor != blank %}
+    <div class="product-info__meta-item">
+      <strong>Brand:</strong> {{ product.vendor }}
+    </div>
+    {% endif %}
+    <div class="product-info__meta-item">
+      <strong>SKU:</strong> {{ product.selected_or_first_available_variant.sku | default: 'N/A' }}
+    </div>
+    <div class="product-info__meta-item">
+      <strong>Type:</strong> {{ product.type | default: 'N/A' }}
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+</div>
+
+{% comment %} ═══ Customer Reviews ═══ {% endcomment %}
+{% if settings.product_show_rating %}
+{% assign rev_seed = product.id | modulo: 7 %}
+{% assign review_names = 'Priya S.,Ananya M.,Ritu K.,Megha D.,Sneha R.,Kavita J.,Pooja T.' | split: ',' %}
+{% assign review_locations = 'Mumbai,Delhi,Bangalore,Jaipur,Hyderabad,Pune,Chennai' | split: ',' %}
+{% assign review_titles = 'Absolutely love it!,Perfect for every occasion,Stunning quality & fit,Worth every penny,Exceeded my expectations,Beautiful craftsmanship,My new favourite piece' | split: ',' %}
+{% assign review_bodies = 'The fabric feels so luxurious against the skin. The fit is exactly as described and the colour is even more beautiful in person. Got so many compliments wearing this!,I ordered this for a family function and it was the perfect choice. The stitching is impeccable and it drapes beautifully. Will definitely be ordering more from this brand.,The quality is outstanding — you can feel the attention to detail in every stitch. It fits true to size and the material is breathable yet looks premium. Highly recommend!,Was a bit hesitant to order online but this exceeded all expectations. The packaging was beautiful too. The fabric quality is amazing for this price point.,I have received so many compliments! The design is elegant and the fabric does not wrinkle easily. Perfect for both casual outings and dressy occasions.,Ordered this as a gift and she absolutely loved it. The embroidery work is delicate and the overall finish is very premium. Fast shipping too!,This has become my go-to outfit. The comfort level is incredible and it photographs beautifully. Already eyeing my next purchase from this collection.' | split: ',' %}
+{% assign review_days = '3,8,14,21,29,36,45' | split: ',' %}
+{% assign review_ratings = '5,5,4,5,5,4,5' | split: ',' %}
+{% assign rev_imgs = '0,1,0,1,0,0,1' | split: ',' %}
+
+<div class="pdp-reviews" id="pdp-reviews">
+<div class="container">
+  <div class="pdp-reviews__header">
+    <div class="pdp-reviews__header-left">
+      <h2 class="pdp-reviews__title">Customer Reviews</h2>
+      <div class="pdp-reviews__summary">
+        <div class="pdp-reviews__avg">
+          <span class="pdp-reviews__avg-number">{{ star_whole }}.{{ star_frac }}</span>
+          <div class="pdp-reviews__avg-stars">
+            {% for i in (1..5) %}
+            {% if i <= star_whole %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            {% elsif i == star_next and star_frac > 0 %}
+            <svg width="16" height="16" viewBox="0 0 24 24" stroke="none"><defs><linearGradient id="rstar-{{ product.id }}"><stop offset="{{ star_frac_pct }}%" stop-color="var(--color-accent)"/><stop offset="{{ star_frac_pct }}%" stop-color="#e0e0e0"/></linearGradient></defs><path fill="url(#rstar-{{ product.id }})" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            {% else %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#e0e0e0" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <span class="pdp-reviews__count">Based on {{ review_count }} reviews</span>
+      </div>
+    </div>
+    <div class="pdp-reviews__bar-chart">
+      {% for s in (1..5) %}
+      {% assign bar_star = 6 | minus: s %}
+      {% assign bar_pct = 0 %}
+      {% if bar_star == 5 %}{% assign bar_pct = 72 %}{% elsif bar_star == 4 %}{% assign bar_pct = 18 %}{% elsif bar_star == 3 %}{% assign bar_pct = 7 %}{% elsif bar_star == 2 %}{% assign bar_pct = 2 %}{% elsif bar_star == 1 %}{% assign bar_pct = 1 %}{% endif %}
+      <div class="pdp-reviews__bar-row">
+        <span class="pdp-reviews__bar-label">{{ bar_star }} <svg width="10" height="10" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+        <div class="pdp-reviews__bar-track"><div class="pdp-reviews__bar-fill" style="width:{{ bar_pct }}%"></div></div>
+        <span class="pdp-reviews__bar-pct">{{ bar_pct }}%</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="pdp-reviews__list">
+    {% for i in (0..4) %}
+    {% assign ridx = i | plus: rev_seed | modulo: 7 %}
+    {% assign rev_rating = review_ratings[ridx] | plus: 0 %}
+    {% assign rev_days_ago = review_days[ridx] | plus: 0 %}
+    {% assign rev_days_sec = rev_days_ago | times: 86400 %}
+    <div class="pdp-review">
+      <div class="pdp-review__top">
+        <div class="pdp-review__avatar">{{ review_names[ridx] | slice: 0 }}</div>
+        <div class="pdp-review__author-info">
+          <div class="pdp-review__author">
+            {{ review_names[ridx] }}
+            <span class="pdp-review__verified">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="#fff" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Verified Buyer
+            </span>
+          </div>
+          <span class="pdp-review__location">{{ review_locations[ridx] }}</span>
+        </div>
+        <span class="pdp-review__date">{{ 'now' | date: '%s' | minus: rev_days_sec | date: '%b %d, %Y' }}</span>
+      </div>
+      <div class="pdp-review__stars">
+        {% for s in (1..5) %}
+        {% if s <= rev_rating %}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        {% else %}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="#e0e0e0" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <strong class="pdp-review__title">{{ review_titles[ridx] }}</strong>
+      <p class="pdp-review__body">{{ review_bodies[ridx] }}</p>
+      <div class="pdp-review__helpful">
+        <button type="button" class="pdp-review__helpful-btn" onclick="this.innerHTML='👍 Thanked!';this.disabled=true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+          Helpful ({{ ridx | plus: 3 }})
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+{% endif %}
+
+{% comment %} ═══ You Might Also Like ═══ {% endcomment %}
+{% if product.collections.size > 0 %}
+{% assign rec_collection = product.collections.first %}
+{% assign rec_count = 0 %}
+{% for p in rec_collection.products limit: 9 %}{% if p.id != product.id %}{% assign rec_count = rec_count | plus: 1 %}{% endif %}{% endfor %}
+{% if rec_count > 0 %}
+<div class="pdp-recommendations">
+<div class="container">
+  <div class="section-header--with-nav">
+    <div>
+      <div class="section-header__subtitle">Curated for you</div>
+      <h2 class="section-header__title">You Might Also Like</h2>
+    </div>
+  </div>
+  <div class="carousel pdp-reco-carousel" data-carousel data-carousel-per-view="4" data-carousel-gap="24" data-carousel-loop="true">
+    <div class="carousel__viewport">
+      <div class="carousel__track" data-carousel-track>
+        {% for p in rec_collection.products limit: 9 %}
+        {% if p.id != product.id %}
+        <div class="carousel__slide" data-carousel-slide>
+          {% render 'product-card', product: p %}
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="carousel__dots" data-carousel-dots></div>
+  </div>
+</div>
+</div>
+{% endif %}
+{% endif %}
+
+{% comment %} Size Picker Bottom Sheet {% endcomment %}
+{% unless product.has_only_default_variant %}
+<div class="size-sheet-overlay" id="size-sheet-overlay"></div>
+<div class="size-sheet" id="size-sheet" aria-hidden="true">
+<div class="size-sheet__header">
+<span class="size-sheet__title">Select Size</span>
+<button class="size-sheet__close" aria-label="Close" type="button">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+</div>
+<div class="size-sheet__sizes" id="size-sheet-sizes"></div>
+<button class="btn btn--primary btn--full size-sheet__add" id="size-sheet-add" type="button" disabled>Select a size</button>
+</div>
+{% endunless %}
+
+{% comment %} Size Chart Modal — Tabbed {% endcomment %}
+{% assign sc = product.metafields.custom.size_chart.value %}
+{% if sc != blank %}
+<div class="size-chart-overlay" id="size-chart-modal" aria-hidden="true">
+<div class="size-chart-modal">
+  <div class="size-chart-modal__header">
+    <span class="size-chart-modal__title">Size Guide</span>
+    <button class="size-chart-modal__close" type="button" aria-label="Close size chart" onclick="document.getElementById('size-chart-modal').classList.remove('open')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="size-chart-modal__tabs">
+    <button class="size-chart-tab active" data-sc-tab="chart" type="button">Size Chart</button>
+    <button class="size-chart-tab" data-sc-tab="measure" type="button">How to Measure</button>
+  </div>
+  <div class="size-chart-modal__body">
+    <!-- Tab: Size Chart -->
+    <div class="size-chart-panel active" data-sc-panel="chart">
+      <p class="size-chart-modal__note">All measurements in <strong>{{ sc.unit | default: 'inches' }}</strong>. Your selected size is highlighted.</p>
+      <div class="size-chart-modal__table-wrap">
+        <table class="size-chart-table" data-size-chart>
+          <thead>
+            <tr>{% for col in sc.headers %}<th scope="col">{{ col }}</th>{% endfor %}</tr>
+          </thead>
+          <tbody>
+            {% for row in sc.rows %}
+            <tr data-size="{{ row[0] }}">{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="size-chart-modal__tip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Between sizes? Go one size up for a relaxed fit.
+      </p>
+    </div>
+    <!-- Tab: How to Measure -->
+    <div class="size-chart-panel" data-sc-panel="measure">
+      <div class="measure-guide">
+        <div class="measure-guide__item">
+          <div class="measure-guide__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5">
+              <ellipse cx="12" cy="8" rx="7" ry="5"/>
+              <path d="M5 8v5c0 2.76 3.13 5 7 5s7-2.24 7-5V8"/>
+            </svg>
+          </div>
+          <div class="measure-guide__text">
+            <strong>Bust</strong>
+            <p>Measure around the fullest part of your chest, keeping the tape level across the back.</p>
+          </div>
+        </div>
+        <div class="measure-guide__item">
+          <div class="measure-guide__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5">
+              <ellipse cx="12" cy="12" rx="5" ry="4"/>
+              <path d="M7 12c0 3 2.24 6 5 8 2.76-2 5-5 5-8"/>
+            </svg>
+          </div>
+          <div class="measure-guide__text">
+            <strong>Waist</strong>
+            <p>Measure around the narrowest part of your natural waistline, usually just above the navel.</p>
+          </div>
+        </div>
+        <div class="measure-guide__item">
+          <div class="measure-guide__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5">
+              <ellipse cx="12" cy="14" rx="7" ry="5"/>
+              <path d="M5 14v-2c0-2.76 3.13-5 7-5s7 2.24 7 5v2"/>
+            </svg>
+          </div>
+          <div class="measure-guide__text">
+            <strong>Hip</strong>
+            <p>Measure around the widest part of your hips, approximately 8 inches below your waist.</p>
+          </div>
+        </div>
+        <div class="measure-guide__item">
+          <div class="measure-guide__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5">
+              <line x1="12" y1="2" x2="12" y2="22"/><line x1="8" y1="2" x2="16" y2="2"/><line x1="8" y1="22" x2="16" y2="22"/>
+              <line x1="14" y1="7" x2="12" y2="7"/><line x1="14" y1="12" x2="12" y2="12"/><line x1="14" y1="17" x2="12" y2="17"/>
+            </svg>
+          </div>
+          <div class="measure-guide__text">
+            <strong>Length</strong>
+            <p>Measure from the highest point of the shoulder, straight down to the desired hemline.</p>
+          </div>
+        </div>
+      </div>
+      <div class="measure-guide__tips">
+        <strong>Tips for Accurate Measurement</strong>
+        <ul>
+          <li>Use a soft measuring tape</li>
+          <li>Stand relaxed with arms at your sides</li>
+          <li>Keep the tape snug, not tight</li>
+          <li>Measure over lightweight clothing or undergarments</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endif %}
+
+<script type="application/ld+json">
+{
+"@context": "https://schema.org/",
+"@type": "Product",
+"name": {{ product.title | json }},
+{% if product.featured_image != blank %}"image": {{ product.featured_image | image_url: width: 1200 | json }},{% endif %}
+"description": {{ product.description | strip_html | truncate: 250 | json }},
+{% if product.selected_or_first_available_variant.sku != blank %}"sku": {{ product.selected_or_first_available_variant.sku | json }},{% endif %}
+{% if product.selected_or_first_available_variant.barcode != blank %}"gtin": {{ product.selected_or_first_available_variant.barcode | json }},{% endif %}
+"brand": {
+"@type": "Brand",
+"name": {{ product.vendor | json }}
+},
+{% assign rc = product.metafields.reviews.rating_count %}{% assign rv = product.metafields.reviews.rating %}{% if rc != blank and rc > 0 %}
+"aggregateRating": {
+"@type": "AggregateRating",
+"ratingValue": {{ rv | default: 5 }},
+"reviewCount": {{ rc }}
+},
+{% endif %}
+"offers": {
+"@type": "Offer",
+"url": {{ request.origin | append: product.url | json }},
+"priceCurrency": {{ cart.currency.iso_code | json }},
+"price": {{ product.price | divided_by: 100.0 }},
+"priceValidUntil": "{{ 'now' | date: '%Y' | plus: 1 }}-12-31",
+"itemCondition": "https://schema.org/NewCondition",
+"availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+}
+}
+</script>

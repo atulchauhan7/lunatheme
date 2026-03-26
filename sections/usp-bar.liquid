@@ -1,0 +1,33 @@
+<section class="section usp-section" data-section-id="{{ section.id }}">
+<div class="container">
+<div class="usp-section__grid" data-stagger-reveal>
+{% for block in section.blocks %}
+<div class="usp-card hover-lift" data-animate="fade-up" {{ block.shopify_attributes }}>
+<div class="usp-card__icon">
+{% case block.settings.icon %}
+{% when 'shipping' %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+{% when 'returns' %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+{% when 'secure' %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+{% when 'support' %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+{% when 'quality' %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+{% endcase %}
+</div>
+<h3 class="usp-card__title">{{ block.settings.title }}</h3>
+<p class="usp-card__text">{{ block.settings.text }}</p>
+{% if block.settings.link_label != blank %}
+<a href="{{ block.settings.link_url }}" class="usp-card__link">{{ block.settings.link_label }}</a>
+{% endif %}
+</div>
+{% endfor %}
+</div>
+</div>
+</section>
+
+{% schema %}
+{"name":"USP Bar","max_blocks":4,"settings":[],"blocks":[{"type":"usp","name":"USP Item","settings":[{"type":"select","id":"icon","label":"Icon","options":[{"value":"shipping","label":"Shipping"},{"value":"returns","label":"Returns"},{"value":"secure","label":"Secure"},{"value":"support","label":"Support"},{"value":"quality","label":"Quality"}],"default":"shipping"},{"type":"text","id":"title","label":"Title","default":"Free Shipping"},{"type":"text","id":"text","label":"Description","default":"On orders over $100"},{"type":"text","id":"link_label","label":"Link label"},{"type":"url","id":"link_url","label":"Link URL"}]}],"presets":[{"name":"USP Bar","blocks":[{"type":"usp","settings":{"icon":"returns","title":"10-Day Easy Return Policy","text":"We offer a hassle-free 10-day return policy!","link_label":"Learn More"}},{"type":"usp","settings":{"icon":"shipping","title":"Free Shipping & Cash on Delivery","text":"Enjoy FREE shipping on orders above ₹499 and COD","link_label":"Learn More"}},{"type":"usp","settings":{"icon":"support","title":"Customer Support","text":"Mon to Sat, 10 AM – 6 PM","link_label":"Learn More"}}]}]}
+{% endschema %}

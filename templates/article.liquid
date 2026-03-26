@@ -1,0 +1,66 @@
+<div class="page-template">
+<div class="container container--narrow">
+<article data-animate="fade-up">
+<div class="page-header">
+<div class="section-header__subtitle">{{ article.published_at | date: '%B %d, %Y' }} &middot; {{ article.author }}</div>
+<h1>{{ article.title }}</h1>
+</div>
+{% if article.image != blank %}
+<div class="mb-3" style="border-radius:var(--border-radius);overflow:hidden">
+<img src="{{ article.image | image_url: width: 1200 }}" srcset="{{ article.image | image_url: width: 600 }} 600w, {{ article.image | image_url: width: 900 }} 900w, {{ article.image | image_url: width: 1200 }} 1200w" sizes="(max-width: 680px) 100vw, 680px" alt="{{ article.image.alt | escape }}" loading="lazy" width="1200" height="630" style="width:100%;height:auto">
+</div>
+{% endif %}
+<div class="page-content">
+{{ article.content }}
+</div>
+{% if blog.comments_enabled? %}
+<div class="comments-wrap">
+<h3>Comments ({{ article.comments_count }})</h3>
+{% for comment in article.comments %}
+<div class="comment">
+<div class="comment__author">{{ comment.author | escape }}</div>
+<div class="comment__date">{{ comment.created_at | date: '%B %d, %Y' }}</div>
+<p class="comment__body">{{ comment.content }}</p>
+</div>
+{% endfor %}
+{% form 'new_comment', article %}
+<div class="comment-form">
+<h4>Leave a Comment</h4>
+<div class="form-group">
+<label class="form-label" for="comment-author">Name</label>
+<input class="form-input" type="text" id="comment-author" name="comment[author]" required>
+</div>
+<div class="form-group">
+<label class="form-label" for="comment-email">Email</label>
+<input class="form-input" type="email" id="comment-email" name="comment[email]" required>
+</div>
+<div class="form-group">
+<label class="form-label" for="comment-body">Comment</label>
+<textarea class="form-textarea" id="comment-body" name="comment[body]" required></textarea>
+</div>
+<button type="submit" class="btn btn--primary">Post Comment</button>
+</div>
+{% endform %}
+</div>
+{% endif %}
+</article>
+
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "Article",
+"headline": {{ article.title | json }},
+"datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+"author": {
+  "@type": "Person",
+  "name": {{ article.author | json }}
+},
+{% if article.image %}"image": {{ article.image | image_url: width: 1200 | json }},{% endif %}
+"publisher": {
+  "@type": "Organization",
+  "name": {{ shop.name | json }}
+}
+}
+</script>
+</div>
+</div>

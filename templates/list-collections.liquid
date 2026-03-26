@@ -1,0 +1,25 @@
+<div class="page-template">
+<div class="container">
+<div class="page-header" data-animate="fade-up">
+<h1>{{ page_title | default: 'Collections' }}</h1>
+</div>
+
+<div class="grid grid--3" data-animate-stagger>
+{% for collection in collections %}
+{% unless collection.handle == 'frontpage' %}
+<a href="{{ collection.url }}" class="collection-card" data-animate="fade-up">
+{% if collection.image != blank %}
+<img class="collection-card__image" src="{{ collection.image | image_url: width: 800 }}" srcset="{{ collection.image | image_url: width: 400 }} 400w, {{ collection.image | image_url: width: 600 }} 600w, {{ collection.image | image_url: width: 800 }} 800w" sizes="(max-width: 480px) 50vw, (max-width: 768px) 50vw, 33vw" alt="{{ collection.image.alt | default: collection.title | escape }}" loading="lazy" width="800" height="{{ 800 | divided_by: collection.image.aspect_ratio | round }}">
+{% else %}
+{{ 'collection-1' | placeholder_svg_tag: 'collection-card__image placeholder-svg' }}
+{% endif %}
+<div class="collection-card__overlay">
+<h3 class="collection-card__title">{{ collection.title }}</h3>
+<span class="collection-card__count">{{ collection.products_count }} products</span>
+</div>
+</a>
+{% endunless %}
+{% endfor %}
+</div>
+</div>
+</div>

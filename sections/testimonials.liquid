@@ -1,0 +1,68 @@
+<section class="section" data-section-id="{{ section.id }}" style="background: var(--color-surface);">
+<div class="container">
+<div class="section-header--with-nav" data-animate="fade-up">
+<div>
+{% if section.settings.subtitle != blank %}
+<div class="section-header__subtitle">{{ section.settings.subtitle }}</div>
+{% endif %}
+<h2 class="section-header__title split-words">{{ section.settings.title }}</h2>
+</div>
+<div class="carousel__nav">
+<button class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous testimonial">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>
+</button>
+<button class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next testimonial">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6"/></svg>
+</button>
+</div>
+</div>
+
+<div class="carousel testimonials-carousel"
+data-carousel
+data-carousel-per-view="3"
+data-carousel-gap="24"
+data-carousel-autoplay="true"
+data-carousel-speed="6000"
+data-carousel-loop="true"
+data-animate="fade-up" data-animate-delay="200">
+<div class="carousel__viewport">
+<div class="carousel__track" data-carousel-track>
+{% for block in section.blocks %}
+<div class="carousel__slide" data-carousel-slide style="padding: 0 12px;" {{ block.shopify_attributes }}>
+<div class="testimonial-card hover-lift">
+<div class="testimonial-card__quote">&ldquo;</div>
+<div class="testimonial-card__stars">
+{% for i in (1..block.settings.rating) %}
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+{% endfor %}
+</div>
+<p class="testimonial-card__text">{{ block.settings.text }}</p>
+<div class="testimonial-card__author">
+{% if block.settings.avatar != blank %}
+<img class="testimonial-card__avatar" src="{{ block.settings.avatar | image_url: width: 100 }}" alt="{{ block.settings.name | escape }}" loading="lazy" width="100" height="100">
+{% else %}
+<div class="testimonial-card__avatar-placeholder">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+<circle cx="12" cy="7" r="4"/>
+</svg>
+</div>
+{% endif %}
+<div>
+<div class="testimonial-card__name">{{ block.settings.name }}</div>
+<div class="testimonial-card__role">{{ block.settings.role }}</div>
+</div>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+<div class="carousel__dots" data-carousel-dots></div>
+</div>
+</div>
+</section>
+
+{% schema %}
+{"name":"Testimonials","max_blocks":12,"settings":[{"type":"text","id":"subtitle","label":"Subtitle","default":"Reviews"},{"type":"text","id":"title","label":"Title","default":"What Our Customers Say"}],"blocks":[{"type":"testimonial","name":"Testimonial","settings":[{"type":"textarea","id":"text","label":"Review text","default":"Absolutely love the quality. The attention to detail is remarkable and the fit is perfect. Will definitely be ordering again!"},{"type":"text","id":"name","label":"Name","default":"Sarah M."},{"type":"text","id":"role","label":"Role / Location","default":"Verified Buyer"},{"type":"image_picker","id":"avatar","label":"Avatar"},{"type":"range","id":"rating","label":"Star rating","min":1,"max":5,"step":1,"default":5}]}],"presets":[{"name":"Testimonials","blocks":[{"type":"testimonial","settings":{"text":"Absolutely love the quality. The attention to detail is remarkable and the fit is perfect.","name":"Sarah M.","role":"Verified Buyer","rating":5}},{"type":"testimonial","settings":{"text":"Best online shopping experience I\u0027ve ever had. Fast shipping, beautiful packaging, and stunning products.","name":"James K.","role":"Verified Buyer","rating":5}},{"type":"testimonial","settings":{"text":"The craftsmanship is unmatched. Every piece feels luxurious yet affordable. Highly recommend to everyone!","name":"Emily R.","role":"Verified Buyer","rating":5}},{"type":"testimonial","settings":{"text":"I\u0027ve been shopping here for over a year now. Every purchase exceeds my expectations. True quality.","name":"Michael D.","role":"Loyal Customer","rating":5}},{"type":"testimonial","settings":{"text":"From the packaging to the product, everything screams premium. This brand truly understands luxury.","name":"Olivia P.","role":"Verified Buyer","rating":5}}]}]}
+{% endschema %}

@@ -1,0 +1,56 @@
+<div class="page-template">
+<div class="container">
+<div class="page-header" data-animate="fade-up">
+<h1>Search Results</h1>
+</div>
+<div data-animate="fade-up">
+<form action="{{ routes.search_url }}" method="get" class="container--narrow mb-3" style="margin:0 auto">
+<div class="newsletter__form">
+<input type="search" name="q" value="{{ search.terms | escape }}" class="newsletter__input" placeholder="Search our store..." aria-label="Search">
+<button type="submit" class="newsletter__submit">Search</button>
+</div>
+</form>
+{% if search.performed %}
+{% if search.results_count > 0 %}
+<p class="text-center text-muted mb-2">{{ search.results_count }} results for "{{ search.terms | escape }}"</p>
+<div class="grid grid--4" data-animate-stagger>
+{% for item in search.results %}
+{% if item.object_type == 'product' %}
+<div data-animate="fade-up">
+{% render 'product-card', product: item %}
+</div>
+{% elsif item.object_type == 'article' %}
+<div data-animate="fade-up">
+<article class="blog-card">
+{% if item.image %}
+<a href="{{ item.url }}" class="blog-card__image">
+<img src="{{ item.image | image_url: width: 600 }}" alt="{{ item.title | escape }}" loading="lazy" width="600" height="375">
+</a>
+{% endif %}
+<div class="blog-card__content">
+<a href="{{ item.url }}"><h3 class="blog-card__title">{{ item.title }}</h3></a>
+<p class="blog-card__excerpt">{{ item.content | strip_html | truncate: 120 }}</p>
+</div>
+</article>
+</div>
+{% elsif item.object_type == 'page' %}
+<div data-animate="fade-up">
+<div class="search-card">
+<a href="{{ item.url }}"><h3 class="blog-card__title">{{ item.title }}</h3></a>
+<p class="blog-card__excerpt">{{ item.content | strip_html | truncate: 120 }}</p>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+{% else %}
+<div class="text-center">
+<p class="text-muted">No results found for "{{ search.terms | escape }}"</p>
+<p class="text-muted mb-2">Try different keywords or browse our collections.</p>
+<a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Browse All Products</a>
+</div>
+{% endif %}
+{% endif %}
+</div>
+</div>
+</div>

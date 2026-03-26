@@ -1,0 +1,62 @@
+<section class="section tabbed-collections" data-section-id="{{ section.id }}">
+<div class="container">
+<div class="tabbed-collections__header" data-animate="fade-up">
+<div class="tabbed-collections__tabs" role="tablist" aria-label="Collection tabs">
+{% for block in section.blocks %}
+<button class="tabbed-collections__tab {% if forloop.first %}active{% endif %}" data-tab-trigger="{{ block.id }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="panel-{{ block.id }}" id="tab-{{ block.id }}" {{ block.shopify_attributes }}>
+{{ block.settings.tab_label }}
+</button>
+{% endfor %}
+</div>
+</div>
+
+{% for block in section.blocks %}
+<div class="tabbed-collections__panel {% if forloop.first %}active{% endif %}" data-tab-panel="{{ block.id }}" role="tabpanel" id="panel-{{ block.id }}" aria-labelledby="tab-{{ block.id }}">
+<div class="grid grid--{{ section.settings.columns }}" data-stagger-reveal>
+{% assign tab_collection = collections[block.settings.collection] %}
+{% for product in tab_collection.products limit: section.settings.products_to_show %}
+{% render 'product-card', product: product %}
+{% else %}
+{% for i in (1..section.settings.products_to_show) %}
+{% render 'product-card-placeholder' %}
+{% endfor %}
+{% endfor %}
+</div>
+</div>
+{% endfor %}
+
+{% if section.settings.show_view_all %}
+<div class="text-center" style="margin-top: 5px;" data-animate="fade-up">
+<a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary btn--view-all">
+View All Products
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</a>
+</div>
+{% endif %}
+</div>
+</section>
+
+<script>
+(function(){
+function initTabs(){
+document.querySelectorAll('[data-tab-trigger]').forEach(function(tab) {
+tab.addEventListener('click', function() {
+var sectionEl = this.closest('.tabbed-collections');
+var tabId = this.getAttribute('data-tab-trigger');
+sectionEl.querySelectorAll('[data-tab-trigger]').forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+sectionEl.querySelectorAll('[data-tab-panel]').forEach(function(p) { p.classList.remove('active'); });
+this.classList.add('active');
+this.setAttribute('aria-selected', 'true');
+var panel = sectionEl.querySelector('[data-tab-panel="' + tabId + '"]');
+if (panel) panel.classList.add('active');
+});
+});
+}
+initTabs();
+document.addEventListener('shopify:section:load', initTabs);
+})();
+</script>
+
+{% schema %}
+{"name":"Tabbed Collections","max_blocks":4,"settings":[{"type":"text","id":"subtitle","label":"Subtitle"},{"type":"text","id":"title","label":"Title","default":"Shop Our Collections"},{"type":"select","id":"columns","label":"Products per row","options":[{"value":"2","label":"2"},{"value":"3","label":"3"},{"value":"4","label":"4"}],"default":"4"},{"type":"range","id":"products_to_show","label":"Products per tab","min":4,"max":12,"step":1,"default":8},{"type":"checkbox","id":"show_view_all","label":"Show View All button","default":true}],"blocks":[{"type":"tab","name":"Tab","settings":[{"type":"text","id":"tab_label","label":"Tab label","default":"Best Seller"},{"type":"collection","id":"collection","label":"Collection"}]}],"presets":[{"name":"Tabbed Collections","blocks":[{"type":"tab","settings":{"tab_label":"Best Seller"}},{"type":"tab","settings":{"tab_label":"New Arrivals"}},{"type":"tab","settings":{"tab_label":"Top Rated"}}]}]}
+{% endschema %}

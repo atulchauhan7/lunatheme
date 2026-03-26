@@ -1,0 +1,40 @@
+<div class="collection-page">
+<div class="container">
+<nav class="collection-breadcrumbs" data-animate="fade-up">
+  <a href="{{ routes.root_url }}">Home</a>
+  <span aria-hidden="true">/</span>
+  <a href="{{ routes.collections_url }}">Collections</a>
+  <span aria-hidden="true">/</span>
+  <span>{{ collection.title }}</span>
+</nav>
+<div class="collection-toolbar" data-animate="fade-up">
+<div class="collection-toolbar__left">
+<h1 class="collection-toolbar__title">{{ collection.title }}</h1>
+<span class="collection-toolbar__count">({{ collection.products_count }})</span>
+</div>
+<div class="collection-toolbar__sort">
+<label for="sort-by" class="visually-hidden">Sort products</label>
+<select id="sort-by" data-sort-collection>
+{% for option in collection.sort_options %}
+<option value="{{ option.url }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+{% if collection.description != blank %}
+<p class="collection-desc">{{ collection.description }}</p>
+{% endif %}
+{% paginate collection.products by 12 %}
+<div class="grid grid--4" data-animate-stagger>
+{% for product in collection.products %}
+<div data-animate="fade-up">
+{% render 'product-card', product: product %}
+</div>
+{% endfor %}
+</div>
+{% if paginate.pages > 1 %}
+{% render 'pagination', paginate: paginate %}
+{% endif %}
+{% endpaginate %}
+</div>
+</div>

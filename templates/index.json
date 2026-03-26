@@ -1,1 +1,274 @@
-{"sections":{"image_banner_DxgQzN":{"type":"image-banner","name":"t:sections.image-banner.presets.name","settings":{"image":"shopify:\/\/shop_images\/Untitled_design_45.png","image_overlay_opacity":0,"image_height":"adapt","image_behavior":"ambient","desktop_content_position":"middle-center","desktop_content_alignment":"center","show_text_box":true,"color_scheme":"","stack_images_on_mobile":true,"mobile_content_alignment":"center","show_text_below":true}},"featured_collection":{"type":"featured-collection","settings":{"collection":"new-arrival","products_to_show":16,"title":"<strong>BEST SELLERS<\/strong>","heading_size":"h2","description":"<p><strong>\"Loved the most, worn the most – Dhirai Best Sellers.\"<\/strong><\/p>","show_description":true,"description_style":"body","columns_desktop":4,"enable_desktop_slider":false,"full_width":true,"show_view_all":true,"view_all_style":"solid","color_scheme":"scheme-1","image_ratio":"portrait","image_shape":"default","show_secondary_image":true,"show_vendor":true,"show_rating":true,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false,"padding_top":44,"padding_bottom":36}},"featured_collection_9EpJj3":{"type":"featured-collection","name":"t:sections.featured-collection.presets.name","settings":{"collection":"co-ord-sets","products_to_show":16,"title":"<strong>Co-ord Sets<\/strong>","heading_size":"h2","description":"<p><strong>\"Double the style, twice the love – our top co-ords.\"<\/strong><\/p>","show_description":false,"description_style":"body","columns_desktop":4,"enable_desktop_slider":false,"full_width":false,"show_view_all":true,"view_all_style":"solid","color_scheme":"","image_ratio":"portrait","image_shape":"default","show_secondary_image":true,"show_vendor":true,"show_rating":true,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}},"featured_product_tVU7ww":{"type":"featured-product","blocks":{"text_C74p6Y":{"type":"text","settings":{"text":"{{ section.settings.product.vendor }}","text_style":"uppercase"}},"title_bLRbqP":{"type":"title","settings":{"heading_size":"h1"}},"price_UdaAiR":{"type":"price","settings":{}},"variant_picker_cg3VTQ":{"type":"variant_picker","settings":{"picker_type":"button","swatch_shape":"circle"}},"quantity_selector_jRcNGR":{"type":"quantity_selector","settings":{}},"buy_buttons_Gc73NU":{"type":"buy_buttons","settings":{"show_dynamic_checkout":true,"show_gift_card_recipient":true}},"share_MBGbMg":{"type":"share","settings":{"share_label":"Share"}}},"block_order":["text_C74p6Y","title_bLRbqP","price_UdaAiR","variant_picker_cg3VTQ","quantity_selector_jRcNGR","buy_buttons_Gc73NU","share_MBGbMg"],"name":"t:sections.featured-product.presets.name","settings":{"product":"rang-e-noor-dhirai-s-festive-chanderi-collection","color_scheme":"","secondary_background":true,"media_size":"medium","constrain_to_viewport":true,"media_fit":"contain","media_position":"left","image_zoom":"lightbox","hide_variants":false,"enable_video_looping":false,"padding_top":36,"padding_bottom":36}},"featured_collection_gkgzeG":{"type":"featured-collection","name":"t:sections.featured-collection.presets.name","settings":{"collection":"suit-sets","products_to_show":20,"title":"<strong>SUIT SETS<\/strong>","heading_size":"h2","description":"<p><strong>Suit up in style – Dhirai’s best-loved sets.<\/strong><\/p>","show_description":false,"description_style":"body","columns_desktop":4,"enable_desktop_slider":false,"full_width":false,"show_view_all":true,"view_all_style":"solid","color_scheme":"","image_ratio":"portrait","image_shape":"default","show_secondary_image":true,"show_vendor":true,"show_rating":true,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}},"multicolumn_YCh7pe":{"type":"multicolumn","blocks":{"column_YejaGx":{"type":"column","settings":{"title":"<em><strong>Priya Sharma – Delhi<\/strong><\/em>","text":"<p><strong>⭐️⭐️⭐️⭐️⭐️<br\/><\/strong><em><strong>“Perfect blend of comfort & style!”<\/strong><\/em><strong><br\/>Absolutely loved this co-ord set from Dhirai. The fabric feels super soft on the skin and the fit is just amazing. Got so many compliments when I wore it for brunch with friends!<\/strong><\/p>","link_label":"","link":""}},"column_VLdLGt":{"type":"column","settings":{"title":"<strong>Aishwarya Nair – Kochi<\/strong>","text":"<p><strong>⭐️⭐️⭐️⭐️⭐️<\/strong><\/p><p><strong>My new everyday favorite”Review: These co-ords are just perfect – lightweight, chic, and so easy to style. I can wear them for office, outings, or even casual evenings. Definitely worth every penny!<\/strong><\/p>","link_label":"","link":""}},"column_UU7cQp":{"type":"column","settings":{"title":"<strong>Megha Patel – Ahmedabad<\/strong>","text":"<p><strong>⭐️⭐️⭐️⭐️⭐️<br\/>“Best co-ords I own till now”<br\/> I usually struggle with fit, but Dhirai’s sizing is spot on. The design is trendy yet ethnic, which makes it versatile for any occasion. Love how confident it makes me feel!<\/strong><\/p>","link_label":"","link":""}}},"block_order":["column_YejaGx","column_VLdLGt","column_UU7cQp"],"name":"t:sections.multicolumn.presets.name","settings":{"title":"<strong>✨Dhirai Diaries ✨<\/strong>","heading_size":"h1","image_width":"full","image_ratio":"adapt","button_label":"","button_link":"","columns_desktop":3,"column_alignment":"left","background_style":"primary","color_scheme":"","columns_mobile":"1","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}}},"order":["image_banner_DxgQzN","featured_collection","featured_collection_9EpJj3","featured_product_tVU7ww","featured_collection_gkgzeG","multicolumn_YCh7pe"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "blocks": {
+        "slide_XbWHCH": {
+          "type": "slide",
+          "settings": {
+            "video": "https://cdn.shopify.com/videos/c/o/v/3634c0dbf5ab4e4986acc2b41400e6b7.mp4",
+            "subtitle": "",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_XbWHCH"
+      ],
+      "settings": {
+        "subtitle": "",
+        "heading": "",
+        "description": "",
+        "button_label": "Shop Now",
+        "button_link": "shopify://collections/best-sellers",
+        "button_label_2": "",
+        "button_link_2": "",
+        "slideshow_speed": 6,
+        "show_scroll_indicator": false
+      }
+    },
+    "hero_banner_nYYJ4f": {
+      "type": "hero-banner",
+      "blocks": {
+        "slide_4fyCz4": {
+          "type": "slide",
+          "settings": {
+            "video": "",
+            "subtitle": "",
+            "heading": ""
+          }
+        },
+        "slide_fcn7LP": {
+          "type": "slide",
+          "settings": {
+            "video": "",
+            "subtitle": "",
+            "heading": ""
+          }
+        },
+        "slide_Y4p44x": {
+          "type": "slide",
+          "settings": {
+            "video": "",
+            "subtitle": "",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_4fyCz4",
+        "slide_fcn7LP",
+        "slide_Y4p44x"
+      ],
+      "disabled": true,
+      "settings": {
+        "subtitle": "",
+        "heading": "",
+        "description": "Discover our curated collection of premium essentials designed for the modern lifestyle.",
+        "button_label": "Shop Collection",
+        "button_link": "",
+        "button_label_2": "",
+        "button_link_2": "",
+        "slideshow_speed": 6,
+        "show_scroll_indicator": false
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "subtitle": "Curated For You",
+        "title": "Featured Kurtis",
+        "description": "Handpicked ethnic wear that embodies elegance and timeless Indian craftsmanship",
+        "collection": "frontpage",
+        "products_to_show": 8,
+        "columns": "4",
+        "autoplay": true,
+        "show_view_all": true
+      }
+    },
+    "tabbed": {
+      "type": "tabbed-collections",
+      "blocks": {
+        "tab1": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Best Seller",
+            "collection": "best-sellers"
+          }
+        },
+        "tab2": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "chanchal",
+            "collection": "chanchal"
+          }
+        },
+        "tab3": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Coord Set",
+            "collection": "coord-set"
+          }
+        }
+      },
+      "block_order": [
+        "tab1",
+        "tab2",
+        "tab3"
+      ],
+      "settings": {
+        "subtitle": "Shop By",
+        "title": "Our Collections",
+        "columns": "4",
+        "products_to_show": 8,
+        "show_view_all": true
+      }
+    },
+    "banners": {
+      "type": "image-banners",
+      "blocks": {
+        "b1": {
+          "type": "banner",
+          "settings": {
+            "heading": "Daily wear",
+            "button_label": "Shop Now",
+            "link": ""
+          }
+        },
+        "b2": {
+          "type": "banner",
+          "settings": {
+            "heading": "Straight Kurtis",
+            "button_label": "Shop Now",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "scrolling": {
+      "type": "scrolling-text",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "text": "New Arrivals"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "text": "Free Shipping Over ₹999"
+          }
+        },
+        "t3": {
+          "type": "text",
+          "settings": {
+            "text": "COD Available"
+          }
+        },
+        "t4": {
+          "type": "text",
+          "settings": {
+            "text": "10-Day Easy Returns"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {}
+    },
+    "image-text": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify://shop_images/Untitled_design_56.png",
+        "subtitle": "Our Story",
+        "heading": "Crafted with Love",
+        "text": "<p>Every kurti in our collection is thoughtfully designed, blending traditional Indian craftsmanship with contemporary style. From handpicked fabrics to intricate detailing, we create ethnic wear that celebrates the grace of every woman.</p>",
+        "button_label": "Learn More",
+        "button_link": "",
+        "reverse": false
+      }
+    },
+    "usp": {
+      "type": "usp-bar",
+      "blocks": {
+        "usp1": {
+          "type": "usp",
+          "settings": {
+            "icon": "returns",
+            "title": "Returns and Refund Policy",
+            "text": "Hassle-free returns within 10 days",
+            "link_label": "Learn More",
+            "link_url": "shopify://pages/return-exchanges-and-refunds"
+          }
+        },
+        "usp2": {
+          "type": "usp",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping & COD",
+            "text": "Free shipping and cash on delivery available",
+            "link_label": "Learn More",
+            "link_url": "shopify://pages/shipping-policy"
+          }
+        },
+        "usp3": {
+          "type": "usp",
+          "settings": {
+            "icon": "support",
+            "title": "Customer Support",
+            "text": "Dedicated support for all your queries",
+            "link_label": "Learn More",
+            "link_url": "shopify://pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "usp1",
+        "usp2",
+        "usp3"
+      ],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "subtitle": "Stay Connected",
+        "title": "Join Our Community",
+        "description": "Subscribe for exclusive access to new arrivals, special offers, and style inspiration.",
+        "placeholder": "Enter your email address",
+        "button_label": "Subscribe"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "hero_banner_nYYJ4f",
+    "featured",
+    "tabbed",
+    "banners",
+    "scrolling",
+    "image-text",
+    "usp",
+    "newsletter"
+  ]
+}

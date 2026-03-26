@@ -1,0 +1,200 @@
+<div class="product-card" data-product-available="{{ product.available }}">
+<div class="product-card__media-wrap">
+<a href="{{ product.url }}" class="product-card__media" aria-label="{{ product.title | escape }}">
+{% if product.featured_image != blank %}
+<img 
+class="product-card__image" 
+src="{{ product.featured_image | image_url: width: 400 }}"
+srcset="{{ product.featured_image | image_url: width: 200 }} 200w,
+{{ product.featured_image | image_url: width: 300 }} 300w,
+{{ product.featured_image | image_url: width: 400 }} 400w,
+{{ product.featured_image | image_url: width: 600 }} 600w"
+sizes="(max-width: 480px) 45vw, (max-width: 768px) 45vw, (max-width: 1024px) 30vw, 25vw"
+alt="{{ product.featured_image.alt | escape }}"
+loading="lazy"
+decoding="async"
+width="400"
+height="533"
+>
+{% else %}
+{{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder-svg' }}
+{% endif %}
+
+{% if product.images.size > 1 %}
+<img 
+class="product-card__image product-card__image--hover" 
+src="{{ product.images[1] | image_url: width: 400 }}"
+srcset="{{ product.images[1] | image_url: width: 200 }} 200w,
+{{ product.images[1] | image_url: width: 300 }} 300w,
+{{ product.images[1] | image_url: width: 400 }} 400w,
+{{ product.images[1] | image_url: width: 600 }} 600w"
+sizes="(max-width: 480px) 45vw, (max-width: 768px) 45vw, (max-width: 1024px) 30vw, 25vw"
+alt="{{ product.images[1].alt | escape }}"
+loading="lazy"
+decoding="async"
+width="400"
+height="533"
+>
+{% endif %}
+</a>
+
+{% comment %} --- Resolve MRP from compare_at_price or mrp-XXX tag --- {% endcomment %}
+{% assign card_mrp = product.compare_at_price %}
+{% if card_mrp == blank or card_mrp == 0 or card_mrp <= product.price %}
+  {% for tag in product.tags %}
+    {% assign tag_lower = tag | downcase %}
+    {% if tag_lower contains 'mrp-' %}
+      {% assign card_mrp = tag_lower | remove: 'mrp-' | plus: 0 | times: 100 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if card_mrp > product.price %}
+<span class="product-card__badge product-card__badge--sale">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M12 19l-7-7 1.41-1.41L12 16.17l5.59-5.58L19 12z"/></svg>
+-{{ card_mrp | minus: product.price | times: 100 | divided_by: card_mrp }}%
+</span>
+{% elsif product.available == false %}
+<span class="product-card__badge product-card__badge--soldout">Sold Out</span>
+{% elsif product.tags contains 'new' %}
+<span class="product-card__badge product-card__badge--new">New</span>
+{% endif %}
+
+<button class="product-card__wishlist" aria-label="Add to wishlist" 
+data-wishlist-toggle
+data-product-handle="{{ product.handle }}"
+data-product-title="{{ product.title | escape }}"
+data-product-url="{{ product.url }}"
+data-product-price="{{ product.price | money }}"
+data-product-image="{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 200 }}{% endif %}"
+>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+</svg>
+</button>
+</div>
+
+<div class="product-card__info">
+{% if product.vendor != blank %}
+<div class="product-card__vendor">{{ product.vendor }}</div>
+{% endif %}
+<a href="{{ product.url }}" class="product-card__title-link">
+<h3 class="product-card__title">{{ product.title }}</h3>
+</a>
+{% assign review_rating = product.metafields.reviews.rating.value %}
+{% assign review_count = product.metafields.reviews.rating_count.value %}
+{% if review_rating != blank and review_count != blank and review_count > 0 %}
+<div class="product-card__rating">
+<svg class="product-card__star" viewBox="0 0 24 24" fill="currentColor" width="11" height="11" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+<span class="product-card__rating-value">{{ review_rating | round: 1 }}</span>
+<span class="product-card__rating-count">({{ review_count }})</span>
+</div>
+{% endif %}
+<div class="product-card__price-row">
+{% if card_mrp > product.price %}
+{% assign card_price_num = product.price | divided_by: 100 %}
+{% assign card_mrp_num = card_mrp | divided_by: 100 %}
+{% assign card_pct_off = card_mrp | minus: product.price | times: 100 | divided_by: card_mrp %}
+<span class="product-card__price product-card__price--sale">₹{{ card_price_num }}</span>
+<span class="product-card__price product-card__price--compare">₹{{ card_mrp_num }}</span>
+<span class="product-card__price-off">({{ card_pct_off }}% OFF)</span>
+{% else %}
+<span class="product-card__price">{{ product.price | money }}</span>
+{% endif %}
+</div>
+
+{% if product.options.size > 0 and product.variants.size > 1 %}
+{% assign color_option = product.options_by_name['Color'] %}
+{% if color_option %}
+<div class="product-card__swatches">
+{% assign max_swatches = 5 %}
+{% for value in color_option.values %}
+{% if forloop.index <= max_swatches %}
+{% assign color_lower = value | downcase | strip %}
+{% case color_lower %}
+{% when 'maroon' %}{% assign swatch_hex = '#800000' %}
+{% when 'wine' %}{% assign swatch_hex = '#722F37' %}
+{% when 'mustard' or 'mustard yellow' %}{% assign swatch_hex = '#E1AD01' %}
+{% when 'teal' or 'teal blue' %}{% assign swatch_hex = '#008080' %}
+{% when 'dusty rose' or 'dusty pink' %}{% assign swatch_hex = '#DCAE96' %}
+{% when 'peach' %}{% assign swatch_hex = '#FFCBA4' %}
+{% when 'coral' %}{% assign swatch_hex = '#FF7F50' %}
+{% when 'rust' %}{% assign swatch_hex = '#B7410E' %}
+{% when 'mauve' %}{% assign swatch_hex = '#E0B0FF' %}
+{% when 'sage' or 'sage green' %}{% assign swatch_hex = '#9DC183' %}
+{% when 'olive' or 'olive green' %}{% assign swatch_hex = '#6B8E23' %}
+{% when 'lavender' %}{% assign swatch_hex = '#B57EDC' %}
+{% when 'cream' or 'off white' %}{% assign swatch_hex = '#FFFDD0' %}
+{% when 'beige' %}{% assign swatch_hex = '#F5F5DC' %}
+{% when 'charcoal' %}{% assign swatch_hex = '#36454F' %}
+{% when 'ivory' %}{% assign swatch_hex = '#FFFFF0' %}
+{% when 'magenta' %}{% assign swatch_hex = '#FF00FF' %}
+{% when 'turquoise' %}{% assign swatch_hex = '#40E0D0' %}
+{% when 'burgundy' %}{% assign swatch_hex = '#800020' %}
+{% when 'sky blue' %}{% assign swatch_hex = '#87CEEB' %}
+{% when 'bottle green' %}{% assign swatch_hex = '#006A4E' %}
+{% when 'rani pink' %}{% assign swatch_hex = '#E91E76' %}
+{% when 'royal blue' %}{% assign swatch_hex = '#4169E1' %}
+{% when 'mint' or 'mint green' %}{% assign swatch_hex = '#98FF98' %}
+{% when 'grey' or 'gray' %}{% assign swatch_hex = '#808080' %}
+{% when 'multi' or 'multicolor' %}{% assign swatch_hex = 'conic-gradient(red, yellow, green, blue, red)' %}
+{% else %}{% assign swatch_hex = color_lower %}
+{% endcase %}
+{% if color_lower == 'multi' or color_lower == 'multicolor' %}
+<span 
+class="product-card__swatch {% if forloop.first %}active{% endif %}" 
+style="background: {{ swatch_hex }};"
+title="{{ value | escape }}"
+aria-label="{{ value | escape }}"
+></span>
+{% else %}
+<span 
+class="product-card__swatch {% if forloop.first %}active{% endif %}" 
+style="background-color: {{ swatch_hex }};"
+title="{{ value | escape }}"
+aria-label="{{ value | escape }}"
+></span>
+{% endif %}
+{% endif %}
+{% endfor %}
+{% assign remaining = color_option.values.size | minus: max_swatches %}
+{% if remaining > 0 %}
+<span class="product-card__swatch-more">+{{ remaining }}</span>
+{% endif %}
+</div>
+{% endif %}
+
+{% assign size_option = product.options_by_name['Size'] %}
+{% if size_option %}
+<div class="product-card__sizes">
+{% for value in size_option.values %}
+{% assign size_available = false %}
+{% for variant in product.variants %}
+{% if variant.options contains value and variant.available %}
+{% assign size_available = true %}
+{% endif %}
+{% endfor %}
+<span class="product-card__size {% unless size_available %}product-card__size--oos{% endunless %}">{{ value }}</span>
+{% endfor %}
+</div>
+{% endif %}
+{% endif %}
+
+{% if product.available %}
+<div class="product-card__quick-add">
+{% if product.variants.size == 1 %}
+<button class="product-card__quick-add-btn" aria-label="Add to bag" data-quick-add="{{ product.variants.first.id }}">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+<span>Add to Bag</span>
+</button>
+{% else %}
+<button class="product-card__quick-add-btn" type="button" data-quick-add-handle="{{ product.handle }}" data-quick-add-url="{{ product.url }}" data-quick-add-options='{{ product.options | json | escape }}' data-quick-add-variants='{{ product.variants | json | escape }}' aria-label="Add to cart">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+<span>Add to Cart</span>
+</button>
+{% endif %}
+</div>
+{% endif %}
+</div>
+</div>

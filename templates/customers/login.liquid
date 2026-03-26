@@ -1,0 +1,79 @@
+<div class="page-template">
+<div class="container container--narrow">
+<div class="page-header" data-animate="fade-up">
+<h1>Login</h1>
+</div>
+
+<div id="customer-login" data-animate="fade-up" data-animate-delay="200">
+{% form 'customer_login' %}
+{% if form.errors %}
+<div class="form-alert form-alert--error">
+{{ form.errors | default_errors }}
+</div>
+{% endif %}
+
+<div class="form-group">
+<label class="form-label" for="login-email">Email</label>
+<input class="form-input" type="email" id="login-email" name="customer[email]" required autocomplete="email">
+</div>
+
+<div class="form-group">
+<label class="form-label" for="login-password">Password</label>
+<input class="form-input" type="password" id="login-password" name="customer[password]" required>
+</div>
+
+<div class="form-row">
+<a href="#recover" id="recover-link">Forgot your password?</a>
+</div>
+
+<button type="submit" class="btn btn--primary btn--full">Sign In</button>
+
+<p class="form-footer">
+Don't have an account? <a href="{{ routes.account_register_url }}">Create one</a>
+</p>
+{% endform %}
+</div>
+
+<div id="recover-password" style="display:none" data-animate="fade-up">
+{% form 'recover_customer_password' %}
+{% if form.errors %}
+<div class="form-alert form-alert--error">
+{{ form.errors | default_errors }}
+</div>
+{% endif %}
+{% if form.posted_successfully? %}
+<div class="form-alert form-alert--success">
+We've sent you an email with a link to update your password.
+</div>
+{% endif %}
+
+<p class="form-help">Enter your email address and we'll send you a link to reset your password.</p>
+
+<div class="form-group">
+<label class="form-label" for="recover-email">Email</label>
+<input class="form-input" type="email" id="recover-email" name="email" required autocomplete="email">
+</div>
+
+<button type="submit" class="btn btn--primary btn--full">Reset Password</button>
+
+<p class="form-footer" style="margin-top:1.5rem">
+<a href="#login" id="cancel-recover">&larr; Back to Login</a>
+</p>
+{% endform %}
+</div>
+
+<script>
+(function(){
+var loginForm = document.getElementById('customer-login');
+var recoverForm = document.getElementById('recover-password');
+var recoverLink = document.getElementById('recover-link');
+var cancelRecover = document.getElementById('cancel-recover');
+function showRecover(e){if(e)e.preventDefault();loginForm.style.display='none';recoverForm.style.display='block'}
+function showLogin(e){if(e)e.preventDefault();recoverForm.style.display='none';loginForm.style.display='block'}
+if(recoverLink)recoverLink.addEventListener('click',showRecover);
+if(cancelRecover)cancelRecover.addEventListener('click',showLogin);
+if(window.location.hash==='#recover')showRecover();
+})();
+</script>
+</div>
+</div>

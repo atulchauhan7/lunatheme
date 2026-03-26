@@ -1,0 +1,10 @@
+*.zip
+*.rar
+*.7z
+*.tar.gz
+.DS_Store
+Thumbs.db
+desktop.ini
+node_modules/
+.env
+*.log

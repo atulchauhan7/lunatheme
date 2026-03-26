@@ -1,0 +1,135 @@
+<section class="hero-slider" data-section-id="{{ section.id }}" data-hero-slideshow data-hero-speed="{{ section.settings.slideshow_speed | times: 1000 }}">
+<div class="hero-slider__viewport">
+{% if section.blocks.size > 0 %}
+{% for block in section.blocks %}
+<div class="hero-slide {% if forloop.first %}hero-slide--active{% endif %}" {{ block.shopify_attributes }}>
+<div class="hero-slide__media">
+{% if block.settings.video != blank %}
+{% # theme-check-disable RemoteAsset %}
+<video autoplay muted loop playsinline data-autoplay-scroll preload="metadata">
+<source src="{{ block.settings.video }}" type="video/mp4">
+</video>
+{% # theme-check-enable RemoteAsset %}
+{% elsif block.settings.image != blank %}
+<img
+src="{{ block.settings.image | image_url: width: 1200 }}"
+srcset="{{ block.settings.image | image_url: width: 600 }} 600w,
+{{ block.settings.image | image_url: width: 900 }} 900w,
+{{ block.settings.image | image_url: width: 1200 }} 1200w,
+{{ block.settings.image | image_url: width: 1800 }} 1800w,
+{{ block.settings.image | image_url: width: 2000 }} 2000w"
+sizes="100vw"
+alt="{{ block.settings.image.alt | default: section.settings.heading | escape }}"
+loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+{% if forloop.first %}fetchpriority="high"{% endif %}
+decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
+width="2000"
+height="1000"
+>
+{% else %}
+{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+{% endif %}
+</div>
+<div class="hero-slide__overlay"></div>
+<div class="hero-slide__content">
+<div class="container">
+{% if block.settings.subtitle != blank %}
+<span class="hero-slide__subtitle" data-animate="fade-up">{{ block.settings.subtitle }}</span>
+{% elsif section.settings.subtitle != blank %}
+<span class="hero-slide__subtitle" data-animate="fade-up">{{ section.settings.subtitle }}</span>
+{% endif %}
+{% if block.settings.heading != blank %}
+{% if forloop.first %}
+<h1 class="hero-slide__title split-words" data-animate="fade-up" data-animate-delay="200">{{ block.settings.heading }}</h1>
+{% else %}
+<h2 class="hero-slide__title split-words" data-animate="fade-up" data-animate-delay="200">{{ block.settings.heading }}</h2>
+{% endif %}
+{% elsif section.settings.heading != blank %}
+{% if forloop.first %}
+<h1 class="hero-slide__title split-words" data-animate="fade-up" data-animate-delay="200">{{ section.settings.heading }}</h1>
+{% else %}
+<h2 class="hero-slide__title split-words" data-animate="fade-up" data-animate-delay="200">{{ section.settings.heading }}</h2>
+{% endif %}
+{% endif %}
+{% if section.settings.button_label != blank %}
+<a href="{{ section.settings.button_link }}" class="hero-slide__btn btn--magnetic" data-animate="fade-up" data-animate-delay="400">
+<span>{{ section.settings.button_label }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</a>
+{% endif %}
+</div>
+</div>
+</div>
+{% endfor %}
+{% else %}
+<div class="hero-slide hero-slide--active">
+<div class="hero-slide__media">
+{% if section.settings.image != blank %}
+<img
+src="{{ section.settings.image | image_url: width: 1200 }}"
+srcset="{{ section.settings.image | image_url: width: 600 }} 600w,
+{{ section.settings.image | image_url: width: 900 }} 900w,
+{{ section.settings.image | image_url: width: 1200 }} 1200w,
+{{ section.settings.image | image_url: width: 1800 }} 1800w,
+{{ section.settings.image | image_url: width: 2000 }} 2000w"
+sizes="100vw"
+alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+loading="eager"
+fetchpriority="high"
+decoding="sync"
+width="2000"
+height="1000"
+>
+{% else %}
+{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+{% endif %}
+</div>
+<div class="hero-slide__overlay"></div>
+<div class="hero-slide__content">
+<div class="container">
+{% if section.settings.subtitle != blank %}
+<span class="hero-slide__subtitle" data-animate="fade-up">{{ section.settings.subtitle }}</span>
+{% endif %}
+{% if section.settings.heading != blank %}
+<h1 class="hero-slide__title split-words" data-animate="fade-up" data-animate-delay="200">{{ section.settings.heading }}</h1>
+{% endif %}
+{% if section.settings.button_label != blank %}
+<a href="{{ section.settings.button_link }}" class="hero-slide__btn btn--magnetic" data-animate="fade-up" data-animate-delay="400">
+<span>{{ section.settings.button_label }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</a>
+{% endif %}
+</div>
+</div>
+</div>
+{% endif %}
+
+{% if section.settings.show_scroll_indicator %}
+<div class="hero-slider__scroll-cue" aria-hidden="true">
+<span class="hero-slider__scroll-text">Scroll</span>
+<span class="hero-slider__scroll-line"></span>
+</div>
+{% endif %}
+</div>
+
+{% if section.blocks.size > 1 %}
+<div class="hero-slider__dots">
+{% for block in section.blocks %}
+<button class="hero-slider__dot {% if forloop.first %}active{% endif %}" data-slide-index="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
+{% endfor %}
+</div>
+<button class="hero-slider__arrow hero-slider__arrow--prev" aria-label="Previous slide">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+</button>
+<button class="hero-slider__arrow hero-slider__arrow--next" aria-label="Next slide">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+</button>
+<div class="hero-slider__progress">
+<div class="hero-slider__progress-bar" data-hero-progress style="animation-duration: {{ section.settings.slideshow_speed }}s;"></div>
+</div>
+{% endif %}
+</section>
+
+{% schema %}
+{"name":"Hero Slider","settings":[{"type":"image_picker","id":"image","label":"Fallback background image","info":"Used when no slideshow blocks are added. 2000x1000px recommended."},{"type":"text","id":"subtitle","label":"Subtitle","default":"New Collection 2026"},{"type":"text","id":"heading","label":"Heading","default":"Redefine Your Style"},{"type":"textarea","id":"description","label":"Description","default":"Discover our curated collection of premium essentials designed for the modern lifestyle."},{"type":"text","id":"button_label","label":"Button label","default":"Shop Now"},{"type":"url","id":"button_link","label":"Button link"},{"type":"text","id":"button_label_2","label":"Second button label"},{"type":"url","id":"button_link_2","label":"Second button link"},{"type":"range","id":"slideshow_speed","label":"Slideshow speed (seconds)","min":3,"max":10,"step":1,"default":6,"info":"Only applies when multiple slides are added"},{"type":"checkbox","id":"show_scroll_indicator","label":"Show scroll indicator","default":false}],"blocks":[{"type":"slide","name":"Slide","settings":[{"type":"image_picker","id":"image","label":"Image","info":"2000x1000px recommended"},{"type":"url","id":"video","label":"Video URL (mp4)","info":"Optional — overrides image if provided"},{"type":"text","id":"subtitle","label":"Slide subtitle"},{"type":"text","id":"heading","label":"Slide heading"}]}],"presets":[{"name":"Hero Slider","blocks":[{"type":"slide"}]}]}
+{% endschema %}

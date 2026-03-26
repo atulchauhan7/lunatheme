@@ -1,0 +1,20 @@
+<div class="newsletter-popup-overlay">
+<div class="newsletter-popup" role="dialog" aria-modal="true" aria-label="Newsletter signup">
+<button class="newsletter-popup__close" aria-label="Close popup">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+<div class="newsletter-popup__content">
+<div class="section-header__subtitle">Exclusive Offer</div>
+<h3 class="mb-1">Get 15% Off</h3>
+<p class="text-muted mb-2" style="font-size:.95rem">Subscribe to our newsletter and receive 15% off your first order plus exclusive access to new arrivals.</p>
+{% form 'customer' %}
+<input type="hidden" name="contact[tags]" value="newsletter, popup">
+<div class="newsletter__form mb-1">
+<input type="email" name="contact[email]" id="newsletter-popup-email" class="newsletter__input" placeholder="Your email address" required aria-label="Email address">
+<button type="submit" class="newsletter__submit">Get 15% Off</button>
+</div>
+{% endform %}
+<p class="text-muted" style="font-size:.75rem;margin:0">No spam, unsubscribe anytime.</p>
+</div>
+</div>
+</div>

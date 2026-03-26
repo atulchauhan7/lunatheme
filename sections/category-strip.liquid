@@ -1,0 +1,85 @@
+{% if section.settings.show_section %}
+{% if section.blocks.size > 0 %}
+<nav class="category-strip" aria-label="Shop by category">
+  <div class="category-strip__track" role="list">
+    {% for block in section.blocks %}
+    <a href="{{ block.settings.link | default: '#' }}"
+       class="category-strip__item"
+       role="listitem"
+       {{ block.shopify_attributes }}>
+      <span class="category-strip__img-wrap">
+        {% if block.settings.image != blank %}
+        <img
+          src="{{ block.settings.image | image_url: width: 300 }}"
+          srcset="{{ block.settings.image | image_url: width: 100 }} 100w, {{ block.settings.image | image_url: width: 200 }} 200w, {{ block.settings.image | image_url: width: 300 }} 300w, {{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 600 }} 600w"
+          sizes="(max-width:480px) calc((100vw - 12px) / 4.5), (max-width:768px) calc((100vw - 28px) / 4.5), calc(20vw)"
+          alt="{{ block.settings.label | escape }}"
+          width="300" height="300"
+          loading="lazy" decoding="async"
+        >
+        {% else %}
+        {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </span>
+      <span class="category-strip__label">{{ block.settings.label }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</nav>
+{% elsif request.design_mode %}
+<div class="category-strip category-strip--empty">
+  <p style="text-align:center;padding:0.75rem;font-size:0.75rem;color:#888;">Category Strip — add category blocks in the editor</p>
+</div>
+{% endif %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Category Strip",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show section",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Category"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Strip",
+      "blocks": [
+        { "type": "category", "settings": { "label": "New Arrivals" } },
+        { "type": "category", "settings": { "label": "Best Sellers" } },
+        { "type": "category", "settings": { "label": "Dresses" } },
+        { "type": "category", "settings": { "label": "Tops" } },
+        { "type": "category", "settings": { "label": "Sale" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
