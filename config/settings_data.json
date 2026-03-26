@@ -24,6 +24,8 @@
     "section_spacing": 60,
     "border_radius": 0,
     "text_direction": "ltr",
+    "checkout_provider": "gokwik",
+    "enable_shopflo": true,
     "enable_animations": true,
     "enable_custom_cursor": false,
     "enable_newsletter_popup": false,
