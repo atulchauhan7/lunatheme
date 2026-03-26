@@ -1913,9 +1913,9 @@ p{margin-bottom:1rem}
   .cart-drawer__note{font-size:0.68rem}
   /* Global small phone polish */
   .container{padding:0 10px}
-  .main-content{padding-top:var(--header-height,53px)}
+  .main-content{padding-top:calc(var(--header-height,53px) + var(--announcement-content-offset,0px))}
   .template-index .main-content{padding-top:0}
-  .template-product .main-content{padding-top:var(--header-height,53px)}
+  .template-product .main-content{padding-top:calc(var(--header-height,53px) + var(--announcement-content-offset,0px))}
   .section{padding:0.75rem 0}
   .section--no-padding{padding:0}
   .section-header{margin-bottom:0.5rem}
