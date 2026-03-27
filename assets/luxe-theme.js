@@ -176,16 +176,11 @@ return '/checkout';
 }
 
 function triggerShopflowCheckout(source,trigger){
+/* Use GoKwik checkout if available */
+if(typeof onCheckoutClick==='function'){
+try{onCheckoutClick(trigger||document.querySelector('.gokwik-checkout button'));return;}catch(e){}
+}
 var checkoutUrl=resolveCheckoutUrl();
-var detail={source:source||'unknown',checkoutUrl:checkoutUrl,trigger:trigger||null};
-var checkoutEvent=null;
-try{
-checkoutEvent=new CustomEvent('shopflow:checkout',{cancelable:true,detail:detail});
-document.dispatchEvent(checkoutEvent);
-window.dispatchEvent(new CustomEvent('shopflow:checkout',{cancelable:true,detail:detail}));
-}catch(e){}
-if(checkoutEvent&&checkoutEvent.defaultPrevented)return;
-
 /* Fallback to native checkout */
 window.location.href=checkoutUrl;
 }
@@ -208,7 +203,7 @@ setBuyNowState('loading');
 fetch(window.theme.routes.cart_add_url+'.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id:parseInt(variantInput.value,10),quantity:parseInt(qtyInput?qtyInput.value:1,10)||1}]})}).then(function(r){if(!r.ok)throw new Error('Add failed');return r.json()}).then(function(){
 setBuyNowState('redirecting');
 triggerShopflowCheckout('cart',btn);
-setTimeout(function(){setBuyNowState('reset');window.__buyNowInProgress=false},1500);
+setTimeout(function(){setBuyNowState('reset');window.__buyNowInProgress=false},3000);
 }).catch(function(){setBuyNowState('error');window.__buyNowInProgress=false;setTimeout(function(){setBuyNowState('reset')},1500)});
 }
 
@@ -242,7 +237,7 @@ fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json','
 .then(function(){
 setBuyNowState('redirecting');
 triggerShopflowCheckout('cart',btn);
-setTimeout(function(){setBuyNowState('reset');},1500);
+setTimeout(function(){setBuyNowState('reset');},3000);
 })
 .catch(function(){setBuyNowState('error');setTimeout(function(){setBuyNowState('reset');},1500);});
 };
