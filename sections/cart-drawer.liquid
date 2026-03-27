@@ -69,7 +69,7 @@
 <span class="cart-drawer__subtotal-price">{{ cart.total_price | money }}</span>
 </div>
   <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-drawer__checkout-form">
-    <button type="button" id="checkout2" name="checkout2" class="btn btn--primary btn--full gokwik-checkout-btn" onclick="handleFloCheckoutBtn()">Checkout</button>
+    <button type="submit" id="checkout2" name="checkout" class="btn btn--primary btn--full gokwik-checkout-btn">Checkout</button>
   </form>
   <div class="payment-icons payment-icons--drawer">
     <div class="payment-icons__list">
