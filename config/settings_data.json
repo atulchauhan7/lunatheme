@@ -25,6 +25,7 @@
     "border_radius": 0,
     "text_direction": "ltr",
     "checkout_provider": "gokwik",
+    "gokwik_mid": "1937lhjque1z",
     "enable_shopflo": true,
     "enable_animations": true,
     "enable_custom_cursor": false,
