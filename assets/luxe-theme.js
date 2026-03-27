@@ -197,10 +197,7 @@ try{gkApi[gkMethods[gi]]();return;}catch(e){}
 }
 }
 }
-/* GoKwik auto-intercepts .gokwik-checkout-btn clicks — trigger a synthetic click if needed */
-var gkBtn=document.querySelector('.gokwik-checkout-btn');
-if(gkBtn){gkBtn.click();return;}
-/* Fallback to native if GoKwik SDK not yet ready */
+/* GoKwik SDK not yet ready — fall back to native checkout */
 window.location.href=checkoutUrl;
 return;
 }
@@ -306,6 +303,31 @@ if(form&&form.getAttribute('data-shopflow-source'))source=form.getAttribute('dat
 triggerShopflowCheckout(source,btn);
 });
 
+/* ── GoKwik checkout button handler ─────────────────
+   Fires on .gokwik-checkout-btn clicks.
+   GoKwik's own SDK (Dhirai_Gokwik app) should intercept first via its own
+   document listener. This handler only takes over if the SDK hasn't fired. */
+document.addEventListener('click',function(e){
+var btn=e.target.closest('.gokwik-checkout-btn');
+if(!btn)return;
+/* Let GoKwik SDK handle it — check after a tick if it did */
+setTimeout(function(){
+var gkApi=window.gokwik||window.GoKwik||window.GKwik;
+/* If GoKwik modal is open, do nothing */
+var gkModal=document.querySelector('[class*="gokwik-modal"],[id*="gokwik"],[class*="kwik-modal"],[id*="kwik"]');
+if(gkModal&&gkModal.offsetParent!==null)return;
+/* SDK present but modal didn't open — call API directly */
+if(gkApi){
+var methods=['initCheckout','openCheckout','checkout'];
+for(var i=0;i<methods.length;i++){
+if(typeof gkApi[methods[i]]==='function'){try{gkApi[methods[i]]();return;}catch(err){}}
+}
+}
+/* Full fallback — redirect to Shopify native checkout */
+window.location.href=window.theme&&window.theme.routes&&window.theme.routes.checkout_url||'/checkout';
+},200);
+});
+
 /* Refresh cart drawer HTML + count */
 function refreshCart(callback){
 var done=0,total=2,cartData=null;
@@ -376,7 +398,7 @@ h+='</div></div>';
 h+='</div>';
 h+='<div class="cart-drawer__footer"><div class="cart-drawer__subtotal"><span>Subtotal</span>';
 h+='<span class="cart-drawer__subtotal-price">'+money(cart.total_price)+'</span></div>';
-h+='<form action="/cart" method="post" novalidate class="cart-drawer__checkout-form"><button type="submit" id="checkout2" name="checkout" class="btn btn--primary btn--full gokwik-checkout-btn">Checkout</button></form>';
+h+='<form action="/cart" method="post" novalidate class="cart-drawer__checkout-form"><button type="button" class="btn btn--primary btn--full gokwik-checkout-btn">Checkout</button></form>';
 h+='<div class="payment-icons payment-icons--drawer"><div class="payment-icons__list">';
 h+='<span class="payment-icon" title="Visa"><svg viewBox="0 0 38 24" width="38" height="24"><rect width="38" height="24" rx="3" fill="#1A1F71"/><path d="M15.6 16.4l1.7-10.3h2.7l-1.7 10.3h-2.7zm11.3-10c-.5-.2-1.4-.4-2.4-.4-2.7 0-4.6 1.4-4.6 3.4 0 1.5 1.4 2.3 2.4 2.8 1 .5 1.4.8 1.4 1.3 0 .7-.8 1-1.6 1-1.1 0-1.6-.2-2.5-.5l-.3-.2-.4 2.1c.6.3 1.8.5 3 .5 2.9 0 4.7-1.4 4.7-3.5 0-1.2-.7-2.1-2.3-2.8-.9-.5-1.5-.8-1.5-1.3 0-.4.5-.9 1.5-.9.9 0 1.5.2 2 .4l.2.1.4-2zm7 0h-2.1c-.7 0-1.2.2-1.4.8l-4.1 9.6h2.9l.6-1.6h3.5l.3 1.6h2.5l-2.2-10.3zm-3.4 6.6l1.5-3.9.4 3.9h-1.9zM14.2 6.1l-2.6 7-.3-1.4c-.5-1.6-2-3.4-3.7-4.3l2.5 9h2.9l4.3-10.3h-3.1z" fill="#fff"/><path d="M8.4 6.1H4.2l-.1.3c3.4.9 5.7 2.9 6.6 5.4l-1-4.9c-.2-.6-.6-.8-1.3-.8z" fill="#F9A533"/></svg></span>';
 h+='<span class="payment-icon" title="Mastercard"><svg viewBox="0 0 38 24" width="38" height="24"><rect width="38" height="24" rx="3" fill="#252525"/><circle cx="15" cy="12" r="7" fill="#EB001B"/><circle cx="23" cy="12" r="7" fill="#F79E1B"/><path d="M19 7.3a7 7 0 0 1 2.6 4.7A7 7 0 0 1 19 16.7a7 7 0 0 1-2.6-4.7A7 7 0 0 1 19 7.3z" fill="#FF5F00"/></svg></span>';
