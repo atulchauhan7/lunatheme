@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
 <meta name="theme-color" content="{{ settings.accent_color }}">
 
+<!-- Gokwik theme code start -->
+<link rel="dns-prefetch" href="https://pdp.gokwik.co/">
+<link rel="dns-prefetch" href="https://api.gokwik.co">
+{% render 'gokwik' %}
+<!-- Gokwik theme code End -->
+
 <!-- Preconnect to critical origins -->
 <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
@@ -134,7 +140,6 @@ window.theme = {
 moneyFormat: {{ shop.money_format | json }},
 currency: {{ cart.currency.iso_code | json }},
 cartCount: {{ cart.item_count }},
-checkoutProvider: {{ settings.checkout_provider | default: 'native' | json }},
 routes: {
 cart_url: '{{ routes.cart_url }}',
 cart_add_url: '{{ routes.cart_add_url }}',
@@ -156,57 +161,7 @@ setTimeout(function(){
   if(!document.body.classList.contains('page-loaded')){ document.body.classList.add('page-loaded'); }
 }, 1500);
 </script>
-{% assign active_provider = settings.checkout_provider | default: 'native' %}
-{% if active_provider == 'shopflo' or active_provider == 'native' and settings.enable_shopflo %}
-<script>
-(function(){
-  var h=window.location.hostname;
-  var isLocal=(h==='localhost'||h==='127.0.0.1');
-  var realHost={{ shop.permanent_domain | json }};
-  window.Shopflo=Object.assign({},window.Shopflo||{},{autoOnboarding:true});
-  if(isLocal&&realHost){
-    var _fetch=window.fetch;
-    window.fetch=function(url,opts){
-      if(typeof url==='string'&&(url.indexOf('shopUrl=localhost')!==-1||url.indexOf('shop-url=localhost')!==-1||url.indexOf('shop_url=localhost')!==-1)){
-        url=url.replace(/shop[_-]?[Uu]rl=localhost[^&]*/g,function(m){return m.replace(/=localhost[^&]*/,'='+realHost)});
-      }
-      return _fetch.apply(this,arguments);
-    };
-  }
-  var s=document.createElement('script');
-  s.src='https://bridge.shopflo.com/js/shopflo.bundle.js';
-  s.async=true;
-  document.head.appendChild(s);
-})();
-</script>
-{% elsif active_provider == 'gokwik' %}
-{% if settings.gokwik_mid != blank %}
-{{- '' -}}
-{%- comment -%}
-  GoKwik is loaded via the "Dhirai_Gokwik" Shopify app through content_for_header above.
-  The script below is a fallback — it only fires if the app's ScriptTag has NOT already
-  injected gkwik.js (guards against double-initialization).
-{%- endcomment -%}
-<script>
-(function(){
-  if(document.querySelector('script[src*="gkwik.js"]')||document.querySelector('script[src*="gokwik"]')){return;}
-  var mid={{ settings.gokwik_mid | json }};
-  var h=window.location.hostname;
-  var isLocal=(h==='localhost'||h==='127.0.0.1');
-  window.gokwikConfig=Object.assign({},{
-    mid:mid,
-    environment:isLocal?'sandbox':'production',
-    shopDomain:{{ shop.permanent_domain | json }}
-  },window.gokwikConfig||{});
-  var s=document.createElement('script');
-  s.src='https://cdn.gokwik.co/v4/build/gkwik.js';
-  s.async=true;
-  s.setAttribute('data-gk-mid',mid);
-  document.head.appendChild(s);
-})();
-</script>
-{% endif %}
-{% endif %}
+
 
 <!-- Preload main JS -->
 {{ 'luxe-theme.js' | asset_url | preload_tag: as: 'script' }}

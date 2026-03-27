@@ -172,29 +172,35 @@
     "name": "Integrations",
     "settings": [
       {
-        "type": "radio",
-        "id": "checkout_provider",
-        "label": "Checkout Provider",
-        "default": "native",
-        "options": [
-          { "value": "native", "label": "Shopify Native" },
-          { "value": "shopflo", "label": "Shopflo" },
-          { "value": "gokwik", "label": "GoKwik (KwikCheckout)" }
-        ],
-        "info": "Choose which checkout provider to use. Switch here to toggle between providers without touching code."
+        "type": "text",
+        "id": "mid",
+        "label": "GoKwik Merchant ID (MID)",
+        "info": "Your GoKwik MID — same as used in GoKwik dashboard."
       },
       {
-        "type": "text",
-        "id": "gokwik_mid",
-        "label": "GoKwik Merchant ID",
-        "info": "Required when GoKwik is selected. Get this from your GoKwik merchant dashboard."
+        "type": "select",
+        "id": "envType",
+        "label": "GoKwik Environment",
+        "default": "production",
+        "options": [
+          { "value": "production", "label": "Production" },
+          { "value": "sandbox", "label": "Sandbox" }
+        ],
+        "info": "Use 'production' for live store, 'sandbox' for testing."
       },
       {
         "type": "checkbox",
-        "id": "enable_shopflo",
-        "label": "Enable Shopflo checkout (legacy)",
-        "default": false,
-        "info": "Deprecated — use Checkout Provider above instead. Only active if provider is set to Native."
+        "id": "goEnable",
+        "label": "Enable GoKwik Checkout",
+        "default": true,
+        "info": "Enable GoKwik checkout integration."
+      },
+      {
+        "type": "checkbox",
+        "id": "goBuynowEnable",
+        "label": "Enable GoKwik Buy Now",
+        "default": true,
+        "info": "Enable GoKwik Buy Now button on product pages."
       }
     ]
   },

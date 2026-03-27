@@ -1,0 +1,155 @@
+{% if settings.envType == 'production' %}
+  {% assign env = 'pdp' %}
+{% elsif settings.envType == 'sandbox' %}
+  {% assign env = 'sandbox.pdp' %}
+{% endif %}
+
+{% if settings.goEnable %}
+<script>
+  window.merchantInfo = {
+    mid: "{{ settings.mid }}",
+    environment: "{{ settings.envType }}",
+    type: "merchantInfo",
+    storeId: "{{ shop.id }}"
+  };
+  var cart = {{ cart | json }};
+  var templateName = '{{ template.name }}';
+</script>
+
+<script src="https://{{ env }}.gokwik.co/merchant-integration/build/merchant.integration.js?v4" defer></script>
+
+<script>
+  window.addEventListener('gokwikLoaded', function(e) {
+    var gokwikCheckoutButtons = document.querySelectorAll('.gokwik-checkout button');
+    gokwikCheckoutButtons.forEach(function(button) {
+      button.disabled = false;
+      button.classList.remove('disabled');
+    });
+
+    var targetElement = document.querySelector('body');
+
+    function debounce(func, delay) {
+      var timeoutId;
+      return function() {
+        var context = this;
+        var args = arguments;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function() {
+          func.apply(context, args);
+        }, delay);
+      };
+    }
+
+    var observer = new MutationObserver(function() {
+      debouncedMyTimer();
+    });
+
+    var debouncedMyTimer = debounce(function() {
+      observer.disconnect();
+      var gokwikCheckoutButtons = document.querySelectorAll('.gokwik-checkout button');
+      gokwikCheckoutButtons.forEach(function(button) {
+        button.disabled = false;
+        button.classList.remove('disabled');
+      });
+      observer.observe(targetElement, { childList: true, subtree: true });
+    }, 700);
+
+    var config = { childList: true, subtree: true };
+    observer.observe(targetElement, config);
+  });
+</script>
+{% endif %}
+
+<style>
+{% if settings.goEnable %}
+.gokwik-checkout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: end;
+  margin-bottom: 10px;
+}
+.gokwik-checkout button {
+  max-width: 100%;
+  width: 100%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  padding: 5px 10px;
+  height: 45px;
+}
+.gokwik-checkout button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.gokwik-checkout button:focus {
+  outline: none;
+}
+.gokwik-checkout button > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gokwik-checkout button > span.btn-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.gokwik-checkout button > span.btn-text > span:first-child {
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  line-height: 1.5rem;
+}
+.gokwik-checkout button > span.btn-text > span:last-child {
+  padding-top: 2px;
+  font-size: 10px;
+  line-height: 10px;
+  text-transform: initial;
+}
+{% endif %}
+
+{% if settings.goBuynowEnable %}
+#gokwik-buy-now {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  border: none;
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  line-height: 1.5rem;
+  margin-bottom: 10px;
+  position: relative;
+  padding: 5px 10px;
+  height: 45px;
+}
+#gokwik-buy-now > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#gokwik-buy-now > span.btn-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#gokwik-buy-now > span.btn-text > span:last-child {
+  padding-top: 0;
+  font-size: 10px;
+  letter-spacing: 1px;
+  line-height: 14px;
+  text-transform: initial;
+}
+#gokwik-buy-now:disabled,
+#gokwik-buy-now.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+{% endif %}
+</style>
