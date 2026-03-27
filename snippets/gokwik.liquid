@@ -6,20 +6,65 @@
 
 {% if settings.goEnable %}
 <script>
+  window.gaTag = {ga4: "{{ settings.ga4Gokwik }}"};
   window.merchantInfo = {
     mid: "{{ settings.mid }}",
     environment: "{{ settings.envType }}",
     type: "merchantInfo",
-    storeId: "{{ shop.id }}"
+    storeId: "{{ shop.id }}",
+    fbpixel: "{{ settings.fbpixel }}",
+    snapchatPixels: "{{ settings.snapPixel }}"
   };
+  var productFormSelector = '.product-form';
   var cart = {{ cart | json }};
   var templateName = '{{ template.name }}';
 </script>
 
+{% if settings.enableIntlFlow %}
+<script>
+const getCountryData = async() => {
+  const getCountry = await fetch("/browsing_context_suggestions.json");
+  const response = await getCountry.json();
+  const res = response?.detected_values?.country_name;
+  const styleElement = document.createElement("style");
+  let css = "";
+  switch(res){
+    case "India":
+      css = ".shopifycheckoutbtn{display:none !important;}";
+      break;
+    default:
+      css = ".gokwik-checkout{ display : none !important;} #gokwik-buy-now{ display : none !important;} .shopifycheckoutbtn{display:block !important;}";
+      break;
+  }
+  styleElement.textContent = css;
+  document.head.appendChild(styleElement);
+}
+document.addEventListener("DOMContentLoaded", getCountryData);
+</script>
+{% endif %}
+
 <script src="https://{{ env }}.gokwik.co/merchant-integration/build/merchant.integration.js?v4" defer></script>
 
 <script>
+  if (gaTag.ga4 && gaTag.ga4 !== 'undefined' && gaTag.ga4 !== '') {
+    const script = document.createElement('script');
+    script.src = "https://www.googletagmanager.com/gtag/js?id=" + window.gaTag.ga4;
+    script.defer = true;
+    document.head.appendChild(script);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', window.gaTag.ga4, { 'groups': 'GA4' });
+  }
+</script>
+
+<script>
   window.addEventListener('gokwikLoaded', function(e) {
+    var buyNowButton = document.getElementById('gokwik-buy-now');
+    if (buyNowButton) {
+      buyNowButton.disabled = false;
+      buyNowButton.classList.remove('disabled');
+    }
     var gokwikCheckoutButtons = document.querySelectorAll('.gokwik-checkout button');
     gokwikCheckoutButtons.forEach(function(button) {
       button.disabled = false;
@@ -41,6 +86,13 @@
     }
 
     var observer = new MutationObserver(function() {
+      var addToCartButton = document.querySelector("button[name='add']");
+      var gokwikBuyNowButton = document.getElementById('gokwik-buy-now');
+      if (addToCartButton && addToCartButton.disabled) {
+        gokwikBuyNowButton?.setAttribute('disabled', 'disabled');
+      } else {
+        gokwikBuyNowButton?.removeAttribute('disabled');
+      }
       debouncedMyTimer();
     });
 
