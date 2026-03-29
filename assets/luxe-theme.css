@@ -934,7 +934,7 @@ p{margin-bottom:1rem}
 /* === PRODUCT PAGE — Ritu Kumar inspired: editorial, slider gallery === */
 .product-page{padding-top:0;overflow:hidden}
 /* Breadcrumbs — clear fixed header */
-.product-breadcrumbs{display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--color-text-muted);padding:2px 0;letter-spacing:0.02em;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;min-width:0}
+.product-breadcrumbs{display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--color-text-muted);padding:4px 0 2px;letter-spacing:0.02em;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;min-width:0;line-height:1.2}
 .product-breadcrumbs a{transition:color 0.3s}
 .product-breadcrumbs a:hover{color:var(--color-accent)}
 .product-breadcrumbs span[aria-hidden]{opacity:0.4}
@@ -964,7 +964,7 @@ p{margin-bottom:1rem}
 .pdp-ticket__code.copied .pdp-ticket__copy-icon{stroke:#fff;opacity:1}
 .pdp-ticket__code::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) scale(0.9);font-size:0.58rem;font-weight:500;font-family:var(--font-body);letter-spacing:0;white-space:nowrap;background:var(--color-heading);color:#fff;padding:3px 10px;border-radius:5px;opacity:0;pointer-events:none;transition:all 0.2s}
 .pdp-ticket__code:hover::after,.pdp-ticket__code.copied::after{opacity:1;transform:translateX(-50%) scale(1)}
-.product-page__grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:3.5rem;align-items:start;max-width:100%;overflow:visible}
+.product-page__grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:3.5rem;align-items:start;max-width:100%;overflow:visible;margin-top:0}
 /* Product Gallery Slider */
 .product-gallery--slider{position:sticky;max-width:100%;overflow:hidden}
 .product-gallery__viewport{position:relative;width:100%;overflow:hidden;touch-action:pan-y pinch-zoom;aspect-ratio:3/4;max-height:calc(100vh - 60px);background:var(--color-surface);border-radius:4px}
@@ -1243,7 +1243,7 @@ p{margin-bottom:1rem}
   .pdp-ticket__right{padding:0.5rem 0.75rem 0.6rem;flex-direction:row;gap:8px;min-width:0}
   .pdp-ticket__label{font-size:0.5rem}
   .pdp-ticket__code{font-size:0.72rem;padding:4px 10px}
-  .product-page__grid{grid-template-columns:1fr;gap:1rem}
+  .product-page__grid{grid-template-columns:1fr;gap:1rem;margin-top:0}
   .product-page{padding-top:0;overflow-x:hidden;padding-bottom:0}
   .product-gallery--slider{position:static}
   .product-gallery__viewport{aspect-ratio:auto;height:68vh;max-height:580px}
@@ -1286,7 +1286,7 @@ p{margin-bottom:1rem}
   .product-info__meta{margin-top:1rem;padding-top:1rem}
   .product-info__meta-item{font-size:0.75rem}
   .product-info__vendor{font-size:0.6rem}
-  .product-breadcrumbs{padding:0.5rem 0 0;font-size:0.68rem}
+  .product-breadcrumbs{padding:4px 0 0;font-size:0.68rem;line-height:1.2;margin-bottom:0}
   .product-gallery__arrow{display:none!important}
   .product-gallery__badge{top:8px;left:8px;font-size:0.52rem;padding:4px 12px}
   .product-info>*{animation-duration:0.35s}
@@ -1828,7 +1828,7 @@ p{margin-bottom:1rem}
   .main-content{padding-top:calc(var(--header-height,72px) + var(--announcement-content-offset,0px))}
   .template-index .main-content{padding-top:0}
   .template-product .main-content{padding-top:calc(var(--header-height,72px) + var(--announcement-content-offset,0px))}
-  .product-page__grid{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .product-page__grid{grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:0}
   .product-gallery--slider{position:static}
   .product-gallery__viewport{aspect-ratio:3/4;max-height:calc(100vh - 50px)}
   .product-info{position:static}
@@ -1857,6 +1857,7 @@ p{margin-bottom:1rem}
 @media(max-width:412px){
   /* Product page — vertical gallery */
   .product-page{padding-top:0}
+  .product-breadcrumbs{padding:4px 0 0;line-height:1.2}
   .product-gallery--vertical{gap:2px}
   .product-gallery__item img{cursor:default}
   .product-gallery__main{aspect-ratio:4/5;margin-bottom:0.3rem}
