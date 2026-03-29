@@ -57,7 +57,7 @@
         "type": "announcement-bar",
         "settings": {
           "show_announcement": true,
-          "text": "Flat 30% Off On Summer Sale",
+          "text": "Flat 30% Off",
           "link": "",
           "timer_end": "2026-03-30T23:59:59"
         }
