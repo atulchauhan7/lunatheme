@@ -23,7 +23,10 @@ window.addEventListener('scroll',function(){if(!progTicking){progTicking=true;re
 const header=$('.site-header');
 const announcementBar=$('.announcement-bar');
 function syncAnnouncementContentOffsetVar(){
-  var h=announcementBar?Math.round(announcementBar.getBoundingClientRect().height):0;
+  var h=0;
+  if(announcementBar&&!announcementBar.classList.contains('announcement-hidden')){
+    h=Math.round(announcementBar.getBoundingClientRect().height);
+  }
   document.documentElement.style.setProperty('--announcement-content-offset',h+'px');
 }
 function syncAnnouncementHeightVar(){
@@ -61,14 +64,19 @@ var headerTicking=false;
 function handleHeaderScroll(){
 const cs=window.pageYOffset||document.documentElement.scrollTop;
 const scrollingDown=cs>lastScroll+2;
+var stateChanged=false;
 if(header){
+var wasScrolled=header.classList.contains('scrolled');
 header.classList.toggle('scrolled',cs>40);
+if(header.classList.contains('scrolled')!==wasScrolled)stateChanged=true;
 if(announcementBar){
 if(cs<=5){
+if(announcementBar.classList.contains('announcement-hidden'))stateChanged=true;
 announcementBar.classList.remove('announcement-hidden');
 header.classList.add('has-announcement');
 syncAnnouncementHeightVar();
 }else if(scrollingDown){
+if(!announcementBar.classList.contains('announcement-hidden'))stateChanged=true;
 announcementBar.classList.add('announcement-hidden');
 header.classList.remove('has-announcement');
 syncAnnouncementHeightVar();
@@ -77,6 +85,16 @@ syncAnnouncementHeightVar();
 }
 lastScroll=cs<=0?0:cs;
 syncAnnouncementHeightVar();
+if(stateChanged){
+  var mainEl=document.querySelector('main.main-content');
+  if(mainEl)mainEl.style.paddingTop='';
+  requestAnimationFrame(function(){
+    var hh=header?Math.round(header.offsetHeight):72;
+    document.documentElement.style.setProperty('--header-height',hh+'px');
+    syncAnnouncementContentOffsetVar();
+    syncAnnouncementHeightVar();
+  });
+}
 headerTicking=false;
 }
 window.addEventListener('scroll',function(){if(!headerTicking){headerTicking=true;requestAnimationFrame(handleHeaderScroll)}},{passive:true});
