@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "name": "Product Information",
+      "settings": {
+        "show_rating": true,
+        "show_share": true,
+        "tax_note": "Inclusive of all taxes",
+        "quantity_label": "Quantity",
+        "add_to_cart_label": "Add to Cart",
+        "buy_now_label": "Buy Now",
+        "sold_out_label": "Sold Out",
+        "delivery_heading": "Estimated Delivery",
+        "description_heading": "Description",
+        "shipping_heading": "Shipping & Returns",
+        "care_heading": "Care Instructions",
+        "shipping_text": "<p>Free standard shipping on all orders. 7-day hassle-free returns on all items.</p>",
+        "care_text": "<p>Please refer to the product label for specific care instructions.</p>",
+        "delivery_min_days": 5,
+        "delivery_max_days": 7,
+        "trust_1": "Free Shipping",
+        "trust_2": "Easy Returns",
+        "trust_3": "Secure Checkout",
+        "trust_4": "Quality Assured",
+        "show_free_gift_note": true,
+        "free_gift_note": "🛒 Add any <b>2 items</b> & unlock <b>additional 30% OFF</b> 🎉",
+        "promo_enabled": true,
+        "promo_text": "Add any 2 items to your cart and avail additional 30% off",
+        "promo_subtext": "Tap the code to copy & apply at checkout",
+        "promo_code": "SUMMER30"
+      }
+    },
+    "17737752434b549832": {
+      "type": "apps",
+      "blocks": {
+        "kiwi_size_chart_recommender_kiwi_sizing_9Xrt97": {
+          "type": "shopify://apps/kiwi-size-chart-recommender/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
+          "settings": {
+            "fallbackToBlockPosition": false,
+            "waitForElementSelector": "",
+            "waitForElementDelay": 5
+          }
+        }
+      },
+      "block_order": [
+        "kiwi_size_chart_recommender_kiwi_sizing_9Xrt97"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "17737752434b549832"
+  ]
+}

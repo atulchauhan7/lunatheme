@@ -721,32 +721,298 @@ decoding="async"
 
 <script type="application/ld+json">
 {
-"@context": "https://schema.org/",
-"@type": "Product",
-"name": {{ product.title | json }},
-{% if product.featured_image != blank %}"image": {{ product.featured_image | image_url: width: 1200 | json }},{% endif %}
-"description": {{ product.description | strip_html | truncate: 250 | json }},
-{% if product.selected_or_first_available_variant.sku != blank %}"sku": {{ product.selected_or_first_available_variant.sku | json }},{% endif %}
-{% if product.selected_or_first_available_variant.barcode != blank %}"gtin": {{ product.selected_or_first_available_variant.barcode | json }},{% endif %}
-"brand": {
-"@type": "Brand",
-"name": {{ product.vendor | json }}
-},
-{% assign rc = product.metafields.reviews.rating_count %}{% assign rv = product.metafields.reviews.rating %}{% if rc != blank and rc > 0 %}
-"aggregateRating": {
-"@type": "AggregateRating",
-"ratingValue": {{ rv | default: 5 }},
-"reviewCount": {{ rc }}
-},
-{% endif %}
-"offers": {
-"@type": "Offer",
-"url": {{ request.origin | append: product.url | json }},
-"priceCurrency": {{ cart.currency.iso_code | json }},
-"price": {{ product.price | divided_by: 100.0 }},
-"priceValidUntil": "{{ 'now' | date: '%Y' | plus: 1 }}-12-31",
-"itemCondition": "https://schema.org/NewCondition",
-"availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
-}
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  {% if product.featured_image != blank %}"image": {{ product.featured_image | image_url: width: 1200 | json }},{% endif %}
+  "description": {{ product.description | strip_html | truncate: 250 | json }},
+  {% if product.selected_or_first_available_variant.sku != blank %}"sku": {{ product.selected_or_first_available_variant.sku | json }},{% endif %}
+  {% if product.selected_or_first_available_variant.barcode != blank %}"gtin": {{ product.selected_or_first_available_variant.barcode | json }},{% endif %}
+  "brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | json }}
+  },
+  {% assign rc = product.metafields.reviews.rating_count %}{% assign rv = product.metafields.reviews.rating %}{% if rc != blank and rc > 0 %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ rv | default: 5 }},
+    "reviewCount": {{ rc }}
+  },
+  {% endif %}
+  "offers": {
+    "@type": "Offer",
+    "url": {{ request.origin | append: product.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ product.price | divided_by: 100.0 }},
+    "priceValidUntil": "{{ 'now' | date: '%Y' | plus: 1 }}-12-31",
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+  }
 }
 </script>
+
+<script src="{{ 'lunatic-product.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Lunatic PDP",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show star rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share",
+      "label": "Show share buttons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tax_note",
+      "label": "Tax note",
+      "default": "Inclusive of all taxes"
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity label",
+      "default": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_label",
+      "label": "Add to cart button label",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "buy_now_label",
+      "label": "Buy now button label",
+      "default": "Buy Now"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_label",
+      "label": "Sold out button label",
+      "default": "Sold Out"
+    },
+    {
+      "type": "text",
+      "id": "delivery_heading",
+      "label": "Delivery heading",
+      "default": "Estimated Delivery"
+    },
+    {
+      "type": "text",
+      "id": "description_heading",
+      "label": "Description accordion heading",
+      "default": "Description"
+    },
+    {
+      "type": "text",
+      "id": "shipping_heading",
+      "label": "Shipping accordion heading",
+      "default": "Shipping & Returns"
+    },
+    {
+      "type": "text",
+      "id": "care_heading",
+      "label": "Care accordion heading",
+      "default": "Care Instructions"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_text",
+      "label": "Shipping & Returns text",
+      "default": "<p>Free standard shipping on all orders. 7-day hassle-free returns on all items.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "care_text",
+      "label": "Care instructions text",
+      "default": "<p>Please refer to the product label for specific care instructions.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Delivery"
+    },
+    {
+      "type": "range",
+      "id": "delivery_min_days",
+      "label": "Min delivery days",
+      "min": 1,
+      "max": 30,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "delivery_max_days",
+      "label": "Max delivery days",
+      "min": 1,
+      "max": 30,
+      "default": 7
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust badge 1",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust badge 2",
+      "default": "Easy Returns"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust badge 3",
+      "default": "Secure Checkout"
+    },
+    {
+      "type": "text",
+      "id": "trust_4",
+      "label": "Trust badge 4",
+      "default": "Quality Assured"
+    },
+    {
+      "type": "header",
+      "content": "Free Gift Note"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_free_gift_note",
+      "label": "Show free gift note",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "free_gift_note",
+      "label": "Free gift note text",
+      "info": "Supports emojis.",
+      "default": "🎁 Free Gift + 10% off with every prepaid order ❤️"
+    },
+    {
+      "type": "header",
+      "content": "Promo Coupon"
+    },
+    {
+      "type": "checkbox",
+      "id": "promo_enabled",
+      "label": "Show promo coupon",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "promo_text",
+      "label": "Promo heading"
+    },
+    {
+      "type": "text",
+      "id": "promo_subtext",
+      "label": "Promo subtext",
+      "default": "Tap the code to copy & apply at checkout"
+    },
+    {
+      "type": "text",
+      "id": "promo_code",
+      "label": "Promo code"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "option_layout",
+      "name": "Option Layout",
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout_type",
+          "label": "Layout item",
+          "default": "all_options",
+          "options": [
+            {
+              "value": "product_title",
+              "label": "Product title"
+            },
+            {
+              "value": "size_chart_trigger",
+              "label": "Size chart trigger"
+            },
+            {
+              "value": "size_options",
+              "label": "Size options"
+            },
+            {
+              "value": "color_options",
+              "label": "Color options"
+            },
+            {
+              "value": "other_options",
+              "label": "Other options"
+            },
+            {
+              "value": "all_options",
+              "label": "All options (fallback)"
+            },
+            {
+              "value": "custom_content",
+              "label": "Custom content"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Trigger label",
+          "default": "Size Chart",
+          "info": "Used when Layout item is Size chart trigger"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Custom content",
+          "default": "<p>Add any content you want between option groups.</p>",
+          "info": "Used when Layout item is Custom content"
+        }
+      ]
+    },
+    {
+      "type": "info_container",
+      "name": "Product Info Container",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Container title",
+          "default": "Shipping & Returns"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Container content",
+          "default": "<p>Add your product information here. You can format this text from the Theme Editor.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Or use a page (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
