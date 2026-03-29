@@ -83,19 +83,6 @@
         "show_scroll_indicator": false
       }
     },
-    "featured": {
-      "type": "featured-collection",
-      "settings": {
-        "subtitle": "Curated For You",
-        "title": "Featured Kurtis",
-        "description": "Handpicked ethnic wear that embodies elegance and timeless Indian craftsmanship",
-        "collection": "frontpage",
-        "products_to_show": 8,
-        "columns": "4",
-        "autoplay": true,
-        "show_view_all": true
-      }
-    },
     "tabbed": {
       "type": "tabbed-collections",
       "blocks": {
@@ -131,6 +118,19 @@
         "title": "Our Collections",
         "columns": "4",
         "products_to_show": 8,
+        "show_view_all": true
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "subtitle": "Curated For You",
+        "title": "Featured Kurtis",
+        "description": "Handpicked ethnic wear that embodies elegance and timeless Indian craftsmanship",
+        "collection": "frontpage",
+        "products_to_show": 8,
+        "columns": "4",
+        "autoplay": true,
         "show_view_all": true
       }
     },
@@ -200,8 +200,8 @@
     },
     "image-text": {
       "type": "image-with-text",
-      "disabled": true,
       "settings": {
+        "image": "shopify://shop_images/Untitled_design_34.png",
         "subtitle": "Our Story",
         "heading": "Crafted with Love",
         "text": "<p>Every kurti in our collection is thoughtfully designed, blending traditional Indian craftsmanship with contemporary style. From handpicked fabrics to intricate detailing, we create ethnic wear that celebrates the grace of every woman.</p>",
@@ -265,8 +265,8 @@
   "order": [
     "hero",
     "hero_banner_nYYJ4f",
-    "featured",
     "tabbed",
+    "featured",
     "banners",
     "scrolling",
     "image-text",
