@@ -200,6 +200,10 @@ decoding="async"
 
   {% unless product.has_only_default_variant %}
   <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
+
+  {% comment %} Kiwi Size Chart App – renders above size options {% endcomment %}
+  <div id="kiwi_sizechart" class="kiwi-sizechart-wrapper" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}"></div>
+
   <div class="product-info__options">
     {% for option in product.options_with_values %}
     {% assign option_name_down = option.name | downcase %}
