@@ -201,8 +201,8 @@ decoding="async"
   {% unless product.has_only_default_variant %}
   <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
 
-  {% comment %} Kiwi Size Chart App – renders above size options {% endcomment %}
-  <div id="kiwi_sizechart" class="kiwi-sizechart-wrapper" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}"></div>
+  {% comment %} Kiwi Size Chart App – container + trigger above size options {% endcomment %}
+  <div class="kiwi-sizing-chart" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}" data-product-title="{{ product.title | escape }}" data-product-url="{{ product.url }}"></div>
 
   <div class="product-info__options">
     {% for option in product.options_with_values %}
@@ -212,12 +212,12 @@ decoding="async"
     <div class="product-option" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}">
       <label class="product-option__label">
         {{ option.name }}
-        {% if is_size %}{% if product.metafields.custom.size_chart != blank %}
-        <button type="button" class="size-chart-trigger" onclick="document.getElementById('size-chart-modal').classList.add('open')" aria-label="View size chart">
+        {% if is_size %}
+        <a href="#" class="kiwi-sizing-chart-trigger size-chart-trigger" data-kiwisizing data-product-handle="{{ product.handle }}" aria-label="View size chart">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3H3v18h18V3z"/><path d="M3 9h3"/><path d="M3 15h5"/><path d="M3 12h4"/></svg>
-          Size Guide
-        </button>
-        {% endif %}{% endif %}
+          Size Chart
+        </a>
+        {% endif %}
       </label>
       <div class="product-option__values">
         {% for value in option.values %}
