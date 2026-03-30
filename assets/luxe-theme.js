@@ -193,9 +193,21 @@ if(window.theme&&window.theme.routes&&window.theme.routes.checkout_url)return wi
 return '/checkout';
 }
 
+function shouldUseGoKwikCheckout(source,trigger){
+if(typeof onCheckoutClick!=='function')return false;
+var el=trigger||null;
+if(el&&el.closest){
+if(el.closest('[data-buy-now],[data-add-to-cart],[data-product-form]'))return false;
+if(el.closest('.product-info__cta-desktop,.product-info__cta-group,.product-page'))return false;
+if(el.closest('.cart-drawer,.cart-page,.template-cart,.cart__footer,.gokwik-checkout'))return true;
+}
+if(source==='cart')return true;
+return false;
+}
+
 function triggerShopflowCheckout(source,trigger){
 /* Use GoKwik checkout if available */
-if(typeof onCheckoutClick==='function'){
+if(shouldUseGoKwikCheckout(source,trigger)){
 try{onCheckoutClick(trigger||document.querySelector('.gokwik-checkout button'));return;}catch(e){}
 }
 var checkoutUrl=resolveCheckoutUrl();
