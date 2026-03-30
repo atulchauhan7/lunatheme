@@ -39,7 +39,7 @@
     "enable_custom_cursor": false,
     "enable_newsletter_popup": false,
     "whatsapp_number": "+919166881552",
-    "product_promo_enabled": false,
+    "product_promo_enabled": true,
     "product_promo_text": "Buy 2 Get 30% Off",
     "product_promo_code": "SUMMER30",
     "product_show_rating": true,
