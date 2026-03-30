@@ -57,9 +57,9 @@
         "type": "announcement-bar",
         "settings": {
           "show_announcement": true,
-          "text": "Offer Ends In",
+          "text": "Buy 2 -> Get 30% off",
           "link": "",
-          "timer_end": "2026-03-30T23:59:00"
+          "timer_end": ""
         }
       },
       "header": {
