@@ -195,6 +195,7 @@ return '/checkout';
 
 function shouldUseGoKwikCheckout(source,trigger){
 if(typeof onCheckoutClick!=='function')return false;
+if(source==='buy-now')return true;
 var el=trigger||null;
 if(el&&el.closest){
 if(el.closest('[data-buy-now],[data-add-to-cart],[data-product-form]'))return false;
@@ -232,7 +233,7 @@ window.__buyNowInProgress=true;
 setBuyNowState('loading');
 fetch(window.theme.routes.cart_add_url+'.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id:parseInt(variantInput.value,10),quantity:parseInt(qtyInput?qtyInput.value:1,10)||1}]})}).then(function(r){if(!r.ok)throw new Error('Add failed');return r.json()}).then(function(){
 setBuyNowState('redirecting');
-triggerShopflowCheckout('cart',btn);
+triggerShopflowCheckout('buy-now',btn);
 setTimeout(function(){setBuyNowState('reset');window.__buyNowInProgress=false},3000);
 }).catch(function(){setBuyNowState('error');window.__buyNowInProgress=false;setTimeout(function(){setBuyNowState('reset')},1500)});
 }
@@ -266,7 +267,7 @@ fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json','
 .then(function(r){if(!r.ok)throw new Error('add failed');return r.json();})
 .then(function(){
 setBuyNowState('redirecting');
-triggerShopflowCheckout('cart',btn);
+triggerShopflowCheckout('buy-now',btn);
 setTimeout(function(){setBuyNowState('reset');},3000);
 })
 .catch(function(){setBuyNowState('error');setTimeout(function(){setBuyNowState('reset');},1500);});
