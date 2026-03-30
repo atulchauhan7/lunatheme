@@ -30,7 +30,7 @@
         "heading": "",
         "description": "",
         "button_label": "Shop Now",
-        "button_link": "shopify://collections",
+        "button_link": "shopify://collections/frontpage",
         "button_label_2": "",
         "button_link_2": "",
         "slideshow_speed": 6,
