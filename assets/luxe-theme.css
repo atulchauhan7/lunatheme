@@ -1396,7 +1396,7 @@ p{margin-bottom:1rem}
 .page-content a{color:var(--color-accent);text-decoration:underline}
 .page-content img{max-width:100%;height:auto}
 .page-content table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
-.page-content iframe{max-width:100%}
+.page-content iframe:not([src*="gokwik"]){max-width:100%}
 @media(max-width:768px){
   .page-template{padding-top:0;padding-bottom:1.5rem}
   .page-header{padding:1rem 0}
@@ -2078,7 +2078,7 @@ p{margin-bottom:1rem}
 
 /* === ENSURE ALL IMAGES / MEDIA CONSTRAINED === */
 img,video,svg,picture{max-width:100%;height:auto}
-iframe{max-width:100%}
+iframe:not([src*="gokwik"]){max-width:100%}
 
 /* === SAFE AREA INSETS FOR NOTCHED PHONES === */
 @supports(padding:env(safe-area-inset-top)){
