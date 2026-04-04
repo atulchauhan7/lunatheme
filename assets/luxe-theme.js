@@ -1021,6 +1021,7 @@ if(prevArr)prevArr.addEventListener('click',function(e){e.stopPropagation();goTo
 if(nextArr)nextArr.addEventListener('click',function(e){e.stopPropagation();goTo(current+1)});
 
 goTo(0,false);
+gallery._goTo=goTo;
 });
 
 /* Legacy thumb gallery */
@@ -1040,6 +1041,64 @@ var variantJson=form.querySelector('[data-product-variants]');
 var variants=variantJson?JSON.parse(variantJson.textContent):[];
 var hiddenInput=form.querySelector('input[name="id"]');
 var addBtn=form.querySelector('[type="submit"]');
+var gallery=$('.product-gallery--slider');
+var gallerySlides=gallery?gallery.querySelectorAll('.product-gallery__slide'):[];
+var galleryDots=gallery?gallery.querySelectorAll('.product-gallery__dot'):[];
+
+function syncVariantImage(match,clickedEl){
+var targetIndex=-1;
+/* Strategy 1: full variant match has featured_image.position */
+if(match&&match.featured_image&&match.featured_image.position){
+targetIndex=match.featured_image.position-1;
+}
+/* Strategy 2: no full match — find first variant for the clicked color using its featured_image.position */
+if(targetIndex<0&&clickedEl){
+var clickedOpt=clickedEl.closest('.product-option');
+if(clickedOpt){
+var optName=(clickedOpt.getAttribute('data-option-name')||'').toLowerCase();
+var isColor=(optName==='color'||optName==='colour'||optName==='colors'||optName==='colours');
+if(isColor){
+var clickedVal=clickedEl.getAttribute('data-value');
+var optIdx=parseInt(clickedOpt.getAttribute('data-option-index')||'0',10);
+for(var vi=0;vi<variants.length;vi++){
+if(variants[vi].options&&variants[vi].options[optIdx]===clickedVal&&variants[vi].featured_image&&variants[vi].featured_image.position){
+targetIndex=variants[vi].featured_image.position-1;break;
+}
+}
+}
+}
+}
+/* Strategy 3: positional grouping (no featured_image data at all) */
+if(targetIndex<0&&gallerySlides.length>1){
+var colorOpt=null;
+form.querySelectorAll('.product-option').forEach(function(o){
+var n=(o.getAttribute('data-option-name')||'').toLowerCase();
+if(n==='color'||n==='colour'||n==='colors'||n==='colours'){colorOpt=o;}
+});
+if(colorOpt){
+var colorVals=colorOpt.querySelectorAll('.product-option__value');
+var selColor=colorOpt.querySelector('.product-option__value.selected');
+if(colorVals.length&&selColor){
+var cIdx=Array.prototype.indexOf.call(colorVals,selColor);
+if(cIdx>=0&&gallerySlides.length>=colorVals.length){
+var perColor=Math.floor(gallerySlides.length/colorVals.length);
+targetIndex=cIdx*perColor;
+}
+}
+}
+}
+if(targetIndex<0)return;
+if(gallery&&gallery._goTo){gallery._goTo(targetIndex);return;}
+var track=gallery?gallery.querySelector('.product-gallery__track'):null;
+if(track){
+track.style.transition='transform 0.45s cubic-bezier(.25,.46,.45,.94)';
+track.style.transform='translate3d('+(-(targetIndex*100))+'%,0,0)';
+if(galleryDots.length){galleryDots.forEach(function(d,i){d.classList.toggle('active',i===targetIndex)});}
+var ctr=gallery.querySelector('[data-gallery-current]');
+if(ctr)ctr.textContent=targetIndex+1;
+}
+}
+
 $$('.product-option__value').forEach(function(v){
 v.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();this.click()}});
 v.addEventListener('click',function(){
@@ -1059,6 +1118,8 @@ var v=variants[i];var opts=v.options||[];var isMatch=true;
 for(var j=0;j<selected.length;j++){if(opts[j]!==selected[j]){isMatch=false;break}}
 if(isMatch){match=v;break}
 }
+/* Always sync gallery image — works even without a full variant match */
+syncVariantImage(match,this);
 if(match&&hiddenInput){
 hiddenInput.value=match.id;
 /* Update price display */

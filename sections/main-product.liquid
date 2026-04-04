@@ -36,7 +36,7 @@
 {% if has_discount %}<span class="product-gallery__badge product-gallery__badge--sale">SALE</span>{% elsif product.tags contains 'new' or product.tags contains 'New' or product.tags contains 'NEW' %}<span class="product-gallery__badge">NEW IN</span>{% endif %}
 <div class="product-gallery__track">
 {% for image in product.images %}
-<div class="product-gallery__slide">
+<div class="product-gallery__slide" data-media-id="{{ image.id }}">
 <img 
 src="{{ image | image_url: width: 800 }}"
 srcset="{{ image | image_url: width: 400 }} 400w,
