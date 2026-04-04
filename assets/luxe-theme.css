@@ -932,7 +932,7 @@ p{margin-bottom:1rem}
 /* === PRODUCT PAGE — Ritu Kumar inspired: editorial, slider gallery === */
 .product-page{padding-top:0;overflow:hidden}
 /* Breadcrumbs — clear fixed header */
-.product-breadcrumbs{display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--color-text-muted);padding:4px 0 2px;letter-spacing:0.02em;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;min-width:0;line-height:1.2}
+.product-breadcrumbs{display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--color-text-muted);padding:2px 0;letter-spacing:0.02em;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;min-width:0}
 .product-breadcrumbs a{transition:color 0.3s}
 .product-breadcrumbs a:hover{color:var(--color-accent)}
 .product-breadcrumbs span[aria-hidden]{opacity:0.4}
@@ -1294,7 +1294,7 @@ p{margin-bottom:1rem}
   .product-info__meta{margin-top:1rem;padding-top:1rem}
   .product-info__meta-item{font-size:0.75rem}
   .product-info__vendor{font-size:0.6rem}
-  .product-breadcrumbs{padding:2px 0 0;font-size:0.68rem;line-height:1.2;margin-bottom:0;padding-bottom:0}
+  .product-breadcrumbs{padding:0.5rem 0 0;font-size:0.68rem}
   .product-gallery__arrow{display:none!important}
   .product-gallery__badge{top:8px;left:8px;font-size:0.52rem;padding:4px 12px}
   .product-info>*{animation-duration:0.35s}
@@ -1793,7 +1793,7 @@ p{margin-bottom:1rem}
   /* PDP gallery for small phones */
   .product-gallery__viewport{height:62vh;max-height:500px}
   .product-gallery__dots{padding:4px 0 0}
-  .product-breadcrumbs{padding:2px 0 0;font-size:0.65rem;margin-bottom:0}
+  .product-breadcrumbs{padding:0.4rem 0 0;font-size:0.65rem}
   .product-page__grid{margin-top:0;padding-top:0}
   /* Collection cards small phones */
   .collection-card__overlay{padding:0.75rem}
@@ -1866,7 +1866,6 @@ p{margin-bottom:1rem}
 @media(max-width:412px){
   /* Product page — vertical gallery */
   .product-page{padding-top:0}
-  .product-breadcrumbs{padding:2px 0 0;line-height:1.2;margin-bottom:0;padding-bottom:0}
   .product-page__grid{margin-top:0;padding-top:0}
   .product-gallery--vertical{gap:2px}
   .product-gallery__item img{cursor:default}
@@ -1904,7 +1903,7 @@ p{margin-bottom:1rem}
   .product-info__meta{margin-top:0.75rem;padding-top:0.75rem;grid-template-columns:1fr}
   .product-info__meta-item{font-size:0.72rem;margin-bottom:0.3rem;flex-wrap:wrap}
   .product-info__meta-item strong{font-size:0.72rem}
-  .product-breadcrumbs{padding-top:2px;padding-bottom:0;font-size:0.65rem;margin-bottom:0}
+  .product-breadcrumbs{padding-top:8px;padding-bottom:0;font-size:0.65rem}
   .product-page__grid{margin-top:0;padding-top:0}
   /* Header tighter */
   .site-header__inner{padding:8px 12px}
