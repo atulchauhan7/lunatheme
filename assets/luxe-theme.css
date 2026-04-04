@@ -1192,6 +1192,7 @@ p{margin-bottom:1rem}
 .accordion-trigger svg{width:14px;height:14px;transition:transform 0.4s var(--ease-out-expo)}
 .accordion-item.open .accordion-trigger svg{transform:rotate(180deg)}
 .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.4s var(--ease-out-expo)}
+.accordion-item.open .accordion-content{max-height:2000px}
 .accordion-content__inner{padding:0 0.25rem 1.25rem;font-size:0.85rem;line-height:1.85;color:var(--color-text-muted);overflow-wrap:break-word;word-break:break-word}
 .accordion-content__inner h1,.accordion-content__inner h2,.accordion-content__inner h3,.accordion-content__inner h4,.accordion-content__inner h5,.accordion-content__inner h6{font-family:var(--font-body);font-size:0.9rem;font-weight:700;color:var(--color-heading);letter-spacing:0.03em;line-height:1.4;margin:0.9rem 0 0.4rem}
 .accordion-content__inner h1:first-child,.accordion-content__inner h2:first-child,.accordion-content__inner h3:first-child,.accordion-content__inner h4:first-child{margin-top:0}
