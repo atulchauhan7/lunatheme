@@ -884,7 +884,7 @@ if(!variantId){setATCBtnsState(form,'error');setTimeout(()=>{form.querySelectorA
 setATCBtnsState(form,'loading');
 fetch(window.theme.routes.cart_add_url+'.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id:variantId,quantity:parseInt(qtyInput&&qtyInput.value||1,10)||1}]})}).then(r=>{if(!r.ok)throw new Error('Add failed');return r.json()}).then(()=>{
 setATCBtnsState(form,'added');
-refreshCart(function(){openCartDrawer();setTimeout(function(){form.querySelectorAll('[type="submit"]').forEach(resetATCBtn)},500)});
+refreshCart(function(){setTimeout(function(){form.querySelectorAll('[type="submit"]').forEach(resetATCBtn)},500)});
 }).catch(()=>{setATCBtnsState(form,'error');setTimeout(()=>{form.querySelectorAll('[type="submit"]').forEach(resetATCBtn)},1500)})})});
 }
 initAddToCart();
