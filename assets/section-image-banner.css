@@ -266,6 +266,12 @@
   }
 }
 
+.banner__link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 .banner__content {
   padding: 0;
   display: flex;
