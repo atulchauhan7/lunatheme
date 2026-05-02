@@ -13,7 +13,7 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/Summer_sale_dhirair_1200_628.webp",
+        "image": "shopify://shop_images/IMG_5745.webp",
         "image_overlay_opacity": 0,
         "image_height": "adapt",
         "image_behavior": "none",
