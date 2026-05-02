@@ -266,10 +266,8 @@
   }
 }
 
-.banner__link {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+.banner--has-link {
+  cursor: pointer;
 }
 
 .banner__content {
