@@ -14,6 +14,7 @@
       "name": "t:sections.image-banner.presets.name",
       "settings": {
         "image": "shopify://shop_images/IMG_5745.webp",
+        "banner_link": "shopify://collections/embroidery",
         "image_overlay_opacity": 0,
         "image_height": "adapt",
         "image_behavior": "none",
